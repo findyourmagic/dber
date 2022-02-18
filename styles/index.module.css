@@ -1,0 +1,29 @@
+.nav {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 2;
+}
+
+.main {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: grab;
+}
+
+.aside {
+    position: absolute;
+    height: 100vh;
+    right: 0;
+    top: 0;
+    z-index: 3;
+    background: #fff;
+    padding: 15px;
+}
