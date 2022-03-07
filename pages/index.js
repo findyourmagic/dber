@@ -210,7 +210,7 @@ export default function Home() {
             setLinkStat({
                 ...linkStat,
                 endX: x,
-                endY: y,
+                endY: y + 3,
             });
         }
     };
