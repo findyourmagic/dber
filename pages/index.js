@@ -384,21 +384,9 @@ export default function Home() {
                 stroke="black"
                 strokeWidth="1"
                 fill="none"
-                markerMid="url(#one-many)"
+                markerMid="url(#many-one)"
             />
         );
-
-        path.setAttribute("stroke", "red");
-        path.setAttribute("fill", "none");
-        path.setAttribute("stroke-width", 10);
-        path.setAttribute("marker-start", "url(#circle)");
-        path.setAttribute("marker-mid", "url(#one-many)");
-        path.setAttribute("marker-end", "url(#circle)");
-        path.addEventListener("mouseover", function (e) {
-            console.log(e);
-            elm.style.fill = "#f90";
-        });
-        return path;
     }
 
     return (

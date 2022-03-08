@@ -13,50 +13,73 @@ function NodeFormItem(props, ref) {
     return (
         <form ref={ref}>
             <input type="hidden" name="id" defaultValue={props.attr.id || ""} />
-
-            <input
-                type="text"
-                name="name"
-                defaultValue={props.attr.name || ""}
-            />
-            <input
-                type="text"
-                name="type"
-                placeholder="type"
-                defaultChecked={props.attr.type || ""}
-            />
-            <input
-                type="text"
-                name="note"
-                placeholder="note"
-                defaultChecked={props.attr.note || ""}
-            />
-            <input
-                type="text"
-                name="dbdefault"
-                placeholder="default"
-                defaultChecked={props.attr.dbdefault || ""}
-            />
-            <input
-                type="checkbox"
-                name="primary"
-                defaultChecked={props.attr.primary || false}
-            />
-            <input
-                type="checkbox"
-                name="unique"
-                defaultChecked={props.attr.unique || false}
-            />
-            <input
-                type="checkbox"
-                name="not_null"
-                defaultChecked={props.attr.not_null || false}
-            />
-            <input
-                type="checkbox"
-                name="increment"
-                defaultChecked={props.attr.increment || false}
-            />
+            <label>
+                Name:
+                <input
+                    type="text"
+                    name="name"
+                    defaultValue={props.attr.name || ""}
+                />
+            </label>
+            <label>
+                Type:
+                <input
+                    type="text"
+                    name="type"
+                    placeholder="type"
+                    defaultChecked={props.attr.type || ""}
+                />
+            </label>
+            <label>
+                Note:
+                <input
+                    type="text"
+                    name="note"
+                    placeholder="note"
+                    defaultChecked={props.attr.note || ""}
+                />
+            </label>
+            <label>
+                Default:
+                <input
+                    type="text"
+                    name="dbdefault"
+                    placeholder="default"
+                    defaultChecked={props.attr.dbdefault || ""}
+                />
+            </label>
+            <label>
+                Primary:
+                <input
+                    type="checkbox"
+                    name="primary"
+                    defaultChecked={props.attr.primary || false}
+                />
+            </label>
+            <label>
+                Unique:
+                <input
+                    type="checkbox"
+                    name="unique"
+                    defaultChecked={props.attr.unique || false}
+                />
+            </label>
+            <label>
+                Not Null:
+                <input
+                    type="checkbox"
+                    name="not_null"
+                    defaultChecked={props.attr.not_null || false}
+                />
+            </label>
+            <label>
+                Increment:
+                <input
+                    type="checkbox"
+                    name="increment"
+                    defaultChecked={props.attr.increment || false}
+                />
+            </label>
             <button
                 onClick={() => {
                     props.removeItem(props.attr.id);

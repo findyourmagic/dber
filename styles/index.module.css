@@ -1,6 +1,6 @@
 .nav {
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
     position: absolute;
     top: 0;
@@ -25,5 +25,12 @@
     top: 0;
     z-index: 3;
     background: #fff;
+    box-sizing: border-box;
     padding: 15px;
+    width: 400px;
+    overflow: auto;
+}
+
+.aside label {
+    display: block;
 }
