@@ -377,15 +377,28 @@ export default function Home() {
         const midY = y1 - (y1 - y) / 2;
         // 路径Y轴中点
         return (
-            <path
-                d={`M ${x} ${y}
+            <>
+                <foreignObject
+                    x={midX - 15}
+                    y={midY - 10}
+                    width={30}
+                    height={20}
+                    onMouseDown={(e) => console.log(e)}
+                >
+                    <div style={{ cursor: "pointer", userSelect: "none" }}>
+                        123
+                    </div>
+                </foreignObject>
+                <path
+                    d={`M ${x} ${y}
         C ${x + control} ${y} ${midX} ${midY} ${midX} ${midY}
         C ${midX} ${midY} ${x1 - control} ${y1} ${x1} ${y1}`}
-                stroke="black"
-                strokeWidth="1"
-                fill="none"
-                markerMid="url(#many-one)"
-            />
+                    stroke="black"
+                    strokeWidth="2"
+                    fill="none"
+                    markerMid="url(#many-one)"
+                />
+            </>
         );
     }
 
