@@ -12,13 +12,17 @@ import { useState, useEffect, useRef, forwardRef } from "react";
 function TalbeFormItem(props, ref) {
     return (
         <form ref={ref}>
-            <input type="hidden" name="id" defaultValue={props.attr.id || ""} />
+            <input
+                type="hidden"
+                name="id"
+                defaultValue={props.field.id || ""}
+            />
             <label>
                 Name:
                 <input
                     type="text"
                     name="name"
-                    defaultValue={props.attr.name || ""}
+                    defaultValue={props.field.name || ""}
                 />
             </label>
             <label>
@@ -27,7 +31,7 @@ function TalbeFormItem(props, ref) {
                     type="text"
                     name="type"
                     placeholder="type"
-                    defaultChecked={props.attr.type || ""}
+                    defaultValue={props.field.type || ""}
                 />
             </label>
             <label>
@@ -36,7 +40,7 @@ function TalbeFormItem(props, ref) {
                     type="text"
                     name="note"
                     placeholder="note"
-                    defaultChecked={props.attr.note || ""}
+                    defaultValue={props.field.note || ""}
                 />
             </label>
             <label>
@@ -45,7 +49,7 @@ function TalbeFormItem(props, ref) {
                     type="text"
                     name="dbdefault"
                     placeholder="default"
-                    defaultChecked={props.attr.dbdefault || ""}
+                    defaultValue={props.field.dbdefault || ""}
                 />
             </label>
             <label>
@@ -53,7 +57,7 @@ function TalbeFormItem(props, ref) {
                 <input
                     type="checkbox"
                     name="primary"
-                    defaultChecked={props.attr.primary || false}
+                    defaultChecked={props.field.primary || false}
                 />
             </label>
             <label>
@@ -61,7 +65,7 @@ function TalbeFormItem(props, ref) {
                 <input
                     type="checkbox"
                     name="unique"
-                    defaultChecked={props.attr.unique || false}
+                    defaultChecked={props.field.unique || false}
                 />
             </label>
             <label>
@@ -69,7 +73,7 @@ function TalbeFormItem(props, ref) {
                 <input
                     type="checkbox"
                     name="not_null"
-                    defaultChecked={props.attr.not_null || false}
+                    defaultChecked={props.field.not_null || false}
                 />
             </label>
             <label>
@@ -77,12 +81,12 @@ function TalbeFormItem(props, ref) {
                 <input
                     type="checkbox"
                     name="increment"
-                    defaultChecked={props.attr.increment || false}
+                    defaultChecked={props.field.increment || false}
                 />
             </label>
             <button
                 onClick={() => {
-                    props.removeItem(props.attr.id);
+                    props.removeItem(props.field.id);
                 }}
             >
                 x
@@ -106,16 +110,17 @@ export default function TalbeForm(props) {
     }, [fields]);
 
     const save = () => {
-        const updatedAttrs = forms.current.map((form) => {
+        const updatedFields = forms.current.map((form) => {
             return [...new FormData(form).entries()].reduce((prev, cur) => {
                 prev[cur[0]] = cur[1];
                 return prev;
             }, {});
         });
-        let table = { ...props.table, fields: updatedAttrs };
+        let table = { ...props.table, fields: updatedFields };
         delete table.x;
         delete table.y;
-        props.updateTalbe(table);
+        console.log(props);
+        props.updateTable(table);
     };
 
     const addItem = () => {
@@ -143,16 +148,16 @@ export default function TalbeForm(props) {
         <>
             <div
                 onClick={() => {
-                    props.updateTalbe(null);
+                    props.updateTable(null);
                 }}
             >
                 关闭
             </div>
             <input defaultValue={props.table.name} type="text"></input>
-            {fields.map((attr, index) => (
+            {fields.map((field, index) => (
                 <TalbeRefFormItem
-                    attr={attr}
-                    key={attr.id}
+                    field={field}
+                    key={field.id}
                     ref={(dom) => (forms.current[index] = dom)}
                     removeItem={removeItem}
                 ></TalbeRefFormItem>

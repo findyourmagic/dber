@@ -1,32 +1,60 @@
 export default function LinkPath(props) {
+    // {
+    //     id: "link1",
+    //     name: null,
+    //     endpoints: [
+    //         {
+    //             id: "table1",
+    //             tableName: "sales",
+    //             fieldNames: ["id"],
+    //             fieldId: "field1",
+    //             relation: "1",
+    //         },
+    //         {
+    //             id: "table2",
+    //             tableName: "store",
+    //             fieldNames: ["id"],
+    //             relation: "*",
+    //             fieldId: "field3",
+    //         },
+    //     ],
+    // }
+
+    console.log("render LinkPath");
     const control = 20;
-    const width = NodeWidth;
     const padding = 5;
     const gripWidth = 10;
     const gripRadius = gripWidth / 2;
     const margin = 3;
-    const edge = props.edge;
-    const [sourceNode, targetNode] = [
-        graph.nodes.find((node) => node.id == edge.startNodeId),
-        graph.nodes.find((node) => node.id == edge.endNodeId),
+    const { link, tableDict, linkDict, TableWidth: width } = props;
+    if (!tableDict) return null;
+
+    const { endpoints } = link;
+    const [sourceTable, targetTable] = [
+        tableDict[endpoints[0].id],
+        tableDict[endpoints[1].id],
     ];
 
-    const [sourceAttrIndex, targetAttrIndex] = [
-        sourceNode.attrs.findIndex((attr) => attr.id == edge.startAttr),
-        targetNode.attrs.findIndex((attr) => attr.id == edge.endAttr),
+    const [sourceFieldIndex, targetFieldIndex] = [
+        sourceTable.fields.findIndex(
+            (field) => field.id == endpoints[0].fieldId
+        ),
+        targetTable.fields.findIndex(
+            (field) => field.id == endpoints[1].fieldId
+        ),
     ];
 
-    const sourceAttrPosition = [
-        sourceNode.x,
-        sourceNode.y + sourceAttrIndex * 30 + 50 + gripRadius,
+    const sourceFieldPosition = [
+        sourceTable.x,
+        sourceTable.y + sourceFieldIndex * 30 + 50 + gripRadius,
     ];
 
-    const targetAttrPosition = [
-        targetNode.x,
-        targetNode.y + targetAttrIndex * 30 + 50 + gripRadius,
+    const targetFieldPosition = [
+        targetTable.x,
+        targetTable.y + targetFieldIndex * 30 + 50 + gripRadius,
     ];
 
-    const [source, target] = [sourceAttrPosition, targetAttrPosition].sort(
+    const [source, target] = [sourceFieldPosition, targetFieldPosition].sort(
         (a, b) => {
             return a[0] - b[0] || a[1] - b[1];
         }
@@ -81,15 +109,6 @@ export default function LinkPath(props) {
     // 路径Y轴中点
     return (
         <>
-            <foreignObject
-                x={midX - 15}
-                y={midY - 10}
-                width={30}
-                height={20}
-                onMouseDown={(e) => console.log(e)}
-            >
-                <div style={{ cursor: "pointer", userSelect: "none" }}>123</div>
-            </foreignObject>
             <path
                 d={`M ${x} ${y}
     C ${x + control} ${y} ${midX} ${midY} ${midX} ${midY}
@@ -97,8 +116,21 @@ export default function LinkPath(props) {
                 stroke="black"
                 strokeWidth="2"
                 fill="none"
-                markerMid="url(#many-one)"
             />
+            <foreignObject
+                x={midX - 30}
+                y={midY - 15}
+                width={60}
+                height={30}
+                onMouseDown={(e) => console.log(e)}
+            >
+                <div
+                    style={{ cursor: "pointer", userSelect: "none" }}
+                    className="path-label"
+                >
+                    {endpoints[0].relation}:{endpoints[1].relation}
+                </div>
+            </foreignObject>
         </>
     );
 }

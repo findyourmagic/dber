@@ -61,3 +61,15 @@ body {
     right: auto;
     left: 5px;
 }
+
+.path-label {
+    background: #fff;
+    text-align: center;
+    position: relative;
+    z-index: 3;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    vertical-align: center;
+    font-weight: bolder;
+    border-radius: 3px;
+}

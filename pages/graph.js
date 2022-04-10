@@ -4,11 +4,13 @@ import { useState, useEffect, useRef, useMemo, useReducer } from "react";
 import SvgDefs from "../components/svg_defs";
 import TableForm from "../components/table_form";
 import reducer from "../reducers/graph_reducer";
+import LinkPath from "../components/link_path";
 
 const initialState = {};
 
 export default function Home() {
     console.log("render home");
+
     const [tableDict, setTableDict] = useState({
         table1: {
             id: "table1",
@@ -18,19 +20,23 @@ export default function Home() {
             y: 0,
             fields: [
                 {
+                    id: "field1",
                     name: "id",
-                    type: {
-                        type_name: "int",
-                        args: null,
-                    },
+                    type: "int",
+                    // type: {
+                    //     type_name: "int",
+                    //     args: null,
+                    // },
                     pk: true,
                 },
                 {
+                    id: "field2",
                     name: "date",
-                    type: {
-                        type_name: "datetime",
-                        args: null,
-                    },
+                    type: "datetime",
+                    // type: {
+                    //     type_name: "datetime",
+                    //     args: null,
+                    // },
                     note: "replace text here",
                 },
             ],
@@ -44,19 +50,23 @@ export default function Home() {
             y: 400,
             fields: [
                 {
+                    id: "field3",
                     name: "id",
-                    type: {
-                        type_name: "int",
-                        args: null,
-                    },
+                    type: "int",
+                    // type: {
+                    //     type_name: "int",
+                    //     args: null,
+                    // },
                     pk: true,
                 },
                 {
+                    id: "field4",
                     name: "date",
-                    type: {
-                        type_name: "datetime",
-                        args: null,
-                    },
+                    type: "datetime",
+                    // type: {
+                    //     type_name: "datetime",
+                    //     args: null,
+                    // },
                     note: "replace text here",
                 },
             ],
@@ -65,28 +75,30 @@ export default function Home() {
     });
     const tables = useMemo(() => Object.values(tableDict), [tableDict]);
 
-    const [refDict, setRefDict] = useState({
-        ref1: {
-            id: "ref1",
+    const [linkDict, setLinkDict] = useState({
+        link1: {
+            id: "link1",
             name: null,
             endpoints: [
                 {
                     id: "table1",
-                    tableName: "sales",
-                    fieldNames: ["id"],
+                    // tableName: "sales",
+                    // fieldNames: ["id"],
+                    fieldId: "field1",
                     relation: "1",
                 },
                 {
                     id: "table2",
-                    tableName: "store",
-                    fieldNames: ["id"],
+                    // tableName: "store",
+                    // fieldNames: ["id"],
                     relation: "*",
+                    fieldId: "field3",
                 },
             ],
         },
     });
 
-    const refs = useMemo(() => Object.values(refDict), [refDict]);
+    const links = useMemo(() => Object.values(linkDict), [linkDict]);
 
     const svg = useRef();
 
@@ -144,53 +156,67 @@ export default function Home() {
 
     const mouseUpHanlder = (e) => {
         console.log("mouse up");
-        // if (mode == "linking") {
-        //     const row = e.target.classList.contains("row")
-        //         ? e.target
-        //         : e.target.closest(".row");
-        //     if (row) {
-        //         const endTableId = row.getAttribute("tableid");
-        //         const endAttr = row.getAttribute("filedid");
+        if (mode == "linking") {
+            const row = e.target.classList.contains("row")
+                ? e.target
+                : e.target.closest(".row");
+            if (row) {
+                const endTableId = row.getAttribute("tableid");
+                const endField = row.getAttribute("fieldid");
 
-        //         if (
-        //             !graph.edges.find(
-        //                 (edge) =>
-        //                     edge.startTableId == linkStat.startTableId &&
-        //                     edge.startAttr == linkStat.startAttr &&
-        //                     edge.endTableId == endTableId &&
-        //                     edge.endAttr == endAttr
-        //             )
-        //         )
-        //             dispatch({
-        //                 type: "createEdge",
-        //                 payload: {
-        //                     id: window.crypto.randomUUID(),
-        //                     startTableId: linkStat.startTableId,
-        //                     startAttr: linkStat.startAttr,
-        //                     endTableId,
-        //                     endAttr,
-        //                     type: "one2one",
-        //                 },
-        //             });
-        //     }
-        // }
+                if (
+                    !links.find(
+                        (link) =>
+                            link.endpoints[0].id == linkStat.startTableId &&
+                            link.endpoints[0].fieldId == linkStat.startField &&
+                            link.endpoints[1].id == endTableId &&
+                            link.endpoints[1].fieldId == endField
+                    )
+                ) {
+                    setLinkDict((state) => {
+                        const id = window.crypto.randomUUID();
+                        return {
+                            ...state,
+                            [id]: {
+                                id,
+                                name: null,
+                                endpoints: [
+                                    {
+                                        id: linkStat.startTableId,
+                                        // tableName: "sales",
+                                        // fieldNames: ["id"],
+                                        fieldId: linkStat.startField,
+                                        relation: "1",
+                                    },
+                                    {
+                                        id: endTableId,
+                                        // tableName: "store",
+                                        // fieldNames: ["id"],
+                                        fieldId: endField,
+                                        relation: "*",
+                                    },
+                                ],
+                            },
+                        };
+                    });
+                }
+            }
+        }
         setMode("");
         setLinkStat({
             startX: null,
             startY: null,
             startTableId: null,
-            startAttr: null,
+            startField: null,
             endX: null,
             endY: null,
         });
         setMovingTable(null);
-
-        // console.log(e.target.tagName);
     };
 
     const tableMouseUpHandler = (e, table) => {
         console.log("table mouse up");
-        console.log(e);
+        // console.log(e);
         console.log(table);
         e.stopPropagation();
         e.preventDefault();
@@ -223,59 +249,70 @@ export default function Home() {
 
         if (mode == "moving") {
             const cursor = getSVGCursor(e);
-            // dispatch({
-            //     type: "updateTable",
-            //     payload: {
-            //         id: movingTable.id,
-            //         x: cursor.x - movingTable.offsetX,
-            //         y: cursor.y - movingTable.offsetY,
-            //     },
-            // });
+
+            setTableDict((state) => {
+                return {
+                    ...state,
+                    [movingTable.id]: {
+                        ...state[movingTable.id],
+                        x: cursor.x - movingTable.offsetX,
+                        y: cursor.y - movingTable.offsetY,
+                    },
+                };
+            });
         }
 
         if (mode == "linking") {
             const { x, y } = getSVGCursor(e);
-            // setLinkStat({
-            //     ...linkStat,
-            //     endX: x,
-            //     endY: y + 3,
-            // });
+            setLinkStat({
+                ...linkStat,
+                endX: x,
+                endY: y + 3,
+            });
         }
     };
 
     const addTable = () => {
-        // dispatch({
-        //     type: "createTable",
-        //     payload: {
-        //         id: window.crypto.randomUUID(),
-        //         name: `Table Name ${graph.tables.length + 1}`,
-        //         x: box.x + box.w / 2 - 200 + graph.tables.length * 20,
-        //         y: box.y + box.h / 2 - 200 + graph.tables.length * 20,
-        //         fields: [
-        //             {
-        //                 id: window.crypto.randomUUID(),
-        //                 name: "id",
-        //                 type: "Integer",
-        //                 primary: true,
-        //             },
-        //         ],
-        //     },
-        // });
+        setTableDict((state) => {
+            const id = window.crypto.randomUUID();
+            return {
+                ...state,
+                [id]: {
+                    id,
+                    name: `Table Name ${tables.length + 1}`,
+                    x: box.x + box.w / 2 - 200 + tables.length * 20,
+                    y: box.y + box.h / 2 - 200 + tables.length * 20,
+                    fields: [
+                        {
+                            id: window.crypto.randomUUID(),
+                            name: "id",
+                            type: "int",
+                            pk: true,
+                        },
+                    ],
+                },
+            };
+        });
     };
 
     const updateTable = (table) => {
         // console.log(table);
-        // if (table) {
-        //     dispatch({
-        //         type: "updateTable",
-        //         payload: table,
-        //     });
-        // }
-        // setEditingTable(null);
+        if (table) {
+            setTableDict((state) => {
+                return {
+                    ...state,
+                    [table.id]: {
+                        ...state[table.id],
+                        ...table,
+                    },
+                };
+            });
+        }
+        setEditingTable(null);
     };
 
     const tableClickHandler = (table) => {
-        // setEditingTable(table);
+        setEditingTable(table);
     };
 
     const resizeHandler = () => {
@@ -301,7 +338,7 @@ export default function Home() {
         startX: null,
         startY: null,
         startTableId: null,
-        startAttr: null,
+        startField: null,
         endX: null,
         endY: null,
     });
@@ -314,7 +351,7 @@ export default function Home() {
             startX: x,
             startY: y,
             startTableId: row.getAttribute("tableid"),
-            startAttr: row.getAttribute("filedid"),
+            startField: row.getAttribute("fieldid"),
         });
         setMode("linking");
         e.preventDefault();
@@ -352,9 +389,17 @@ export default function Home() {
                 onMouseMove={mouseMoveHanlder}
                 ref={svg}
             >
-                {/* {graph.edges.map((edge) => {
-                    return <LinkPath edge={edge} key={`${edge.id}`} />;
-                })} */}
+                {links.map((link) => {
+                    return (
+                        <LinkPath
+                            TableWidth={TableWidth}
+                            link={link}
+                            key={`${link.id}`}
+                            tableDict={tableDict}
+                            linkDict={linkDict}
+                        />
+                    );
+                })}
                 {tables.map((table) => {
                     const height = table.fields.length * 30 + 52;
                     return (
@@ -367,9 +412,9 @@ export default function Home() {
                             onMouseDown={(e) => {
                                 tableMouseDownHanlder(e, table);
                             }}
-                            onMouseUp={(e) => {
-                                tableMouseUpHandler(e, table);
-                            }}
+                            // onMouseUp={(e) => {
+                            //     tableMouseUpHandler(e, table);
+                            // }}
                         >
                             <div className="table">
                                 <div className="table-title">
@@ -382,13 +427,13 @@ export default function Home() {
                                         编辑
                                     </button>
                                 </div>
-                                {table.fields.map((filed) => {
+                                {table.fields.map((field) => {
                                     return (
                                         <div
                                             className="row"
-                                            key={filed.id}
+                                            key={field.id}
                                             tableid={table.id}
-                                            filedid={filed.id}
+                                            fieldid={field.id}
                                         >
                                             <div
                                                 className="start-grip grip"
@@ -396,7 +441,7 @@ export default function Home() {
                                                     gripMouseDownHandler
                                                 }
                                             ></div>
-                                            <span>{filed.name}</span>
+                                            <span>{field.name}</span>
                                             <div
                                                 className="end-grip grip"
                                                 onMouseDown={
