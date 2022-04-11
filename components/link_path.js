@@ -1,3 +1,19 @@
+// 控制点距离
+const control = 20;
+// 控制点内边距
+const padding = 5;
+// 控制点直径
+const gripWidth = 10;
+// 控制点半径
+const gripRadius = gripWidth / 2;
+// 控制点外边距
+const margin = 3;
+
+const relationDict = {
+    '1': '1',
+    '*': 'N'
+}
+
 export default function LinkPath(props) {
     // {
     //     id: "link1",
@@ -21,11 +37,8 @@ export default function LinkPath(props) {
     // }
 
     console.log("render LinkPath");
-    const control = 20;
-    const padding = 5;
-    const gripWidth = 10;
-    const gripRadius = gripWidth / 2;
-    const margin = 3;
+
+
     const { link, tableDict, linkDict, TableWidth: width } = props;
     if (!tableDict) return null;
 
@@ -128,7 +141,7 @@ export default function LinkPath(props) {
                     style={{ cursor: "pointer", userSelect: "none" }}
                     className="path-label"
                 >
-                    {endpoints[0].relation}:{endpoints[1].relation}
+                    {relationDict[endpoints[0].relation]}:{relationDict[endpoints[1].relation]}
                 </div>
             </foreignObject>
         </>
