@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, forwardRef } from "react";
-
+import { useState, useEffect, useRef, forwardRef } from 'react';
+import { Button, Space } from '@arco-design/web-react';
 // name: string;
 // type: any;
 // unique: boolean;
@@ -15,14 +15,14 @@ function TalbeFormItem(props, ref) {
             <input
                 type="hidden"
                 name="id"
-                defaultValue={props.field.id || ""}
+                defaultValue={props.field.id || ''}
             />
             <label>
                 Name:
                 <input
                     type="text"
                     name="name"
-                    defaultValue={props.field.name || ""}
+                    defaultValue={props.field.name || ''}
                 />
             </label>
             <label>
@@ -31,7 +31,7 @@ function TalbeFormItem(props, ref) {
                     type="text"
                     name="type"
                     placeholder="type"
-                    defaultValue={props.field.type || ""}
+                    defaultValue={props.field.type || ''}
                 />
             </label>
             <label>
@@ -40,7 +40,7 @@ function TalbeFormItem(props, ref) {
                     type="text"
                     name="note"
                     placeholder="note"
-                    defaultValue={props.field.note || ""}
+                    defaultValue={props.field.note || ''}
                 />
             </label>
             <label>
@@ -49,7 +49,7 @@ function TalbeFormItem(props, ref) {
                     type="text"
                     name="dbdefault"
                     placeholder="default"
-                    defaultValue={props.field.dbdefault || ""}
+                    defaultValue={props.field.dbdefault || ''}
                 />
             </label>
             <label>
@@ -110,7 +110,7 @@ export default function TalbeForm(props) {
     }, [fields]);
 
     const save = () => {
-        const updatedFields = forms.current.map((form) => {
+        const updatedFields = forms.current.map(form => {
             return [...new FormData(form).entries()].reduce((prev, cur) => {
                 prev[cur[0]] = cur[1];
                 return prev;
@@ -124,46 +124,52 @@ export default function TalbeForm(props) {
     };
 
     const addItem = () => {
-        setFields((state) => {
+        setFields(state => {
             return [
                 ...state,
                 {
                     id: window.crypto.randomUUID(),
-                    name: "new item" + state.length,
-                    type: "",
+                    name: 'new item' + state.length,
+                    type: '',
                     unique: false,
                 },
             ];
         });
     };
 
-    const removeItem = (id) => {
-        setFields((state) => {
-            const fields = state.filter((item) => item.id != id);
+    const removeItem = id => {
+        setFields(state => {
+            const fields = state.filter(item => item.id != id);
             return fields.length ? fields : [];
         });
     };
 
     return (
-        <>
-            <div
-                onClick={() => {
-                    props.updateTable(null);
-                }}
-            >
-                关闭
-            </div>
+        <Space direction="vertical">
             <input defaultValue={props.table.name} type="text"></input>
             {fields.map((field, index) => (
                 <TalbeRefFormItem
                     field={field}
                     key={field.id}
-                    ref={(dom) => (forms.current[index] = dom)}
+                    ref={dom => (forms.current[index] = dom)}
                     removeItem={removeItem}
                 ></TalbeRefFormItem>
             ))}
-            <button onClick={addItem}>添加</button>
-            <button onClick={save}>确定</button>
-        </>
+            <Button onClick={addItem} type="outline" long>
+                + 添加字段
+            </Button>
+            <Space className="btns">
+                <Button
+                    onClick={() => {
+                        props.updateTable(null);
+                    }}
+                >
+                    取消
+                </Button>
+                <Button onClick={save} type="primary">
+                    更新
+                </Button>
+            </Space>
+        </Space>
     );
 }
