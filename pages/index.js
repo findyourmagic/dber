@@ -358,6 +358,8 @@ export default function Home() {
 
     const TableWidth = 220;
 
+    const [committing, setCommitting] = useState(false);
+
     return (
         <>
             <Head>
@@ -376,7 +378,14 @@ export default function Home() {
                     </a>
                 </div>
                 <div>
-                    <button onClick={addTable}>New Table</button>
+                    <Button
+                        onClick={addTable}
+                        type="outline"
+                        shape="round"
+                        size="mini"
+                    >
+                        + Add New Table
+                    </Button>
                 </div>
             </nav>
             <svg
@@ -417,13 +426,14 @@ export default function Home() {
                             <div className="table">
                                 <div className="table-title">
                                     <span>{table.name}</span>
-                                    <button
+                                    <Button
+                                        size="mini"
                                         onClick={() => {
                                             tableClickHandler(table);
                                         }}
                                     >
-                                        编辑
-                                    </button>
+                                        Edit
+                                    </Button>
                                 </div>
                                 {table.fields.map(field => {
                                     return (
@@ -473,10 +483,9 @@ export default function Home() {
             <Drawer
                 width={332}
                 title={null}
-                footer={null}
                 visible={editingTable}
                 onOk={() => {
-                    // setEditingTable(null);
+                    setCommitting(true);
                 }}
                 onCancel={() => {
                     setEditingTable(false);
@@ -486,6 +495,8 @@ export default function Home() {
                     <TableForm
                         table={editingTable}
                         updateTable={updateTable}
+                        committing={committing}
+                        setCommitting={setCommitting}
                     ></TableForm>
                 ) : null}
             </Drawer>

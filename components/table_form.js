@@ -121,7 +121,14 @@ export default function TalbeForm(props) {
         delete table.y;
         console.log(props);
         props.updateTable(table);
+        props.setCommitting(false);
     };
+
+    useEffect(() => {
+        if (props.committing) {
+            save();
+        }
+    }, [props.committing]);
 
     const addItem = () => {
         setFields(state => {
@@ -158,18 +165,6 @@ export default function TalbeForm(props) {
             <Button onClick={addItem} type="outline" long>
                 + 添加字段
             </Button>
-            <Space className="btns">
-                <Button
-                    onClick={() => {
-                        props.updateTable(null);
-                    }}
-                >
-                    取消
-                </Button>
-                <Button onClick={save} type="primary">
-                    更新
-                </Button>
-            </Space>
         </Space>
     );
 }

@@ -2,7 +2,6 @@
     margin: 0
     padding: 0
 
-
 body
     background: url(../public/point.svg) repeat
 
@@ -16,10 +15,8 @@ body
     overflow: hidden
     user-select: none
 
-
     &:hover
-        border: 1px solid red
-
+        border: 1px solid rgb(var(--primary-6))
 
     &-title
         display: flex
@@ -28,7 +25,7 @@ body
         align-items: center
         padding: 5px
         box-sizing: border-box
-        background: rgba(225, 225, 0, 0.7)
+        background: rgba(var(--primary-4), 0.7)
 
 .row
     background: rgba(255, 255, 255, 0.1)
@@ -46,7 +43,7 @@ body
     width: 12px
     height: 12px
     border-radius: 50%
-    background: orange
+    background: rgb(var(--primary-3))
     position: absolute
     right: 5px
     top: 50%
@@ -67,3 +64,13 @@ body
     vertical-align: center
     font-weight: bolder
     border-radius: 3px
+
+.drawer-btns
+    position: fixed
+    bottom: 10px
+    left: 0
+    right: 0
+    display: flex
+    justify-content: space-around
+    button
+        width: 40%

@@ -9,7 +9,8 @@
     z-index: 2;
     box-sizing: border-box;
     padding: 10px;
-    background-color: #fff;
+    background-color: var(--color-bg-1);
+    color: var(--color-text-1);
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
 }
 
