@@ -134,10 +134,10 @@ export default function LinkPath(props) {
                 fill="none"
             />
             <foreignObject
-                x={(x + midX) / 2 - 15}
-                y={(y + midY) / 2 - 15}
-                width={30}
-                height={30}
+                x={(x + control + midX) / 2 - 10}
+                y={(y + midY) / 2 - 10}
+                width={20}
+                height={20}
                 onMouseDown={() => {
                     setEditingLink(link.id);
                 }}
@@ -150,10 +150,10 @@ export default function LinkPath(props) {
                 </div>
             </foreignObject>
             <foreignObject
-                x={(x1 + midX) / 2 - 15}
-                y={(y1 + midY) / 2 - 15}
-                width={30}
-                height={30}
+                x={(x1 - control + midX) / 2 - 10}
+                y={(y1 + midY) / 2 - 10}
+                width={20}
+                height={20}
                 onMouseDown={() => {
                     setEditingLink(link.id);
                 }}
