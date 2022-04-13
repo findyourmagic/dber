@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo, useReducer } from 'react';
 import SvgDefs from '../components/svg_defs';
 import TableForm from '../components/table_form';
 import LinkPath from '../components/link_path';
+import LinkModal from '../components/link_modal';
 import { Drawer, Button } from '@arco-design/web-react';
 
 export default function Home() {
@@ -360,6 +361,8 @@ export default function Home() {
 
     const [committing, setCommitting] = useState(false);
 
+    const [editingLink, setEditingLink] = useState(null);
+
     return (
         <>
             <Head>
@@ -404,6 +407,7 @@ export default function Home() {
                             key={`${link.id}`}
                             tableDict={tableDict}
                             linkDict={linkDict}
+                            setEditingLink={setEditingLink}
                         />
                     );
                 })}
@@ -500,6 +504,10 @@ export default function Home() {
                     ></TableForm>
                 ) : null}
             </Drawer>
+            <LinkModal
+                editingLink={editingLink}
+                setEditingLink={setEditingLink}
+            ></LinkModal>
         </>
     );
 }

@@ -10,9 +10,9 @@ const gripRadius = gripWidth / 2;
 const margin = 3;
 
 const relationDict = {
-    '1': '1',
-    '*': 'N'
-}
+    1: '1',
+    '*': 'N',
+};
 
 export default function LinkPath(props) {
     // {
@@ -36,10 +36,15 @@ export default function LinkPath(props) {
     //     ],
     // }
 
-    console.log("render LinkPath");
+    console.log('render LinkPath');
 
-
-    const { link, tableDict, linkDict, TableWidth: width } = props;
+    const {
+        link,
+        tableDict,
+        linkDict,
+        TableWidth: width,
+        setEditingLink,
+    } = props;
     if (!tableDict) return null;
 
     const { endpoints } = link;
@@ -49,12 +54,8 @@ export default function LinkPath(props) {
     ];
 
     const [sourceFieldIndex, targetFieldIndex] = [
-        sourceTable.fields.findIndex(
-            (field) => field.id == endpoints[0].fieldId
-        ),
-        targetTable.fields.findIndex(
-            (field) => field.id == endpoints[1].fieldId
-        ),
+        sourceTable.fields.findIndex(field => field.id == endpoints[0].fieldId),
+        targetTable.fields.findIndex(field => field.id == endpoints[1].fieldId),
     ];
 
     const sourceFieldPosition = [
@@ -67,11 +68,13 @@ export default function LinkPath(props) {
         targetTable.y + targetFieldIndex * 30 + 50 + gripRadius,
     ];
 
-    const [source, target] = [sourceFieldPosition, targetFieldPosition].sort(
-        (a, b) => {
-            return a[0] - b[0] || a[1] - b[1];
-        }
-    );
+    const [source, target] = [sourceFieldPosition, targetFieldPosition];
+
+    // const [source, target] = [sourceFieldPosition, targetFieldPosition].sort(
+    //     (a, b) => {
+    //         return a[0] - b[0] || a[1] - b[1];
+    //     }
+    // );
 
     // 路径绘制
     const sourceLeft = source[0] + padding + gripRadius + margin;
@@ -102,7 +105,7 @@ export default function LinkPath(props) {
         [sourceLeft, targetRight],
         [sourceRight, targetLeft],
         [sourceRight, targetRight],
-    ].forEach((items) => {
+    ].forEach(items => {
         if (Math.abs(items[0] - items[1]) < minDistance) {
             minDistance = Math.min(items[0] - items[1]);
             x = items[0];
@@ -131,17 +134,35 @@ export default function LinkPath(props) {
                 fill="none"
             />
             <foreignObject
-                x={midX - 30}
-                y={midY - 15}
-                width={60}
+                x={(x + midX) / 2 - 15}
+                y={(y + midY) / 2 - 15}
+                width={30}
                 height={30}
-                onMouseDown={(e) => console.log(e)}
+                onMouseDown={() => {
+                    setEditingLink(link.id);
+                }}
             >
                 <div
-                    style={{ cursor: "pointer", userSelect: "none" }}
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
                     className="path-label"
                 >
-                    {relationDict[endpoints[0].relation]}:{relationDict[endpoints[1].relation]}
+                    {relationDict[endpoints[0].relation]}
+                </div>
+            </foreignObject>
+            <foreignObject
+                x={(x1 + midX) / 2 - 15}
+                y={(y1 + midY) / 2 - 15}
+                width={30}
+                height={30}
+                onMouseDown={() => {
+                    setEditingLink(link.id);
+                }}
+            >
+                <div
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    className="path-label"
+                >
+                    {relationDict[endpoints[1].relation]}
                 </div>
             </foreignObject>
         </>
