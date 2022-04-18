@@ -9,11 +9,6 @@ const gripRadius = gripWidth / 2;
 // 控制点外边距
 const margin = 3;
 
-const relationDict = {
-    1: '1',
-    '*': 'N',
-};
-
 export default function LinkPath(props) {
     // {
     //     id: "link1",
@@ -146,7 +141,7 @@ export default function LinkPath(props) {
                     style={{ cursor: 'pointer', userSelect: 'none' }}
                     className="path-label"
                 >
-                    {relationDict[endpoints[0].relation]}
+                    {endpoints[0].relation}
                 </div>
             </foreignObject>
             <foreignObject
@@ -162,7 +157,7 @@ export default function LinkPath(props) {
                     style={{ cursor: 'pointer', userSelect: 'none' }}
                     className="path-label"
                 >
-                    {relationDict[endpoints[1].relation]}
+                    {endpoints[1].relation}
                 </div>
             </foreignObject>
         </>
