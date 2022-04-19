@@ -507,6 +507,7 @@ export default function Home() {
             <LinkModal
                 editingLink={editingLink}
                 setEditingLink={setEditingLink}
+                setLinkDict={setLinkDict}
             ></LinkModal>
         </>
     );

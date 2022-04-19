@@ -53,41 +53,43 @@ export default function LinkPath(props) {
         targetTable.fields.findIndex(field => field.id == endpoints[1].fieldId),
     ];
 
-    const sourceFieldPosition = [
-        sourceTable.x,
-        sourceTable.y + sourceFieldIndex * 30 + 50 + gripRadius,
-    ];
+    const sourceFieldPosition = {
+        x: sourceTable.x,
+        y: sourceTable.y + sourceFieldIndex * 30 + 50 + gripRadius,
+        ...endpoints[0],
+    };
 
-    const targetFieldPosition = [
-        targetTable.x,
-        targetTable.y + targetFieldIndex * 30 + 50 + gripRadius,
-    ];
+    const targetFieldPosition = {
+        x: targetTable.x,
+        y: targetTable.y + targetFieldIndex * 30 + 50 + gripRadius,
+        ...endpoints[1],
+    };
 
-    const [source, target] = [sourceFieldPosition, targetFieldPosition];
+    // const [source, target] = [sourceFieldPosition, targetFieldPosition];
 
-    // const [source, target] = [sourceFieldPosition, targetFieldPosition].sort(
-    //     (a, b) => {
-    //         return a[0] - b[0] || a[1] - b[1];
-    //     }
-    // );
+    const [source, target] = [sourceFieldPosition, targetFieldPosition].sort(
+        (a, b) => {
+            return a.x - b.x || a.y - b.y;
+        }
+    );
 
     // 路径绘制
-    const sourceLeft = source[0] + padding + gripRadius + margin;
+    const sourceLeft = source.x + padding + gripRadius + margin;
 
     // 来源左侧位置坐标
-    const sourceRight = source[0] + width - padding - gripRadius - margin;
+    const sourceRight = source.x + width - padding - gripRadius - margin;
     // 来源右侧位置坐标
 
     let x = sourceLeft;
     // 定义起点 x
 
-    const y = source[1] + gripRadius + margin;
+    const y = source.y + gripRadius + margin;
     // 来源 y 轴中点
 
-    const targetLeft = target[0] + padding + gripRadius + margin;
+    const targetLeft = target.x + padding + gripRadius + margin;
     // 目标左侧点
 
-    const targetRight = target[0] + width - padding - gripRadius - margin;
+    const targetRight = target.x + width - padding - gripRadius - margin;
     // 目标右侧点
 
     let minDistance = Math.abs(sourceLeft - targetLeft);
@@ -109,7 +111,7 @@ export default function LinkPath(props) {
     });
     // 计算距离最短的 x 轴坐标对
 
-    const y1 = target[1] + gripRadius + margin;
+    const y1 = target.y + gripRadius + margin;
     // 终点 y 轴中点
 
     // const midX = x1 - (x1 - x) / 2;
@@ -134,14 +136,17 @@ export default function LinkPath(props) {
                 width={20}
                 height={20}
                 onMouseDown={() => {
-                    setEditingLink(link.id);
+                    setEditingLink({
+                        linkId: link.id,
+                        fieldId: source.fieldId,
+                    });
                 }}
             >
                 <div
                     style={{ cursor: 'pointer', userSelect: 'none' }}
                     className="path-label"
                 >
-                    {endpoints[0].relation}
+                    {source.relation}
                 </div>
             </foreignObject>
             <foreignObject
@@ -150,14 +155,17 @@ export default function LinkPath(props) {
                 width={20}
                 height={20}
                 onMouseDown={() => {
-                    setEditingLink(link.id);
+                    setEditingLink({
+                        linkId: link.id,
+                        fieldId: target.fieldId,
+                    });
                 }}
             >
                 <div
                     style={{ cursor: 'pointer', userSelect: 'none' }}
                     className="path-label"
                 >
-                    {endpoints[1].relation}
+                    {target.relation}
                 </div>
             </foreignObject>
         </>
