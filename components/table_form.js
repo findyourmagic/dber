@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
-import { Button, Space } from '@arco-design/web-react';
+import { Button, Space, Input, Checkbox, Card } from '@arco-design/web-react';
 // name: string;
 // type: any;
 // unique: boolean;
@@ -11,86 +11,97 @@ import { Button, Space } from '@arco-design/web-react';
 
 function TalbeFormItem(props, ref) {
     return (
-        <form ref={ref}>
-            <input
-                type="hidden"
-                name="id"
-                defaultValue={props.field.id || ''}
-            />
-            <label>
-                Name:
+        <form ref={ref} className="table-form">
+            <Card>
                 <input
-                    type="text"
-                    name="name"
-                    defaultValue={props.field.name || ''}
+                    type="hidden"
+                    name="id"
+                    defaultValue={props.field.id || ''}
                 />
-            </label>
-            <label>
-                Type:
-                <input
-                    type="text"
-                    name="type"
-                    placeholder="type"
-                    defaultValue={props.field.type || ''}
-                />
-            </label>
-            <label>
-                Note:
-                <input
-                    type="text"
-                    name="note"
-                    placeholder="note"
-                    defaultValue={props.field.note || ''}
-                />
-            </label>
-            <label>
-                Default:
-                <input
-                    type="text"
-                    name="dbdefault"
-                    placeholder="default"
-                    defaultValue={props.field.dbdefault || ''}
-                />
-            </label>
-            <label>
-                Primary:
-                <input
-                    type="checkbox"
-                    name="primary"
-                    defaultChecked={props.field.primary || false}
-                />
-            </label>
-            <label>
-                Unique:
-                <input
-                    type="checkbox"
-                    name="unique"
-                    defaultChecked={props.field.unique || false}
-                />
-            </label>
-            <label>
-                Not Null:
-                <input
-                    type="checkbox"
-                    name="not_null"
-                    defaultChecked={props.field.not_null || false}
-                />
-            </label>
-            <label>
-                Increment:
-                <input
-                    type="checkbox"
-                    name="increment"
-                    defaultChecked={props.field.increment || false}
-                />
-            </label>
-            <button
-                onClick={() => {
-                    props.removeItem(props.field.id);
-                }}
-            >
-                x
-            </button>
+                <Space direction="vertical">
+                    <Space>
+                        <label>Name:</label>
+
+                        <Input
+                            type="text"
+                            name="name"
+                            defaultValue={props.field.name || ''}
+                        />
+                        <label>Type:</label>
+
+                        <Input
+                            type="text"
+                            name="type"
+                            placeholder="type"
+                            defaultValue={props.field.type || ''}
+                        />
+                    </Space>
+                    <Space>
+                        <label>Note:</label>
+
+                        <Input
+                            type="text"
+                            name="note"
+                            placeholder="note"
+                            defaultValue={props.field.note || ''}
+                        />
+                        <label>Default:</label>
+
+                        <Input
+                            type="text"
+                            name="dbdefault"
+                            placeholder="default"
+                            defaultValue={props.field.dbdefault || ''}
+                        />
+                    </Space>
+                    <Space
+                        style={{
+                            width: '100%',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <label>
+                            Primary&nbsp;
+                            <input
+                                type="checkbox"
+                                name="primary"
+                                defaultChecked={props.field.primary || false}
+                            />
+                        </label>
+                        <label>
+                            Unique&nbsp;
+                            <input
+                                type="checkbox"
+                                name="unique"
+                                defaultChecked={props.field.unique || false}
+                            />
+                        </label>
+                        <label>
+                            Not Null&nbsp;
+                            <input
+                                type="checkbox"
+                                name="not_null"
+                                defaultChecked={props.field.not_null || false}
+                            />
+                        </label>
+                        <label>
+                            Increment&nbsp;
+                            <input
+                                type="checkbox"
+                                name="increment"
+                                defaultChecked={props.field.increment || false}
+                            />
+                        </label>
+                    </Space>
+                    <Button
+                        onClick={() => {
+                            props.removeItem(props.field.id);
+                        }}
+                    >
+                        Remove field
+                    </Button>
+                </Space>
+            </Card>
         </form>
     );
 }
@@ -153,7 +164,10 @@ export default function TalbeForm(props) {
 
     return (
         <Space direction="vertical">
-            <input defaultValue={props.table.name} type="text"></input>
+            <Space>
+                <label>Table Name:</label>
+                <Input defaultValue={props.table.name} type="text"></Input>
+            </Space>
             {fields.map((field, index) => (
                 <TalbeRefFormItem
                     field={field}
@@ -163,7 +177,7 @@ export default function TalbeForm(props) {
                 ></TalbeRefFormItem>
             ))}
             <Button onClick={addItem} type="outline" long>
-                + 添加字段
+                + Add field
             </Button>
         </Space>
     );

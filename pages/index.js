@@ -485,12 +485,15 @@ export default function Home() {
             </svg>
 
             <Drawer
-                width={332}
+                width={420}
                 title={null}
                 visible={editingTable}
+                okText="Commit"
+                autoFocus={false}
                 onOk={() => {
                     setCommitting(true);
                 }}
+                cancelText="Cancel"
                 onCancel={() => {
                     setEditingTable(false);
                 }}
