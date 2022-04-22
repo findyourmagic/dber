@@ -5,7 +5,8 @@ import SvgDefs from '../components/svg_defs';
 import TableForm from '../components/table_form';
 import LinkPath from '../components/link_path';
 import LinkModal from '../components/link_modal';
-import { Drawer, Button } from '@arco-design/web-react';
+import { Drawer, Button, Space, Modal } from '@arco-design/web-react';
+import exportSQL from '../utils/export-sql';
 
 export default function Home() {
     console.log('render home');
@@ -363,6 +364,8 @@ export default function Home() {
 
     const [editingLink, setEditingLink] = useState(null);
 
+    const [command, setCommand] = useState('');
+
     return (
         <>
             <Head>
@@ -373,6 +376,17 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <Modal
+                title={null}
+                simple
+                visible={command}
+                autoFocus={false}
+                onOk={() => setCommand('')}
+                onCancel={() => setCommand('')}
+                style={{ width: 'auto' }}
+            >
+                <pre>{`${command}`}</pre>
+            </Modal>
             <nav className={styles.nav}>
                 <div>
                     <a>
@@ -380,7 +394,7 @@ export default function Home() {
                         Database
                     </a>
                 </div>
-                <div>
+                <Space>
                     <Button
                         onClick={addTable}
                         type="outline"
@@ -389,7 +403,18 @@ export default function Home() {
                     >
                         + Add New Table
                     </Button>
-                </div>
+                    <Button
+                        onClick={() => {
+                            const sql = exportSQL(tableDict, linkDict);
+                            setCommand(sql);
+                        }}
+                        type="outline"
+                        shape="round"
+                        size="mini"
+                    >
+                        Export SQL
+                    </Button>
+                </Space>
             </nav>
             <svg
                 className={styles.main}
