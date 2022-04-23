@@ -1,6 +1,13 @@
 import Head from 'next/head';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { Drawer, Button, Space } from '@arco-design/web-react';
+import {
+    Drawer,
+    Button,
+    Space,
+    Popconfirm,
+    Dropdown,
+    Menu,
+} from '@arco-design/web-react';
 
 import styles from '../styles/index.module.css';
 import SvgDefs from '../components/svg_defs';
@@ -242,8 +249,11 @@ export default function Home() {
                         {
                             id: window.crypto.randomUUID(),
                             name: 'id',
-                            type: 'int',
-                            pk: true,
+                            type: 'INTEGER',
+                            primary: true,
+                            unique: true,
+                            not_null: true,
+                            increment: true,
                         },
                     ],
                 },
@@ -264,6 +274,30 @@ export default function Home() {
                 };
             });
         }
+        setEditingTable(null);
+    };
+
+    const removeTable = tableId => {
+        setTableDict(state => {
+            const newState = { ...state };
+            delete newState[tableId];
+            return newState;
+        });
+
+        setLinkDict(state => {
+            const newState = { ...state };
+            Object.keys(newState).forEach(key => {
+                if (
+                    newState[key].endpoints.find(
+                        endpoint => endpoint.id == tableId
+                    )
+                ) {
+                    delete newState[key];
+                }
+            });
+            return newState;
+        });
+
         setEditingTable(null);
     };
 
@@ -346,23 +380,86 @@ export default function Home() {
                 <Space>
                     <Button
                         onClick={addTable}
-                        type="outline"
+                        type="primary"
                         shape="round"
                         size="mini"
                     >
                         + Add New Table
                     </Button>
-                    <Button
-                        onClick={() => {
-                            const sql = exportSQL(tableDict, linkDict);
-                            setCommand(sql);
+                    <Popconfirm
+                        title="Are you sure you want to reset?"
+                        okText="Yes"
+                        cancelText="No"
+                        position="br"
+                        onOk={() => {
+                            setTableDict(defaultTables);
+                            setLinkDict(defaultLinks);
                         }}
-                        type="outline"
-                        shape="round"
-                        size="mini"
                     >
-                        Export SQL
-                    </Button>
+                        <Button type="outline" shape="round" size="mini">
+                            Reset
+                        </Button>
+                    </Popconfirm>
+                    <Popconfirm
+                        title="Are you sure you want to delete all the tables?"
+                        okText="Yes"
+                        cancelText="No"
+                        position="br"
+                        onOk={() => {
+                            setTableDict({});
+                            setLinkDict({});
+                        }}
+                    >
+                        <Button type="outline" shape="round" size="mini">
+                            Clear
+                        </Button>
+                    </Popconfirm>
+                    <Dropdown
+                        droplist={
+                            <Menu>
+                                <Menu.Item
+                                    onClick={() => {
+                                        const sql = exportSQL(
+                                            tableDict,
+                                            linkDict
+                                        );
+                                        setCommand(sql);
+                                    }}
+                                >
+                                    PostgreSQL
+                                </Menu.Item>
+                                <Menu.Item
+                                    onClick={() => {
+                                        const sql = exportSQL(
+                                            tableDict,
+                                            linkDict,
+                                            'mysql'
+                                        );
+                                        setCommand(sql);
+                                    }}
+                                >
+                                    MySQL
+                                </Menu.Item>
+                                <Menu.Item
+                                    onClick={() => {
+                                        const sql = exportSQL(
+                                            tableDict,
+                                            linkDict,
+                                            'mssql'
+                                        );
+                                        setCommand(sql);
+                                    }}
+                                >
+                                    MSSQL
+                                </Menu.Item>
+                            </Menu>
+                        }
+                        position="br"
+                    >
+                        <Button type="outline" shape="round" size="mini">
+                            Export SQL
+                        </Button>
+                    </Dropdown>
                 </Space>
             </nav>
             <svg
@@ -460,7 +557,7 @@ export default function Home() {
 
             <Drawer
                 width={420}
-                title={null}
+                title="Edit Table"
                 visible={editingTable}
                 okText="Commit"
                 autoFocus={false}
@@ -476,6 +573,7 @@ export default function Home() {
                     <TableForm
                         table={editingTable}
                         updateTable={updateTable}
+                        removeTable={removeTable}
                         committing={committing}
                         setCommitting={setCommitting}
                     ></TableForm>

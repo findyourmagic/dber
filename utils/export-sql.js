@@ -1,6 +1,6 @@
 import { ModelExporter, Parser } from '@dbml/core';
 
-const exportSQL = (tableDict, linkDict) => {
+const exportSQL = (tableDict, linkDict, databaseType = 'postgres') => {
     const combined = {
         name: 'public',
         note: 'Default Public Schema',
@@ -41,7 +41,7 @@ const exportSQL = (tableDict, linkDict) => {
     };
 
     const database = Parser.parse(combined, 'json');
-    const sql = ModelExporter.export(database, 'postgres', false);
+    const sql = ModelExporter.export(database, databaseType, false);
 
     return sql;
 };

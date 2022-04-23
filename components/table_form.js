@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
-import { Button, Space, Input, Select, Card } from '@arco-design/web-react';
+import {
+    Button,
+    Space,
+    Input,
+    Select,
+    Card,
+    Popconfirm,
+} from '@arco-design/web-react';
 const Option = Select.Option;
 import fieldTypes from '../data/filed_typs';
 // name: string;
@@ -154,7 +161,7 @@ export default function TalbeForm(props) {
                 {
                     id: window.crypto.randomUUID(),
                     name: 'new item' + state.length,
-                    type: '',
+                    type: 'INTEGER',
                     unique: false,
                 },
             ];
@@ -179,6 +186,19 @@ export default function TalbeForm(props) {
                         setName(value);
                     }}
                 ></Input>
+                <Popconfirm
+                    position="br"
+                    title="Are you sure you want to delete this table?"
+                    okText="Yes"
+                    cancelText="No"
+                    onOk={() => {
+                        props.removeTable(props.table.id);
+                    }}
+                >
+                    <Button type="outline" status="warning">
+                        Delete table
+                    </Button>
+                </Popconfirm>
             </Space>
             {fields.map((field, index) => (
                 <TalbeRefFormItem
