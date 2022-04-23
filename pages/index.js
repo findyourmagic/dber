@@ -394,7 +394,12 @@ export default function Home() {
                             setLinkDict(defaultLinks);
                         }}
                     >
-                        <Button type="outline" shape="round" size="mini">
+                        <Button
+                            type="outline"
+                            shape="round"
+                            size="mini"
+                            status="danger"
+                        >
                             Reset
                         </Button>
                     </Popconfirm>
@@ -408,7 +413,12 @@ export default function Home() {
                             setLinkDict({});
                         }}
                     >
-                        <Button type="outline" shape="round" size="mini">
+                        <Button
+                            type="outline"
+                            shape="round"
+                            size="mini"
+                            status="danger"
+                        >
                             Clear
                         </Button>
                     </Popconfirm>
