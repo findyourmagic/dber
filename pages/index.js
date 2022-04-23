@@ -537,7 +537,7 @@ export default function Home() {
                     );
                 })}
 
-                <rect x="0" y="0" width="20" height="20"></rect>
+                <rect x="0" y="0" width="2" height="2"></rect>
                 {mode == 'linking' &&
                     linkStat.startX != null &&
                     linkStat.endX != null && (
