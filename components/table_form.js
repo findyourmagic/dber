@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
 import { Button, Space, Input, Card, Popconfirm } from '@arco-design/web-react';
+import SelectInput from './select_input';
 import fieldTypes from '../data/filed_typs';
 // name: string;
 // type: any;
@@ -57,20 +58,12 @@ function TalbeFormItem(props, ref) {
                             defaultValue={props.field.name || ''}
                         />
                         <label>Type:</label>
-                        <div className="arco-select arco-select-single arco-select-size-default">
-                            <select
-                                className="arco-input arco-input-size-default"
-                                name="type"
-                                defaultValue={props.field.type || ''}
-                                style={{ width: 120 }}
-                            >
-                                {fieldTypes.map(item => (
-                                    <option key={item} value={item}>
-                                        {item}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                        <SelectInput
+                            defaultValue={props.field.type || ''}
+                            style={{ width: 120 }}
+                            options={fieldTypes}
+                            name="type"
+                        ></SelectInput>
                     </Space>
                     <Space>
                         <label>Note:</label>
