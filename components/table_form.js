@@ -110,6 +110,7 @@ const TalbeRefFormItem = forwardRef(TalbeFormItem);
 
 export default function TalbeForm(props) {
     const [fields, setFields] = useState(props.table.fields);
+    const [name, setName] = useState(props.table.name);
     const forms = useRef([]);
 
     useEffect(() => {
@@ -127,10 +128,9 @@ export default function TalbeForm(props) {
                 return prev;
             }, {});
         });
-        let table = { ...props.table, fields: updatedFields };
+        let table = { ...props.table, name, fields: updatedFields };
         delete table.x;
         delete table.y;
-        console.log(props);
         props.updateTable(table);
         props.setCommitting(false);
     };
@@ -166,7 +166,13 @@ export default function TalbeForm(props) {
         <Space direction="vertical">
             <Space>
                 <label>Table Name:</label>
-                <Input defaultValue={props.table.name} type="text"></Input>
+                <Input
+                    defaultValue={props.table.name}
+                    type="text"
+                    onChange={value => {
+                        setName(value);
+                    }}
+                ></Input>
             </Space>
             {fields.map((field, index) => (
                 <TalbeRefFormItem

@@ -17,8 +17,8 @@ export default function Home() {
             id: 'table1',
             name: 'date',
             alias: null,
-            x: 0,
-            y: 0,
+            x: 100,
+            y: 100,
             fields: [
                 {
                     id: 'field1',
