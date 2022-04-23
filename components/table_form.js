@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
-import { Button, Space, Input, Checkbox, Card } from '@arco-design/web-react';
+import { Button, Space, Input, Select, Card } from '@arco-design/web-react';
+const Option = Select.Option;
+import fieldTypes from '../data/filed_typs';
 // name: string;
 // type: any;
 // unique: boolean;
@@ -28,13 +30,17 @@ function TalbeFormItem(props, ref) {
                             defaultValue={props.field.name || ''}
                         />
                         <label>Type:</label>
-
-                        <Input
-                            type="text"
+                        <Select
                             name="type"
-                            placeholder="type"
                             defaultValue={props.field.type || ''}
-                        />
+                            style={{ width: 120 }}
+                        >
+                            {fieldTypes.map(item => (
+                                <Option key={item} value={item}>
+                                    {item}
+                                </Option>
+                            ))}
+                        </Select>
                     </Space>
                     <Space>
                         <label>Note:</label>
@@ -128,7 +134,7 @@ export default function TalbeForm(props) {
                 return prev;
             }, {});
         });
-        let table = { ...props.table, name, fields: updatedFields };
+        const table = { ...props.table, name, fields: updatedFields };
         delete table.x;
         delete table.y;
         props.updateTable(table);

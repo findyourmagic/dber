@@ -9,9 +9,9 @@ const defaultTables = {
             {
                 id: 'field1',
                 name: 'id',
-                type: 'int',
+                type: 'INTEGER',
                 // type: {
-                //     type_name: "int",
+                //     type_name: "INTEGER",
                 //     args: null,
                 // },
                 pk: true,
@@ -19,7 +19,7 @@ const defaultTables = {
             {
                 id: 'field2',
                 name: 'date',
-                type: 'datetime',
+                type: 'DATE',
                 // type: {
                 //     type_name: "datetime",
                 //     args: null,
@@ -39,7 +39,7 @@ const defaultTables = {
             {
                 id: 'field3',
                 name: 'id',
-                type: 'int',
+                type: 'INTEGER',
                 // type: {
                 //     type_name: "int",
                 //     args: null,
@@ -49,7 +49,7 @@ const defaultTables = {
             {
                 id: 'field4',
                 name: 'date',
-                type: 'datetime',
+                type: 'DATE',
                 // type: {
                 //     type_name: "datetime",
                 //     args: null,

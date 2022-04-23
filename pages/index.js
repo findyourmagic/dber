@@ -1,15 +1,17 @@
 import Head from 'next/head';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { Drawer, Button, Space } from '@arco-design/web-react';
+
 import styles from '../styles/index.module.css';
-import { useState, useEffect, useRef, useMemo, useReducer } from 'react';
 import SvgDefs from '../components/svg_defs';
 import TableForm from '../components/table_form';
 import LinkPath from '../components/link_path';
 import LinkModal from '../components/link_modal';
-import { Drawer, Button, Space, Modal } from '@arco-design/web-react';
 import exportSQL from '../utils/export-sql';
 import { ExportModal } from '../components/export_modal';
 import defaultTables from '../data/default_tables';
 import defaultLinks from '../data/default_links';
+
 export default function Home() {
     console.log('render home');
 
