@@ -1,13 +1,5 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
-import {
-    Button,
-    Space,
-    Input,
-    Select,
-    Card,
-    Popconfirm,
-} from '@arco-design/web-react';
-const Option = Select.Option;
+import { Button, Space, Input, Card, Popconfirm } from '@arco-design/web-react';
 import fieldTypes from '../data/filed_typs';
 // name: string;
 // type: any;
@@ -37,17 +29,20 @@ function TalbeFormItem(props, ref) {
                             defaultValue={props.field.name || ''}
                         />
                         <label>Type:</label>
-                        <Select
-                            name="type"
-                            defaultValue={props.field.type || ''}
-                            style={{ width: 120 }}
-                        >
-                            {fieldTypes.map(item => (
-                                <Option key={item} value={item}>
-                                    {item}
-                                </Option>
-                            ))}
-                        </Select>
+                        <div className="arco-select arco-select-single arco-select-size-default">
+                            <select
+                                className="arco-input arco-input-size-default"
+                                name="type"
+                                defaultValue={props.field.type || ''}
+                                style={{ width: 120 }}
+                            >
+                                {fieldTypes.map(item => (
+                                    <option key={item} value={item}>
+                                        {item}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </Space>
                     <Space>
                         <label>Note:</label>
@@ -77,8 +72,8 @@ function TalbeFormItem(props, ref) {
                             Primary&nbsp;
                             <input
                                 type="checkbox"
-                                name="primary"
-                                defaultChecked={props.field.primary || false}
+                                name="pk"
+                                defaultChecked={props.field.pk || false}
                             />
                         </label>
                         <label>

@@ -3,7 +3,7 @@ import { ModelExporter, Parser } from '@dbml/core';
 const exportSQL = (tableDict, linkDict, databaseType = 'postgres') => {
     const combined = {
         name: 'public',
-        note: 'Default Public Schema',
+        note: '',
         tables: Object.values(tableDict).map(table => {
             return {
                 name: table.name,
