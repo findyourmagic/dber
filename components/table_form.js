@@ -11,6 +11,34 @@ import fieldTypes from '../data/filed_typs';
 // increment: boolean;
 
 function TalbeFormItem(props, ref) {
+    const moveUp = () => {
+        props.setFields(fields => {
+            if (props.index > 0) {
+                const _fields = [...fields];
+                [_fields[props.index], _fields[props.index - 1]] = [
+                    _fields[props.index - 1],
+                    _fields[props.index],
+                ];
+                return _fields;
+            }
+            return fields;
+        });
+    };
+
+    const moveDown = () => {
+        props.setFields(fields => {
+            if (props.index < fields.length - 1) {
+                const _fields = [...fields];
+                [_fields[props.index], _fields[props.index + 1]] = [
+                    _fields[props.index + 1],
+                    _fields[props.index],
+                ];
+                return _fields;
+            }
+            return fields;
+        });
+    };
+
     return (
         <form ref={ref} className="table-form">
             <Card>
@@ -101,13 +129,25 @@ function TalbeFormItem(props, ref) {
                             />
                         </label>
                     </Space>
-                    <Button
-                        onClick={() => {
-                            props.removeItem(props.field.id);
-                        }}
-                    >
-                        Remove field
-                    </Button>
+                    <Space>
+                        <Button onClick={moveUp} type="primary">
+                            ↑ Move up
+                        </Button>
+                        <Button onClick={moveDown} type="primary">
+                            ↓ Move down
+                        </Button>
+
+                        <Popconfirm
+                            title="Are you sure delete this field?"
+                            onOk={() => {
+                                props.removeItem(props.field.id);
+                            }}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button status="danger">Remove field</Button>
+                        </Popconfirm>
+                    </Space>
                 </Space>
             </Card>
         </form>
@@ -199,8 +239,10 @@ export default function TalbeForm(props) {
                 <TalbeRefFormItem
                     field={field}
                     key={field.id}
+                    index={index}
                     ref={dom => (forms.current[index] = dom)}
                     removeItem={removeItem}
+                    setFields={setFields}
                 ></TalbeRefFormItem>
             ))}
             <Button onClick={addItem} type="outline" long>
