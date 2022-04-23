@@ -8,96 +8,41 @@ import LinkModal from '../components/link_modal';
 import { Drawer, Button, Space, Modal } from '@arco-design/web-react';
 import exportSQL from '../utils/export-sql';
 import { ExportModal } from '../components/export_modal';
-
+import defaultTables from '../data/default_tables';
+import defaultLinks from '../data/default_links';
 export default function Home() {
     console.log('render home');
 
-    const [tableDict, setTableDict] = useState({
-        table1: {
-            id: 'table1',
-            name: 'date',
-            alias: null,
-            x: 100,
-            y: 100,
-            fields: [
-                {
-                    id: 'field1',
-                    name: 'id',
-                    type: 'int',
-                    // type: {
-                    //     type_name: "int",
-                    //     args: null,
-                    // },
-                    pk: true,
-                },
-                {
-                    id: 'field2',
-                    name: 'date',
-                    type: 'datetime',
-                    // type: {
-                    //     type_name: "datetime",
-                    //     args: null,
-                    // },
-                    note: 'replace text here',
-                },
-            ],
-            indexes: [],
-        },
-        table2: {
-            id: 'table2',
-            name: 'table2',
-            alias: null,
-            x: 400,
-            y: 400,
-            fields: [
-                {
-                    id: 'field3',
-                    name: 'id',
-                    type: 'int',
-                    // type: {
-                    //     type_name: "int",
-                    //     args: null,
-                    // },
-                    pk: true,
-                },
-                {
-                    id: 'field4',
-                    name: 'date',
-                    type: 'datetime',
-                    // type: {
-                    //     type_name: "datetime",
-                    //     args: null,
-                    // },
-                    note: 'replace text here',
-                },
-            ],
-            indexes: [],
-        },
-    });
-    const tables = useMemo(() => Object.values(tableDict), [tableDict]);
+    const [tableDict, setTableDict] = useState(defaultTables);
+    const [linkDict, setLinkDict] = useState(defaultLinks);
 
-    const [linkDict, setLinkDict] = useState({
-        link1: {
-            id: 'link1',
-            name: null,
-            endpoints: [
-                {
-                    id: 'table1',
-                    // tableName: "sales",
-                    // fieldNames: ["id"],
-                    fieldId: 'field1',
-                    relation: '1',
-                },
-                {
-                    id: 'table2',
-                    // tableName: "store",
-                    // fieldNames: ["id"],
-                    relation: '*',
-                    fieldId: 'field3',
-                },
-            ],
-        },
-    });
+    const [inited, setInited] = useState(false);
+
+    useEffect(() => {
+        const _tableDict = window.localStorage.getItem('tableDict');
+        const _linkDict = window.localStorage.getItem('linkDict');
+        if (_tableDict) {
+            setTableDict(JSON.parse(_tableDict));
+        }
+        if (_linkDict) {
+            setLinkDict(JSON.parse(_linkDict));
+        }
+        setInited(true);
+    }, []);
+
+    useEffect(() => {
+        if (inited) {
+            window.localStorage.setItem('tableDict', JSON.stringify(tableDict));
+        }
+    }, [tableDict]);
+
+    useEffect(() => {
+        if (inited) {
+            window.localStorage.setItem('linkDict', JSON.stringify(linkDict));
+        }
+    }, [linkDict]);
+
+    const tables = useMemo(() => Object.values(tableDict), [tableDict]);
 
     const links = useMemo(() => Object.values(linkDict), [linkDict]);
 
@@ -137,7 +82,6 @@ export default function Home() {
 
     const tableMouseDownHanlder = (e, table) => {
         console.log('table mouse down');
-        console.log(table);
         let point = svg.current.createSVGPoint();
         point.x = e.clientX;
         point.y = e.clientY;
@@ -168,11 +112,20 @@ export default function Home() {
                 if (
                     !links.find(
                         link =>
-                            link.endpoints[0].id == linkStat.startTableId &&
-                            link.endpoints[0].fieldId == linkStat.startField &&
-                            link.endpoints[1].id == endTableId &&
-                            link.endpoints[1].fieldId == endField
-                    )
+                            [
+                                `${link.endpoints[0].id} ${link.endpoints[0].fieldId}`,
+                                `${link.endpoints[1].id} ${link.endpoints[1].fieldId}`,
+                            ]
+                                .sort()
+                                .join(' ') ==
+                            [
+                                `${linkStat.startTableId} ${linkStat.startField}`,
+                                `${endTableId} ${endField}`,
+                            ]
+                                .sort()
+                                .join(' ')
+                    ) &&
+                    linkStat.startTableId != endTableId
                 ) {
                     setLinkDict(state => {
                         const id = window.crypto.randomUUID();

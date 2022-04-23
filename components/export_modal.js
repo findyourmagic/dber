@@ -5,12 +5,12 @@ export function ExportModal({ command, setCommand }) {
         try {
             await window.navigator.clipboard.writeText(command);
             Notification.success({
-                title: '复制成功',
+                title: 'Copy Success',
             });
         } catch (e) {
             console.log(e);
             Notification.error({
-                title: '复制出错，请手动复制',
+                title: 'Copy Failed',
             });
         }
     };
@@ -21,7 +21,8 @@ export function ExportModal({ command, setCommand }) {
             visible={command}
             autoFocus={false}
             onOk={() => copy()}
-            okText="复制"
+            okText="Copy"
+            cancelText="Close"
             onCancel={() => setCommand('')}
             style={{ width: 'auto' }}
         >
