@@ -7,6 +7,7 @@ import LinkPath from '../components/link_path';
 import LinkModal from '../components/link_modal';
 import { Drawer, Button, Space, Modal } from '@arco-design/web-react';
 import exportSQL from '../utils/export-sql';
+import { ExportModal } from '../components/export_modal';
 
 export default function Home() {
     console.log('render home');
@@ -376,17 +377,10 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Modal
-                title={null}
-                simple
-                visible={command}
-                autoFocus={false}
-                onOk={() => setCommand('')}
-                onCancel={() => setCommand('')}
-                style={{ width: 'auto' }}
-            >
-                <pre>{`${command}`}</pre>
-            </Modal>
+            <ExportModal
+                command={command}
+                setCommand={setCommand}
+            ></ExportModal>
             <nav className={styles.nav}>
                 <div>
                     <a>
