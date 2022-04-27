@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
 import { Button, Space, Input, Card, Popconfirm } from '@arco-design/web-react';
+import classNames from 'classnames';
 import SelectInput from './select_input';
 import fieldTypes from '../data/filed_typs';
 // name: string;
@@ -41,7 +42,34 @@ function TalbeFormItem(props, ref) {
     };
 
     return (
-        <form ref={ref} className="table-form">
+        <form
+            ref={ref}
+            className={classNames({
+                dropping:
+                    props.draggingId &&
+                    props.droppingId == props.field.id &&
+                    props.droppingId != props.draggingId &&
+                    props.index != props.draggingIndex - 1,
+                dragging:
+                    props.draggingId && props.draggingId == props.field.id,
+                'table-form': true,
+            })}
+            draggable="true"
+            onDragStart={() => {
+                props.onDragStart(props.field.id);
+            }}
+            onDragEnd={() => {
+                props.setDraggingId(null);
+                props.setDroppingId(null);
+            }}
+            onDragOver={e => {
+                props.setDroppingId(props.field.id);
+                e.preventDefault();
+            }}
+            onDrop={e => {
+                props.onDrop(props.field.id);
+            }}
+        >
             <Card>
                 <input
                     type="hidden"
@@ -51,7 +79,6 @@ function TalbeFormItem(props, ref) {
                 <Space direction="vertical">
                     <Space>
                         <label>Name:</label>
-
                         <Input
                             type="text"
                             name="name"
@@ -203,31 +230,83 @@ export default function TalbeForm(props) {
         });
     };
 
+    // Drag and drop
+    const [draggingId, setDraggingId] = useState(false);
+    const [draggingIndex, setDraggingIndex] = useState(false);
+    const [droppingId, setDroppingId] = useState(false);
+
+    const onDragStart = id => {
+        setDraggingId(id);
+        setDraggingIndex(fields.findIndex(item => item.id == id));
+    };
+
+    const onDrop = id => {
+        setDroppingId(null);
+        const index = fields.findIndex(item => item.id === id);
+        const draggingIndex = fields.findIndex(item => item.id === draggingId);
+        if (index === draggingIndex || index === draggingIndex - 1) {
+            return setDraggingId(null);
+        }
+        setFields(state => {
+            const _fields = [...state];
+            [_fields[index], _fields[draggingIndex]] = [
+                _fields[draggingIndex],
+                _fields[index],
+            ];
+            return _fields;
+        });
+
+        setDraggingId(null);
+    };
+
+    const unShiftFileds = () => {
+        const draggingIndex = fields.findIndex(item => item.id === draggingId);
+        setFields(state => {
+            const _fields = [...state];
+            const field = _fields.splice(draggingIndex, 1);
+            _fields.unshift(...field);
+            return _fields;
+        });
+        setDraggingId(null);
+        setDroppingId(null);
+    };
+
     return (
         <Space direction="vertical">
-            <Space>
-                <label>Table Name:</label>
-                <Input
-                    defaultValue={props.table.name}
-                    type="text"
-                    onChange={value => {
-                        setName(value);
-                    }}
-                ></Input>
-                <Popconfirm
-                    position="br"
-                    title="Are you sure you want to delete this table?"
-                    okText="Yes"
-                    cancelText="No"
-                    onOk={() => {
-                        props.removeTable(props.table.id);
-                    }}
-                >
-                    <Button type="outline" status="warning">
-                        Delete table
-                    </Button>
-                </Popconfirm>
-            </Space>
+            <div
+                className={droppingId == 'root' ? 'dropping' : ''}
+                onDragOver={e => {
+                    if (draggingIndex != 0) setDroppingId('root');
+                    e.preventDefault();
+                }}
+                onDrop={e => {
+                    unShiftFileds();
+                }}
+            >
+                <Space>
+                    <label>Table Name:</label>
+                    <Input
+                        defaultValue={props.table.name}
+                        type="text"
+                        onChange={value => {
+                            setName(value);
+                        }}
+                    ></Input>
+                    <Popconfirm
+                        position="br"
+                        title="Are you sure you want to delete this table?"
+                        okText="Yes"
+                        cancelText="No"
+                        onOk={() => {
+                            props.removeTable(props.table.id);
+                        }}
+                    >
+                        <Button type="outline" status="warning">
+                            Delete table
+                        </Button>
+                    </Popconfirm>
+                </Space>
+            </div>
             {fields.map((field, index) => (
                 <TalbeRefFormItem
                     field={field}
@@ -236,6 +315,13 @@ export default function TalbeForm(props) {
                     ref={dom => (forms.current[index] = dom)}
                     removeItem={removeItem}
                     setFields={setFields}
+                    onDragStart={onDragStart}
+                    onDrop={onDrop}
+                    draggingIndex={draggingIndex}
+                    draggingId={draggingId}
+                    droppingId={droppingId}
+                    setDroppingId={setDroppingId}
+                    setDraggingId={setDraggingId}
                 ></TalbeRefFormItem>
             ))}
             <Button onClick={addItem} type="outline" long>

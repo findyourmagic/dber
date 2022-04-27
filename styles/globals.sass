@@ -78,3 +78,17 @@ body
 label
     user-select: none
 
+
+.dragging
+    opacity: .3
+
+.dropping
+    position: relative
+    &:after
+        position: relative
+        content: ' '
+        display: block
+        width: 100%
+        height: 140px
+        margin-top: 10px
+        background: #eee
