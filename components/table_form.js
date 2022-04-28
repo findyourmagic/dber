@@ -244,17 +244,35 @@ export default function TalbeForm(props) {
         setDroppingId(null);
         const index = fields.findIndex(item => item.id === id);
         const draggingIndex = fields.findIndex(item => item.id === draggingId);
-        if (index === draggingIndex || index === draggingIndex - 1) {
+
+        if (index === draggingIndex) {
             return setDraggingId(null);
         }
-        setFields(state => {
-            const _fields = [...state];
-            [_fields[index], _fields[draggingIndex]] = [
-                _fields[draggingIndex],
-                _fields[index],
-            ];
-            return _fields;
-        });
+
+        if (index === draggingIndex - 1) {
+            setFields(state => {
+                const fields = [...state];
+                [fields[draggingIndex], fields[draggingIndex - 1]] = [
+                    fields[draggingIndex - 1],
+                    fields[draggingIndex],
+                ];
+                return fields;
+            });
+        } else {
+            setFields(state => {
+                const _fields = [...state];
+                const draggingFiled = _fields.splice(draggingIndex, 1)[0];
+                const index = _fields.findIndex(item => item.id === id);
+
+                if (index + 1 < _fields.length) {
+                    _fields.splice(index + 1, 0, draggingFiled);
+                } else {
+                    _fields.push(draggingFiled);
+                }
+
+                return _fields;
+            });
+        }
 
         setDraggingId(null);
     };
