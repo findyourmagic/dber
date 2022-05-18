@@ -89,7 +89,6 @@ export default function Home() {
     };
 
     const tableMouseDownHanlder = (e, table) => {
-        console.log('table mouse down');
         let point = svg.current.createSVGPoint();
         point.x = e.clientX;
         point.y = e.clientY;
@@ -108,7 +107,6 @@ export default function Home() {
     };
 
     const mouseUpHanlder = e => {
-        console.log('mouse up');
         if (mode == 'linking') {
             const row = e.target.classList.contains('row')
                 ? e.target
@@ -192,11 +190,10 @@ export default function Home() {
         let cursor = point.matrixTransform(
             svg.current.getScreenCTM().inverse()
         );
-        return cursor; // {x, y}
+        return cursor;
     };
 
     const mouseMoveHanlder = e => {
-        // console.log(e.target.tagName);
         if (!mode) return;
         if (mode == 'draging') {
             setBox(state => {
@@ -259,7 +256,6 @@ export default function Home() {
     };
 
     const updateTable = table => {
-        // console.log(table);
         if (table) {
             setTableDict(state => {
                 return {
@@ -359,7 +355,7 @@ export default function Home() {
                 <title>DBER</title>
                 <meta
                     name="description"
-                    content="Entity Relationship Diagram For Database"
+                    content="Database design tool based on entity relation diagram"
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
