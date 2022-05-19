@@ -1,22 +1,16 @@
 import Head from 'next/head';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import {
-    Drawer,
-    Button,
-    Space,
-    Popconfirm,
-    Dropdown,
-    Menu,
-} from '@arco-design/web-react';
+import { Drawer, Button } from '@arco-design/web-react';
 
 import styles from '../styles/index.module.css';
 import TableForm from '../components/table_form';
 import LinkPath from '../components/link_path';
 import LinkModal from '../components/link_modal';
-import exportSQL from '../utils/export-sql';
 import { ExportModal } from '../components/export_modal';
 import defaultTables from '../data/default_tables';
 import defaultLinks from '../data/default_links';
+import Nav from '../components/nav';
+import Table from '../components/table';
 
 export default function Home() {
     console.log('render home');
@@ -363,108 +357,16 @@ export default function Home() {
                 command={command}
                 setCommand={setCommand}
             ></ExportModal>
-            <nav className={styles.nav}>
-                <div>
-                    <a>
-                        <strong>DBER</strong> | Entity Relationship Diagram For
-                        Database
-                    </a>
-                </div>
-                <Space>
-                    <Button
-                        onClick={addTable}
-                        type="primary"
-                        shape="round"
-                        size="mini"
-                    >
-                        + Add New Table
-                    </Button>
-                    <Popconfirm
-                        title="Are you sure you want to reset?"
-                        okText="Yes"
-                        cancelText="No"
-                        position="br"
-                        onOk={() => {
-                            setTableDict(defaultTables);
-                            setLinkDict(defaultLinks);
-                        }}
-                    >
-                        <Button
-                            type="outline"
-                            shape="round"
-                            size="mini"
-                            status="danger"
-                        >
-                            Reset
-                        </Button>
-                    </Popconfirm>
-                    <Popconfirm
-                        title="Are you sure you want to delete all the tables?"
-                        okText="Yes"
-                        cancelText="No"
-                        position="br"
-                        onOk={() => {
-                            setTableDict({});
-                            setLinkDict({});
-                        }}
-                    >
-                        <Button
-                            type="outline"
-                            shape="round"
-                            size="mini"
-                            status="danger"
-                        >
-                            Clear
-                        </Button>
-                    </Popconfirm>
-                    <Dropdown
-                        droplist={
-                            <Menu>
-                                <Menu.Item
-                                    onClick={() => {
-                                        const sql = exportSQL(
-                                            tableDict,
-                                            linkDict
-                                        );
-                                        setCommand(sql);
-                                    }}
-                                >
-                                    PostgreSQL
-                                </Menu.Item>
-                                <Menu.Item
-                                    onClick={() => {
-                                        const sql = exportSQL(
-                                            tableDict,
-                                            linkDict,
-                                            'mysql'
-                                        );
-                                        setCommand(sql);
-                                    }}
-                                >
-                                    MySQL
-                                </Menu.Item>
-                                <Menu.Item
-                                    onClick={() => {
-                                        const sql = exportSQL(
-                                            tableDict,
-                                            linkDict,
-                                            'mssql'
-                                        );
-                                        setCommand(sql);
-                                    }}
-                                >
-                                    MSSQL
-                                </Menu.Item>
-                            </Menu>
-                        }
-                        position="br"
-                    >
-                        <Button type="outline" shape="round" size="mini">
-                            Export SQL
-                        </Button>
-                    </Dropdown>
-                </Space>
-            </nav>
+            <Nav
+                addTable={addTable}
+                setTableDict={setTableDict}
+                setLinkDict={setLinkDict}
+                defaultTables={defaultTables}
+                defaultLinks={defaultLinks}
+                tableDict={tableDict}
+                linkDict={linkDict}
+                setCommand={setCommand}
+            />
             <svg
                 className={styles.main}
                 viewBox={`${box.x} ${box.y} ${box.w} ${box.h}`}
@@ -486,59 +388,15 @@ export default function Home() {
                     );
                 })}
                 {tables.map(table => {
-                    const height = table.fields.length * 30 + 52;
                     return (
-                        <foreignObject
-                            x={table.x}
-                            y={table.y}
-                            width={TableWidth}
-                            height={height}
+                        <Table
                             key={table.id}
-                            onMouseDown={e => {
-                                tableMouseDownHanlder(e, table);
-                            }}
-                            // onMouseUp={(e) => {
-                            //     tableMouseUpHandler(e, table);
-                            // }}
-                        >
-                            <div className="table">
-                                <div className="table-title">
-                                    <span>{table.name}</span>
-                                    <Button
-                                        size="mini"
-                                        onClick={() => {
-                                            tableClickHandler(table);
-                                        }}
-                                    >
-                                        Edit
-                                    </Button>
-                                </div>
-                                {table.fields.map(field => {
-                                    return (
-                                        <div
-                                            className="row"
-                                            key={field.id}
-                                            tableid={table.id}
-                                            fieldid={field.id}
-                                        >
-                                            <div
-                                                className="start-grip grip"
-                                                onMouseDown={
-                                                    gripMouseDownHandler
-                                                }
-                                            ></div>
-                                            <span>{field.name}</span>
-                                            <div
-                                                className="end-grip grip"
-                                                onMouseDown={
-                                                    gripMouseDownHandler
-                                                }
-                                            ></div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </foreignObject>
+                            table={table}
+                            TableWidth={TableWidth}
+                            tableMouseDownHanlder={tableMouseDownHanlder}
+                            tableClickHandler={tableClickHandler}
+                            gripMouseDownHandler={gripMouseDownHandler}
+                        />
                     );
                 })}
 
