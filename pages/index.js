@@ -75,8 +75,8 @@ export default function Home() {
     const mouseDownHanlder = e => {
         if (e.target.tagName == 'svg') {
             setOffset({
-                x: box.x + e.clientX,
-                y: box.y + e.clientY,
+                x: box.x + (e.clientX * box.w) / global.innerWidth,
+                y: box.y + (e.clientY * box.h) / global.innerHeight,
             });
             setMode('draging');
         }
@@ -194,8 +194,8 @@ export default function Home() {
                 return {
                     w: state.w,
                     h: state.h,
-                    x: offset.x - e.clientX,
-                    y: offset.y - e.clientY,
+                    x: offset.x - e.clientX * (state.w / global.innerWidth),
+                    y: offset.y - e.clientY * (state.h / global.innerHeight),
                 };
             });
         }
@@ -223,6 +223,24 @@ export default function Home() {
                 endY: y + 3,
             });
         }
+    };
+
+    const wheelHandler = e => {
+        const { deltaY } = e;
+        setBox(state => {
+            if (state.w > 4000 && deltaY > 0) return state;
+            if (state.w < 600 && deltaY < 0) return state;
+
+            const widthHeightRatio = state.w / state.h;
+            deltaY = deltaY * 2;
+            const deltaX = deltaY * widthHeightRatio;
+            return {
+                x: parseInt((state.x / state.w) * (state.w + deltaX)),
+                y: parseInt((state.y / state.h) * (state.h + deltaY)),
+                w: state.w + deltaX,
+                h: state.h + deltaY,
+            };
+        });
     };
 
     const addTable = () => {
@@ -373,6 +391,7 @@ export default function Home() {
                 onMouseDown={mouseDownHanlder}
                 onMouseUp={mouseUpHanlder}
                 onMouseMove={mouseMoveHanlder}
+                onWheel={wheelHandler}
                 ref={svg}
             >
                 {links.map(link => {
