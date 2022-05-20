@@ -222,12 +222,13 @@ export default function Home() {
             if (state.w > 4000 && deltaY > 0) return state;
             if (state.w < 600 && deltaY < 0) return state;
 
+            const cursor = getSVGCursor(e);
             const widthHeightRatio = state.w / state.h;
             deltaY = deltaY * 2;
             const deltaX = deltaY * widthHeightRatio;
             return {
-                x: state.x - deltaX / 2,
-                y: state.y - deltaY / 2,
+                x: state.x - ((cursor.x - state.x) / state.w) * deltaX,
+                y: state.y - ((cursor.y - state.y) / state.h) * deltaY,
                 w: state.w + deltaX,
                 h: state.h + deltaY,
             };
