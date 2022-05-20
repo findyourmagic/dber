@@ -235,8 +235,8 @@ export default function Home() {
             deltaY = deltaY * 2;
             const deltaX = deltaY * widthHeightRatio;
             return {
-                x: parseInt((state.x / state.w) * (state.w + deltaX)),
-                y: parseInt((state.y / state.h) * (state.h + deltaY)),
+                x: state.x - deltaX / 2,
+                y: state.y - deltaY / 2,
                 w: state.w + deltaX,
                 h: state.h + deltaY,
             };
