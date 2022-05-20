@@ -13,8 +13,6 @@ import Nav from '../components/nav';
 import Table from '../components/table';
 
 export default function Home() {
-    console.log('render home');
-
     const [tableDict, setTableDict] = useState(defaultTables);
     const [linkDict, setLinkDict] = useState(defaultLinks);
 
@@ -83,19 +81,15 @@ export default function Home() {
     };
 
     const tableMouseDownHanlder = (e, table) => {
-        let point = svg.current.createSVGPoint();
-        point.x = e.clientX;
-        point.y = e.clientY;
-        point = point.matrixTransform(svg.current.getScreenCTM().inverse());
+        const { x: cursorX, y: cursorY } = getSVGCursor(e);
 
         setMovingTable({
             id: table.id,
-            offsetX: point.x - table.x,
-            offsetY: point.y - table.y,
+            offsetX: cursorX - table.x,
+            offsetY: cursorY - table.y,
         });
 
         setMode('moving');
-        console.log(movingTable);
         e.preventDefault();
         e.stopPropagation();
     };
@@ -169,9 +163,6 @@ export default function Home() {
     };
 
     const tableMouseUpHandler = (e, table) => {
-        console.log('table mouse up');
-        // console.log(e);
-        console.log(table);
         e.stopPropagation();
         e.preventDefault();
     };
@@ -201,15 +192,15 @@ export default function Home() {
         }
 
         if (mode == 'moving') {
-            const cursor = getSVGCursor(e);
+            const { x: cursorX, y: cursorY } = getSVGCursor(e);
 
             setTableDict(state => {
                 return {
                     ...state,
                     [movingTable.id]: {
                         ...state[movingTable.id],
-                        x: cursor.x - movingTable.offsetX,
-                        y: cursor.y - movingTable.offsetY,
+                        x: cursorX - movingTable.offsetX,
+                        y: cursorY - movingTable.offsetY,
                     },
                 };
             });
