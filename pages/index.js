@@ -11,7 +11,11 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Button href="/graph">Graph</Button>
+            <div className="index-container">
+                <h2>DBER</h2>
+                <div>Database design tool based on entity relation diagram</div>
+                <Button href="/graph">Graph</Button>
+            </div>
         </>
     );
 }
