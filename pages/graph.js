@@ -1,7 +1,6 @@
 import Head from 'next/head';
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { Drawer, Button } from '@arco-design/web-react';
-
+import { useState, useRef, useMemo } from 'react';
+import { Drawer } from '@arco-design/web-react';
 import styles from '../styles/index.module.css';
 import TableForm from '../components/table_form';
 import LinkPath from '../components/link_path';
@@ -11,36 +10,11 @@ import defaultTables from '../data/default_tables';
 import defaultLinks from '../data/default_links';
 import Nav from '../components/nav';
 import Table from '../components/table';
+import useGraphState from '../hooks/use-graph-state';
 
 export default function Home() {
-    const [tableDict, setTableDict] = useState(defaultTables);
-    const [linkDict, setLinkDict] = useState(defaultLinks);
-
-    const [inited, setInited] = useState(false);
-
-    useEffect(() => {
-        const _tableDict = window.localStorage.getItem('tableDict');
-        const _linkDict = window.localStorage.getItem('linkDict');
-        if (_tableDict) {
-            setTableDict(JSON.parse(_tableDict));
-        }
-        if (_linkDict) {
-            setLinkDict(JSON.parse(_linkDict));
-        }
-        setInited(true);
-    }, []);
-
-    useEffect(() => {
-        if (inited) {
-            window.localStorage.setItem('tableDict', JSON.stringify(tableDict));
-        }
-    }, [tableDict]);
-
-    useEffect(() => {
-        if (inited) {
-            window.localStorage.setItem('linkDict', JSON.stringify(linkDict));
-        }
-    }, [linkDict]);
+    const { tableDict, setTableDict, linkDict, setLinkDict, box, setBox } =
+        useGraphState({ defaultTables, defaultLinks });
 
     const tables = useMemo(() => Object.values(tableDict), [tableDict]);
 
@@ -59,14 +33,6 @@ export default function Home() {
     const [offset, setOffset] = useState({
         x: 0,
         y: 0,
-    });
-
-    // viewbox of svg
-    const [box, setBox] = useState({
-        x: 0,
-        y: 0,
-        w: 0,
-        h: 0,
     });
 
     // compute the distance from the pointer to svg origin when mousedown
@@ -162,11 +128,6 @@ export default function Home() {
         setMovingTable(null);
     };
 
-    const tableMouseUpHandler = (e, table) => {
-        e.stopPropagation();
-        e.preventDefault();
-    };
-
     const getSVGCursor = ({ clientX, clientY }) => {
         let point = svg.current.createSVGPoint();
         point.x = clientX;
@@ -187,6 +148,8 @@ export default function Home() {
                     h: state.h,
                     x: offset.x - e.clientX * (state.w / global.innerWidth),
                     y: offset.y - e.clientY * (state.h / global.innerHeight),
+                    clientH: state.clientH,
+                    clientW: state.clientW,
                 };
             });
         }
@@ -231,6 +194,8 @@ export default function Home() {
                 y: state.y - ((cursor.y - state.y) / state.h) * deltaY,
                 w: state.w + deltaX,
                 h: state.h + deltaY,
+                clientH: state.clientH,
+                clientW: state.clientW,
             };
         });
     };
@@ -301,25 +266,6 @@ export default function Home() {
     const tableClickHandler = table => {
         setEditingTable(table);
     };
-
-    const resizeHandler = () => {
-        setBox(state => {
-            return {
-                x: state.x,
-                y: state.y,
-                w: global.innerWidth || 0,
-                h: global.innerHeight || 0,
-            };
-        });
-    };
-
-    useEffect(() => {
-        resizeHandler();
-        global.addEventListener('resize', resizeHandler);
-        return () => {
-            global.removeEventListener('resize', resizeHandler);
-        };
-    }, []);
 
     const [linkStat, setLinkStat] = useState({
         startX: null,
