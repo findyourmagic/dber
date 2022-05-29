@@ -1,13 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/router';
 import { db } from '../data/db';
 
 export default function useGraphState({ defaultTables, defaultLinks }) {
     const [tableDict, setTableDict] = useState(defaultTables);
     const [linkDict, setLinkDict] = useState(defaultLinks);
     const [name, setName] = useState('Untitled graph');
-
-    const router = useRouter();
 
     // viewbox of svg
     const [box, setBox] = useState({
@@ -19,7 +16,10 @@ export default function useGraphState({ defaultTables, defaultLinks }) {
         clientH: 0,
     });
 
-    const { id } = router.query;
+    const [id, setId] = useState(null);
+    useEffect(() => {
+        setId(new URLSearchParams(global.location.search).get('id'));
+    }, []);
 
     useEffect(() => {
         if (!id) return;

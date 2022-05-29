@@ -29,7 +29,7 @@ const addGraph = async () => {
         createdAt: now,
         updatedAt: now,
     });
-    global.location.href = `/graphs/${id}`;
+    global.location.href = `/graphs/detail?id=${id}`;
 };
 
 export default function Home() {
@@ -78,7 +78,7 @@ export default function Home() {
                                         <Button
                                             type="primary"
                                             icon={<IconEdit />}
-                                            href={`/graphs/${item.id}`}
+                                            href={`/graphs/detail?id=${item.id}`}
                                         ></Button>
                                         <Popconfirm
                                             title="Are you sure to delete this graph?"

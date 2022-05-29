@@ -8,16 +8,12 @@ import {
     Input,
 } from '@arco-design/web-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-
 import exportSQL from '../utils/export-sql';
 import { db } from '../data/db';
 
 export default function Nav(props) {
-    const router = useRouter();
-
     const save = async () => {
-        const { id } = router.query;
+        const id = new URLSearchParams(global.location.search).get('id');
         try {
             await db.graphs.put({
                 id,
