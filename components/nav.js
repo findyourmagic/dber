@@ -7,6 +7,7 @@ import {
     Notification,
     Input,
 } from '@arco-design/web-react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import exportSQL from '../utils/export-sql';
@@ -39,10 +40,10 @@ export default function Nav(props) {
     return (
         <nav className="nav">
             <div>
-                <a href="/graphs">
+                <Link href="/graphs">
                     <strong>DBER</strong> | Database design tool based on entity
                     relation diagram
-                </a>
+                </Link>
             </div>
             <Space>
                 <Input
