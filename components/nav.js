@@ -69,7 +69,7 @@ export default function Nav(props) {
                     + Add New Table
                 </Button>
                 <Popconfirm
-                    title="Are you sure you want to reset?"
+                    title="Are you sure to fill the playground with demo data?"
                     okText="Yes"
                     cancelText="No"
                     position="br"
@@ -84,7 +84,7 @@ export default function Nav(props) {
                         size="mini"
                         status="danger"
                     >
-                        Reset
+                        Demo graph
                     </Button>
                 </Popconfirm>
                 <Popconfirm

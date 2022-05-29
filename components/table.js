@@ -35,26 +35,27 @@ export default function Table(props) {
                         Edit
                     </Button>
                 </div>
-                {table.fields.map(field => {
-                    return (
-                        <div
-                            className="row"
-                            key={field.id}
-                            tableid={table.id}
-                            fieldid={field.id}
-                        >
+                {table.fields &&
+                    table.fields.map(field => {
+                        return (
                             <div
-                                className="start-grip grip"
-                                onMouseDown={gripMouseDownHandler}
-                            ></div>
-                            <span>{field.name}</span>
-                            <div
-                                className="end-grip grip"
-                                onMouseDown={gripMouseDownHandler}
-                            ></div>
-                        </div>
-                    );
-                })}
+                                className="row"
+                                key={field.id}
+                                tableid={table.id}
+                                fieldid={field.id}
+                            >
+                                <div
+                                    className="start-grip grip"
+                                    onMouseDown={gripMouseDownHandler}
+                                ></div>
+                                <span>{field.name}</span>
+                                <div
+                                    className="end-grip grip"
+                                    onMouseDown={gripMouseDownHandler}
+                                ></div>
+                            </div>
+                        );
+                    })}
             </div>
         </foreignObject>
     );

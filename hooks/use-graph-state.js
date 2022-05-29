@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { db } from '../data/db';
 
-export default function useGraphState({ defaultTables, defaultLinks }) {
-    const [tableDict, setTableDict] = useState(defaultTables);
-    const [linkDict, setLinkDict] = useState(defaultLinks);
+export default function useGraphState() {
+    const [tableDict, setTableDict] = useState({});
+    const [linkDict, setLinkDict] = useState({});
     const [name, setName] = useState('Untitled graph');
 
     // viewbox of svg

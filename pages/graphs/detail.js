@@ -21,12 +21,11 @@ export default function Home() {
         setBox,
         name,
         setName,
-    } = useGraphState({ defaultTables, defaultLinks });
+    } = useGraphState();
 
     const tables = useMemo(() => Object.values(tableDict), [tableDict]);
 
     const links = useMemo(() => Object.values(linkDict), [linkDict]);
-
     const svg = useRef();
 
     // ''|dragging|moving|linking
