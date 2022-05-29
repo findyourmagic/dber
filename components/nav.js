@@ -40,9 +40,11 @@ export default function Nav(props) {
     return (
         <nav className="nav">
             <div>
-                <Link href="/graphs">
-                    <strong>DBER</strong> | Database design tool based on entity
-                    relation diagram
+                <Link href="/graphs" passHref>
+                    <span>
+                        <strong>DBER</strong> | Database design tool based on
+                        entity relation diagram
+                    </span>
                 </Link>
             </div>
             <Space>
