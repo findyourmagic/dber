@@ -1,11 +1,58 @@
 body
     overflow: hidden
+
+.tc
+    text-align: center
+
 .index-container
     min-height: 30vh
     display: flex
     flex-direction: column
     align-items: center
     justify-content: space-around
+
+.nav
+    display: flex
+    justify-content: space-between
+    align-items: center
+    position: absolute
+    top: 0
+    left: 0
+    width: 100vw
+    z-index: 2
+    box-sizing: border-box
+    padding: 10px
+    background-color: var(--color-bg-1)
+    color: var(--color-text-1)
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.7)
+    a
+        color: var(--color-text-1)
+        text-decoration: none
+
+.main
+    width: 100vw
+    height: 100vh
+    position: absolute
+    left: 0
+    top: 0
+    cursor: grab
+
+.aside
+    position: absolute
+    height: 100vh
+    right: 0
+    top: 0
+    z-index: 3
+    background: #fff
+    box-sizing: border-box
+    padding: 15px
+    width: 400px
+    overflow: auto
+    label
+        display: block
+
+
+
 .graph
     background: url(../public/point.svg) repeat
     width: 100vw
@@ -99,3 +146,14 @@ label
     height: 10px
     margin-top: 10px
     background: var(--color-primary-light-1)
+
+.flex
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+.graph-container
+    padding-top: 100px
+.graph-list
+    max-width: 1024px
+    margin: 0 auto

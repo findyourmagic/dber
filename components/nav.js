@@ -4,21 +4,63 @@ import {
     Popconfirm,
     Dropdown,
     Menu,
+    Notification,
+    Input,
 } from '@arco-design/web-react';
+import { useRouter } from 'next/router';
 
 import exportSQL from '../utils/export-sql';
-import styles from '../styles/index.module.css';
+import { db } from '../data/db';
 
 export default function Nav(props) {
+    const router = useRouter();
+
+    const save = async () => {
+        const { id } = router.query;
+        try {
+            await db.graphs.put({
+                id,
+                tableDict: props.tableDict,
+                linkDict: props.linkDict,
+                box: props.box,
+                name: props.name,
+                updatedAt: new Date().valueOf(),
+            });
+            Notification.success({
+                title: 'Save success',
+            });
+        } catch (e) {
+            Notification.error({
+                title: 'Save failed',
+            });
+        }
+    };
+
     return (
-        <nav className={styles.nav}>
+        <nav className="nav">
             <div>
-                <a>
+                <a href="/graphs">
                     <strong>DBER</strong> | Database design tool based on entity
                     relation diagram
                 </a>
             </div>
             <Space>
+                <Input
+                    type="text"
+                    value={props.name}
+                    onChange={value => {
+                        props.setName(value);
+                    }}
+                />
+                <Button
+                    onClick={save}
+                    type="primary"
+                    status="success"
+                    shape="round"
+                    size="mini"
+                >
+                    Save
+                </Button>
                 <Button
                     onClick={props.addTable}
                     type="primary"
@@ -94,8 +136,8 @@ export default function Nav(props) {
                             <Menu.Item
                                 onClick={() => {
                                     const sql = exportSQL(
-                                        tableDict,
-                                        linkDict,
+                                        props.tableDict,
+                                        props.linkDict,
                                         'mssql'
                                     );
                                     props.setCommand(sql);

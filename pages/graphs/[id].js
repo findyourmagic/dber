@@ -1,20 +1,27 @@
 import Head from 'next/head';
 import { useState, useRef, useMemo } from 'react';
 import { Drawer } from '@arco-design/web-react';
-import styles from '../styles/index.module.css';
-import TableForm from '../components/table_form';
-import LinkPath from '../components/link_path';
-import LinkModal from '../components/link_modal';
-import { ExportModal } from '../components/export_modal';
-import defaultTables from '../data/default_tables';
-import defaultLinks from '../data/default_links';
-import Nav from '../components/nav';
-import Table from '../components/table';
-import useGraphState from '../hooks/use-graph-state';
+import TableForm from '../../components/table_form';
+import LinkPath from '../../components/link_path';
+import LinkModal from '../../components/link_modal';
+import { ExportModal } from '../../components/export_modal';
+import defaultTables from '../../data/default_tables';
+import defaultLinks from '../../data/default_links';
+import Nav from '../../components/nav';
+import Table from '../../components/table';
+import useGraphState from '../../hooks/use-graph-state';
 
 export default function Home() {
-    const { tableDict, setTableDict, linkDict, setLinkDict, box, setBox } =
-        useGraphState({ defaultTables, defaultLinks });
+    const {
+        tableDict,
+        setTableDict,
+        linkDict,
+        setLinkDict,
+        box,
+        setBox,
+        name,
+        setName,
+    } = useGraphState({ defaultTables, defaultLinks });
 
     const tables = useMemo(() => Object.values(tableDict), [tableDict]);
 
@@ -321,10 +328,13 @@ export default function Home() {
                 defaultLinks={defaultLinks}
                 tableDict={tableDict}
                 linkDict={linkDict}
+                box={box}
+                name={name}
+                setName={setName}
                 setCommand={setCommand}
             />
             <svg
-                className={styles.main}
+                className="main"
                 viewBox={`${box.x} ${box.y} ${box.w} ${box.h}`}
                 onMouseDown={mouseDownHanlder}
                 onMouseUp={mouseUpHanlder}

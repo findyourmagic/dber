@@ -14,7 +14,7 @@ export default function Home() {
             <div className="index-container">
                 <h2>DBER</h2>
                 <div>Database design tool based on entity relation diagram</div>
-                <Button href="/graph">Graph</Button>
+                <Button href="/graphs">Graphs</Button>
             </div>
         </>
     );

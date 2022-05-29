@@ -1,8 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { db } from '../data/db';
 
 export default function useGraphState({ defaultTables, defaultLinks }) {
     const [tableDict, setTableDict] = useState(defaultTables);
     const [linkDict, setLinkDict] = useState(defaultLinks);
+    const [name, setName] = useState('Untitled graph');
+
+    const router = useRouter();
 
     // viewbox of svg
     const [box, setBox] = useState({
@@ -14,43 +19,39 @@ export default function useGraphState({ defaultTables, defaultLinks }) {
         clientH: 0,
     });
 
-    const [inited, setInited] = useState(false);
+    const { id } = router.query;
 
     useEffect(() => {
-        const _tableDict = window.localStorage.getItem('tableDict');
-        const _linkDict = window.localStorage.getItem('linkDict');
-        const _box = window.localStorage.getItem('box');
-        if (_tableDict) {
-            setTableDict(JSON.parse(_tableDict));
-        }
-        if (_linkDict) {
-            setLinkDict(JSON.parse(_linkDict));
-        }
-        if (_box) {
-            setBox(() => {
-                console.log(_box);
-                const state = JSON.parse(_box);
-                console.log(state.w && state.clientW);
-                return {
-                    x: state.x,
-                    y: state.y,
-                    w:
-                        state.w && state.clientW
-                            ? state.w * (global.innerWidth / state.clientW)
-                            : global.innerWidth,
-                    h:
-                        state.h && state.clientH
-                            ? state.h * (global.innerHeight / state.clientH)
-                            : global.innerHeight,
-                    clientW: global.innerWidth,
-                    clientH: global.innerHeight,
-                };
-            });
-        } else {
-            resizeHandler();
-        }
-        setInited(true);
-    }, []);
+        if (!id) return;
+        const initGraph = async () => {
+            const graph = await db.graphs.get(id);
+            if (graph) {
+                if (graph.tableDict) setTableDict(graph.tableDict);
+                if (graph.linkDict) setLinkDict(graph.linkDict);
+                if (graph.box) {
+                    const { x, y, w, h, clientH, clientW } = graph.box;
+                    setBox({
+                        x,
+                        y,
+                        w:
+                            w && clientW
+                                ? w * (global.innerWidth / clientW)
+                                : global.innerWidth,
+                        h:
+                            h && clientH
+                                ? h * (global.innerHeight / clientH)
+                                : global.innerHeight,
+                        clientW: global.innerWidth,
+                        clientH: global.innerHeight,
+                    });
+                }
+                if (graph.name) setName(graph.name);
+            } else {
+                resizeHandler();
+            }
+        };
+        initGraph();
+    }, [id]);
 
     const resizeHandler = useCallback(() => {
         setBox(state => {
@@ -78,24 +79,6 @@ export default function useGraphState({ defaultTables, defaultLinks }) {
         };
     }, []);
 
-    useEffect(() => {
-        if (inited) {
-            window.localStorage.setItem('tableDict', JSON.stringify(tableDict));
-        }
-    }, [tableDict]);
-
-    useEffect(() => {
-        if (inited) {
-            window.localStorage.setItem('linkDict', JSON.stringify(linkDict));
-        }
-    }, [linkDict]);
-
-    useEffect(() => {
-        if (inited) {
-            window.localStorage.setItem('box', JSON.stringify(box));
-        }
-    }, [box]);
-
     return {
         tableDict,
         setTableDict,
@@ -103,5 +86,7 @@ export default function useGraphState({ defaultTables, defaultLinks }) {
         setLinkDict,
         box,
         setBox,
+        name,
+        setName,
     };
 }

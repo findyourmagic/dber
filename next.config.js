@@ -1,4 +1,4 @@
 module.exports = {
-  reactStrictMode: true,
-  poweredByHeader: false,
+    reactStrictMode: true,
+    poweredByHeader: false,
 };
