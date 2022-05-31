@@ -1,0 +1,681 @@
+{
+    "id": "4f8f68d1-7cf0-4272-8322-48d094462d52",
+    "tableDict": {
+        "cbe50657-f14b-4dde-986d-e9f7f490148b": {
+            "id": "cbe50657-f14b-4dde-986d-e9f7f490148b",
+            "name": "products",
+            "x": 314.211883544922,
+            "y": 164.81567382812523,
+            "fields": [
+                {
+                    "id": "bf7d0dcc-c74c-4c48-aa6c-cdddd180b50b",
+                    "name": "id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": "",
+                    "pk": "on",
+                    "increment": "on"
+                },
+                {
+                    "id": "97ee07cd-b492-477a-b242-d52069b3126b",
+                    "name": "name",
+                    "type": "VARCHAR",
+                    "note": "",
+                    "dbdefault": "",
+                    "not_null": "on"
+                },
+                {
+                    "id": "fbf4c7a1-a1d2-448a-8f8c-817ca13a6e0f",
+                    "name": "supplier_id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "03f73218-9d4d-4dc3-b8cc-7a2e27110556",
+                    "name": "quantity_per_unit",
+                    "type": "VARCHAR(20)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "e7e15ce8-7553-4e56-acd5-acf1f7bb0cb4",
+                    "name": "unit_price",
+                    "type": "BIGINT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "2624b8c7-cde7-4d82-b7d2-b1fe36f351e1",
+                    "name": "units_in_stock",
+                    "type": "SMALLINT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "ccaa89b9-2348-4f8d-80a2-34b58b11a26f",
+                    "name": "units_on_order",
+                    "type": "SMALLINT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "96b5edae-2619-4bd6-b7c8-68bcbef918d4",
+                    "name": "recorder_level",
+                    "type": "SMALLINT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "44da19c2-d662-4a02-81e5-256abd394c28",
+                    "name": "discontinued",
+                    "type": "BOOLEAN",
+                    "note": "",
+                    "dbdefault": ""
+                }
+            ]
+        },
+        "dda1cbc2-bd16-4017-90e1-9f12f2ded1fd": {
+            "id": "dda1cbc2-bd16-4017-90e1-9f12f2ded1fd",
+            "name": "order_details",
+            "x": 598.5805053710939,
+            "y": 165.18432617187523,
+            "fields": [
+                {
+                    "id": "1d63a5d0-49cc-41f8-a12c-34eb187ad586",
+                    "name": "order_id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": "",
+                    "pk": "on"
+                },
+                {
+                    "id": "d59d00fb-32cf-4065-9b4c-42c6bf134f56",
+                    "name": "product_id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": "",
+                    "pk": "on"
+                },
+                {
+                    "id": "e37e9993-3f39-4904-8dd4-5199a29b17c1",
+                    "name": "unit_price",
+                    "type": "BIGINT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "b426fe3f-f1f0-4901-89cb-db3d44956113",
+                    "name": "quantity",
+                    "type": "SMALLINT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "9d45a81e-ca5b-4123-8125-f8cc131cfdd8",
+                    "name": "discount",
+                    "type": "FLOAT",
+                    "note": "",
+                    "dbdefault": ""
+                }
+            ]
+        },
+        "2f697744-feb5-4ca9-8ba7-1657992dbead": {
+            "id": "2f697744-feb5-4ca9-8ba7-1657992dbead",
+            "name": "suppliers",
+            "x": 20.94491577148449,
+            "y": 163.81567382812523,
+            "fields": [
+                {
+                    "id": "946bc166-8025-435d-8012-80a84111cee1",
+                    "name": "id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": "",
+                    "pk": "on",
+                    "increment": "on"
+                },
+                {
+                    "id": "324f123d-5f9e-414f-998a-fdbd194dc8a6",
+                    "name": "company_name",
+                    "type": "VARCHAR(40)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "77d4d7e2-ee12-46b8-803e-bbf3f39f454e",
+                    "name": "contact_name",
+                    "type": "VARCHAR(30)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "4e48454a-16ed-4bfa-b77f-12610730521f",
+                    "name": "contact_title",
+                    "type": "VARCHAR(30)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "b3e46869-c2d2-46a0-9cbd-915c947499b1",
+                    "name": "address",
+                    "type": "VARCHAR(60)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "4824a732-3ec3-4c9e-9030-500b1d7e1c13",
+                    "name": "city",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "e51093a8-57ab-40e3-8515-15fc0b7504ef",
+                    "name": "region",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "6c804951-483f-4cb7-aeaa-d9bb35a008ab",
+                    "name": "postal_code",
+                    "type": "VARCHAR(10)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "b33f57c2-6a14-4453-a0f5-6f522d539d9a",
+                    "name": "country",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "a598c630-4ed7-42c0-92e9-8b0231d64047",
+                    "name": "phone",
+                    "type": "VARCHAR(24)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "5d0d3a15-57d1-4a17-be6d-4d92f5a243d7",
+                    "name": "fax",
+                    "type": "VARCHAR(24)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "fb3291b3-326b-4c1b-8cbc-7b787393bda0",
+                    "name": "homepage",
+                    "type": "TEXT",
+                    "note": "",
+                    "dbdefault": ""
+                }
+            ]
+        },
+        "657f846f-f95d-4a76-915d-a4c3ee9328c8": {
+            "id": "657f846f-f95d-4a76-915d-a4c3ee9328c8",
+            "name": "orders",
+            "x": 903.7139892578126,
+            "y": 165.8156890869143,
+            "fields": [
+                {
+                    "id": "c254e2aa-e28e-4c18-802e-fc52c3507003",
+                    "name": "id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": "",
+                    "pk": "on",
+                    "increment": "on"
+                },
+                {
+                    "id": "a6fdfdf6-3e66-45d4-9bdd-ed3af957d11c",
+                    "name": "customer_id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "3c85993c-7fde-442c-ad1a-e51310234946",
+                    "name": "employee_id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "63799088-5bd5-45b2-b956-d57f1c32e301",
+                    "name": "order_date",
+                    "type": "DATE",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "b2a6b844-8f13-4245-9a55-1e576f369dd0",
+                    "name": "required_date",
+                    "type": "DATE",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "781a42d6-34ba-485d-b670-76f5a88c099d",
+                    "name": "shipped_date",
+                    "type": "DATE",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "610c8b04-aa80-4f8b-a0ec-6d45ba073742",
+                    "name": "ship_via",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "e3af8fc9-d29f-42ca-86d6-cb5a736b4efb",
+                    "name": "freight",
+                    "type": "BIGINT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "775da150-68cc-4bcf-acb8-c63a4d301384",
+                    "name": "ship_name",
+                    "type": "VARCHAR(40)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "4255c20f-8abc-4807-843e-79b39c2ebf93",
+                    "name": "ship_address",
+                    "type": "VARCHAR(60)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "abeed9f3-2a8e-4edb-a93e-84e9d6f0e3d3",
+                    "name": "ship_city",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "c02c2276-50e8-43fe-a172-19ee2d97ffeb",
+                    "name": "ship_region",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "ea06fca8-7cfc-47a1-8e39-e72d3661cedb",
+                    "name": "ship_postal_code",
+                    "type": "VARCHAR(10)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "5a17396d-0842-46bb-904b-3eab7f69d73c",
+                    "name": "ship_country",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                }
+            ]
+        },
+        "06b7531d-ffd4-4a5a-b06c-2b0c07ed0d64": {
+            "id": "06b7531d-ffd4-4a5a-b06c-2b0c07ed0d64",
+            "name": "employees",
+            "x": 602.0635375976562,
+            "y": 415.27334594726585,
+            "fields": [
+                {
+                    "id": "97790223-20e1-4fc4-826c-533ec186ce9b",
+                    "name": "id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": "",
+                    "pk": "on",
+                    "increment": "on"
+                },
+                {
+                    "id": "56cf5fae-6b9f-4297-8171-17b80b14ecca",
+                    "name": "last_name",
+                    "type": "VARCHAR(20)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "0a9ccafd-f889-455e-adce-84e31edcc195",
+                    "name": "first_name",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "4a5f3af8-ef00-4aa4-baf8-18be40b1aa4b",
+                    "name": "title",
+                    "type": "VARCHAR(30)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "20b09cd5-cbb6-495a-bfb1-73c9db721eb3",
+                    "name": "title_of_courtesy",
+                    "type": "VARCHAR(25)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "47cfa892-549b-41d9-a6d1-d0a6f5234087",
+                    "name": "birth_date",
+                    "type": "DATE",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "ac069666-da54-4405-9b0c-370193c0307a",
+                    "name": "hire_date",
+                    "type": "DATE",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "6050e0a0-288e-4e73-93a4-601dd97f2a76",
+                    "name": "address",
+                    "type": "VARCHAR(60)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "7731938b-42a3-4fc0-9a9d-1ef1a92242dc",
+                    "name": "city",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "735c501f-e6e5-4a66-8507-f47e257207ba",
+                    "name": "region",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "5f1f586d-93f5-423d-9333-5b139072e82c",
+                    "name": "postal_code",
+                    "type": "VARCHAR(10)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "45949ad7-f0aa-413b-9aa8-ebcb4e20faae",
+                    "name": "country",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "c7d970e3-a93b-41b3-9f0e-1084405c6692",
+                    "name": "home_phone",
+                    "type": "VARCHAR(24)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "b3526b5f-ec03-4e30-b05a-d5247227bbe7",
+                    "name": "extension",
+                    "type": "VARCHAR(4)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "4159e511-23c2-4848-ad9d-4777129e0aee",
+                    "name": "photo",
+                    "type": "TEXT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "d75141e8-2d20-4b1c-974b-6e766b1d18f9",
+                    "name": "notes",
+                    "type": "TEXT",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "38a1fb55-f55b-4d9c-9216-4afece3c4691",
+                    "name": "reports_to",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": ""
+                }
+            ]
+        },
+        "820e6ea5-c41b-441c-b9b6-87b9b707f6bc": {
+            "id": "820e6ea5-c41b-441c-b9b6-87b9b707f6bc",
+            "name": "customers",
+            "x": 1210.930071726376,
+            "y": 164.4661187640694,
+            "fields": [
+                {
+                    "id": "83cea2b0-703c-4842-928c-037e4962091f",
+                    "name": "id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": "",
+                    "pk": "on",
+                    "increment": "on"
+                },
+                {
+                    "id": "a5c3c1f5-79a4-4d03-97da-4c264c90b8cd",
+                    "name": "company_name",
+                    "type": "VARCHAR(40)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "7dbee685-8260-41aa-94ac-744f91ac29eb",
+                    "name": "contact_name",
+                    "type": "VARCHAR(30)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "3cb85b5a-bd3b-44be-98d2-dd751574b1be",
+                    "name": "contact_title",
+                    "type": "VARCHAR(30)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "2df85f95-b54a-4471-a0d8-a4d9dd34f2ed",
+                    "name": "address",
+                    "type": "VARCHAR(60)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "94ab4a23-61ef-41b1-8324-0b96eb71a424",
+                    "name": "city",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "4fbc7300-d4ba-4e1a-b5c3-107b44b9e336",
+                    "name": "region",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "af41ea00-e6a7-43a7-8212-2cc49ea846fe",
+                    "name": "postal_code",
+                    "type": "VARCHAR(10)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "d49fc11b-7a79-4ff9-af47-1fdf6c047f5f",
+                    "name": "country",
+                    "type": "VARCHAR(15)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "a5897c12-d581-4cda-b8f4-b886fdb15f7e",
+                    "name": "phone",
+                    "type": "VARCHAR(24)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "0f03d726-b1ee-47ff-9774-f7e088995650",
+                    "name": "fax",
+                    "type": "VARCHAR(24)",
+                    "note": "",
+                    "dbdefault": ""
+                }
+            ]
+        },
+        "18a6b99f-3364-46c3-92cf-084ab55b99d0": {
+            "id": "18a6b99f-3364-46c3-92cf-084ab55b99d0",
+            "name": "shippers",
+            "x": 1210.7965402529248,
+            "y": 600.1631438691738,
+            "fields": [
+                {
+                    "id": "18a90730-d730-4f62-8089-66b77dd45537",
+                    "name": "id",
+                    "type": "INTEGER",
+                    "note": "",
+                    "dbdefault": "",
+                    "pk": "on",
+                    "increment": "on"
+                },
+                {
+                    "id": "1b4f4ef8-9895-4867-8234-375c6fa0dffc",
+                    "name": "company_name",
+                    "type": "VARCHAR(40)",
+                    "note": "",
+                    "dbdefault": ""
+                },
+                {
+                    "id": "0191652d-bc4c-4d59-8498-123f26a4b728",
+                    "name": "phone",
+                    "type": "VARCHAR(24)",
+                    "note": "",
+                    "dbdefault": ""
+                }
+            ]
+        }
+    },
+    "linkDict": {
+        "3d2b8333-2a81-400f-8bb2-392d851c4d11": {
+            "id": "3d2b8333-2a81-400f-8bb2-392d851c4d11",
+            "name": null,
+            "endpoints": [
+                {
+                    "id": "2f697744-feb5-4ca9-8ba7-1657992dbead",
+                    "fieldId": "946bc166-8025-435d-8012-80a84111cee1",
+                    "relation": "1"
+                },
+                {
+                    "id": "cbe50657-f14b-4dde-986d-e9f7f490148b",
+                    "fieldId": "fbf4c7a1-a1d2-448a-8f8c-817ca13a6e0f",
+                    "relation": "*"
+                }
+            ]
+        },
+        "f3e5017a-1456-4a0c-8ebe-93d1cde71a9b": {
+            "id": "f3e5017a-1456-4a0c-8ebe-93d1cde71a9b",
+            "name": null,
+            "endpoints": [
+                {
+                    "id": "cbe50657-f14b-4dde-986d-e9f7f490148b",
+                    "fieldId": "bf7d0dcc-c74c-4c48-aa6c-cdddd180b50b",
+                    "relation": "1"
+                },
+                {
+                    "id": "dda1cbc2-bd16-4017-90e1-9f12f2ded1fd",
+                    "fieldId": "d59d00fb-32cf-4065-9b4c-42c6bf134f56",
+                    "relation": "*"
+                }
+            ]
+        },
+        "2c4e4840-5a08-4535-8f03-f41ea2e085e9": {
+            "id": "2c4e4840-5a08-4535-8f03-f41ea2e085e9",
+            "name": null,
+            "endpoints": [
+                {
+                    "id": "657f846f-f95d-4a76-915d-a4c3ee9328c8",
+                    "fieldId": "c254e2aa-e28e-4c18-802e-fc52c3507003",
+                    "relation": "1"
+                },
+                {
+                    "id": "dda1cbc2-bd16-4017-90e1-9f12f2ded1fd",
+                    "fieldId": "1d63a5d0-49cc-41f8-a12c-34eb187ad586",
+                    "relation": "*"
+                }
+            ]
+        },
+        "88fa58b9-ef51-4f87-8076-c8b8c5646ec8": {
+            "id": "88fa58b9-ef51-4f87-8076-c8b8c5646ec8",
+            "name": null,
+            "endpoints": [
+                {
+                    "id": "06b7531d-ffd4-4a5a-b06c-2b0c07ed0d64",
+                    "fieldId": "97790223-20e1-4fc4-826c-533ec186ce9b",
+                    "relation": "1"
+                },
+                {
+                    "id": "657f846f-f95d-4a76-915d-a4c3ee9328c8",
+                    "fieldId": "3c85993c-7fde-442c-ad1a-e51310234946",
+                    "relation": "*"
+                }
+            ]
+        },
+        "891e3ebc-ca75-4346-91cd-f127b1953b11": {
+            "id": "891e3ebc-ca75-4346-91cd-f127b1953b11",
+            "name": null,
+            "endpoints": [
+                {
+                    "id": "820e6ea5-c41b-441c-b9b6-87b9b707f6bc",
+                    "fieldId": "83cea2b0-703c-4842-928c-037e4962091f",
+                    "relation": "1"
+                },
+                {
+                    "id": "657f846f-f95d-4a76-915d-a4c3ee9328c8",
+                    "fieldId": "a6fdfdf6-3e66-45d4-9bdd-ed3af957d11c",
+                    "relation": "*"
+                }
+            ]
+        },
+        "a80bf0d0-869e-460c-917d-50a183494f80": {
+            "id": "a80bf0d0-869e-460c-917d-50a183494f80",
+            "name": null,
+            "endpoints": [
+                {
+                    "id": "18a6b99f-3364-46c3-92cf-084ab55b99d0",
+                    "fieldId": "18a90730-d730-4f62-8089-66b77dd45537",
+                    "relation": "1"
+                },
+                {
+                    "id": "657f846f-f95d-4a76-915d-a4c3ee9328c8",
+                    "fieldId": "610c8b04-aa80-4f8b-a0ec-6d45ba073742",
+                    "relation": "*"
+                }
+            ]
+        }
+    },
+    "box": {
+        "w": 2082.71186440678,
+        "h": 1024.0000000000005,
+        "x": -20.311441805601135,
+        "y": 33.800845370132436,
+        "clientH": 944,
+        "clientW": 1920
+    },
+    "name": "NorthWind Traders",
+    "updatedAt": 1654003144916
+}
