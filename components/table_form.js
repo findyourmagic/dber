@@ -70,22 +70,22 @@ function TalbeFormItem(props, ref) {
                 />
                 <Space direction="vertical">
                     <Space>
-                        <label>Name:</label>
+                        <label className="table-form-label">Name:</label>
                         <Input
                             type="text"
                             name="name"
                             defaultValue={props.field.name || ''}
                         />
-                        <label>Type:</label>
+                        <label className="table-form-label">Type:</label>
                         <SelectInput
                             defaultValue={props.field.type || ''}
-                            style={{ width: 120 }}
                             options={fieldTypes}
+                            width={150}
                             name="type"
                         ></SelectInput>
                     </Space>
                     <Space>
-                        <label>Note:</label>
+                        <label className="table-form-label">Note:</label>
 
                         <Input
                             type="text"
@@ -93,8 +93,7 @@ function TalbeFormItem(props, ref) {
                             placeholder="note"
                             defaultValue={props.field.note || ''}
                         />
-                        <label>Default:</label>
-
+                        <label className="table-form-label">Default:</label>
                         <Input
                             type="text"
                             name="dbdefault"

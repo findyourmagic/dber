@@ -382,7 +382,7 @@ export default function Home() {
             </svg>
 
             <Drawer
-                width={420}
+                width={500}
                 title="Edit Table"
                 visible={editingTable}
                 okText="Commit"

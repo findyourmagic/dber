@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Select } from '@arco-design/web-react';
 const Option = Select.Option;
 
-export default function SelectInput({ name, options, defaultValue }) {
+export default function SelectInput({ name, options, defaultValue, width }) {
     const [value, setValue] = useState(defaultValue);
 
     const handleChange = value => {
@@ -15,7 +15,7 @@ export default function SelectInput({ name, options, defaultValue }) {
             <Select
                 value={value}
                 onChange={handleChange}
-                style={{ width: 138 }}
+                style={{ width }}
                 allowCreate
             >
                 {options.map(item => (
