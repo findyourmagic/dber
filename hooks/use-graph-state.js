@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Modal, Notification } from '@arco-design/web-react';
 import { db } from '../data/db';
 
 export default function useGraphState() {
@@ -17,6 +18,30 @@ export default function useGraphState() {
     });
 
     const [id, setId] = useState(null);
+    const [inited, setInited] = useState(false);
+    const loadGraph = graph => {
+        if (graph.tableDict) setTableDict(graph.tableDict);
+        if (graph.linkDict) setLinkDict(graph.linkDict);
+        if (graph.box) {
+            const { x, y, w, h, clientH, clientW } = graph.box;
+            setBox({
+                x,
+                y,
+                w:
+                    w && clientW
+                        ? w * (global.innerWidth / clientW)
+                        : global.innerWidth,
+                h:
+                    h && clientH
+                        ? h * (global.innerHeight / clientH)
+                        : global.innerHeight,
+                clientW: global.innerWidth,
+                clientH: global.innerHeight,
+            });
+        }
+        if (graph.name) setName(graph.name);
+    };
+
     useEffect(() => {
         setId(new URLSearchParams(global.location.search).get('id'));
     }, []);
@@ -25,33 +50,47 @@ export default function useGraphState() {
         if (!id) return;
         const initGraph = async () => {
             const graph = await db.graphs.get(id);
-            if (graph) {
-                if (graph.tableDict) setTableDict(graph.tableDict);
-                if (graph.linkDict) setLinkDict(graph.linkDict);
-                if (graph.box) {
-                    const { x, y, w, h, clientH, clientW } = graph.box;
-                    setBox({
-                        x,
-                        y,
-                        w:
-                            w && clientW
-                                ? w * (global.innerWidth / clientW)
-                                : global.innerWidth,
-                        h:
-                            h && clientH
-                                ? h * (global.innerHeight / clientH)
-                                : global.innerHeight,
-                        clientW: global.innerWidth,
-                        clientH: global.innerHeight,
-                    });
-                }
-                if (graph.name) setName(graph.name);
+            const storageGraph = JSON.parse(window.localStorage.getItem(id));
+            if (graph?.updatedAt < storageGraph?.updatedAt) {
+                Modal.confirm({
+                    title: 'Unsaved changes',
+                    content:
+                        'You have some unsaved changes after last version, do you want to restore them? Once you press the no button, the unsaved changes will be cleaned immediately. You can’t undo this action.',
+                    cancelButtonProps: { status: 'danger' },
+                    okText: 'Yes, restore them',
+                    cancelText: 'No, ignore them',
+                    onOk: () => {
+                        loadGraph(storageGraph);
+                    },
+                    onCancel: () => {
+                        loadGraph(graph);
+                        window.localStorage.removeItem(id);
+                    },
+                });
+            } else if (graph) {
+                loadGraph(graph);
             } else {
                 resizeHandler();
             }
+            setInited(true);
         };
         initGraph();
     }, [id]);
+
+    useEffect(() => {
+        if (!id || !inited) return;
+        window.localStorage.setItem(
+            id,
+            JSON.stringify({
+                id,
+                tableDict,
+                linkDict,
+                box,
+                name,
+                updatedAt: new Date().valueOf(),
+            })
+        );
+    }, [id, inited, box, linkDict, tableDict, name]);
 
     const resizeHandler = useCallback(() => {
         setBox(state => {
