@@ -1,26 +1,35 @@
 import { Modal, Notification, Input } from '@arco-design/web-react';
+import { Parser } from '@dbml/core';
+import { useState } from 'react';
 
 export function ImportModal({ importType, setImportType, addGraph }) {
-    const copy = async () => {
+    const [value, setValue] = useState('');
+
+    const handleOk = async () => {
+        if (!value) return;
         try {
-            await window.navigator.clipboard.writeText(command);
-            Notification.success({
-                title: 'Copy Success',
-            });
+            const graph = await Parser.parse(value, importType.toLowerCase());
+            console.log(graph);
+            // addGraph(graph);
+            setValue('');
+            setImportType('');
         } catch (e) {
             console.log(e);
             Notification.error({
-                title: 'Copy Failed',
+                title: 'Parse failed',
             });
         }
     };
+
     return (
         <Modal
             title={null}
             simple
             visible={importType}
             autoFocus={false}
-            onOk={() => {}}
+            onOk={() => {
+                handleOk();
+            }}
             okText="Import"
             cancelText="Close"
             onCancel={() => setImportType('')}
@@ -29,6 +38,7 @@ export function ImportModal({ importType, setImportType, addGraph }) {
             <Input.TextArea
                 placeholder={`Paste your ${importType} content here.`}
                 style={{ height: '400px', width: '500px' }}
+                onChange={e => setValue(e)}
             />
         </Modal>
     );
