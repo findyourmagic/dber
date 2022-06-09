@@ -1,7 +1,9 @@
-import { Space, Button } from '@arco-design/web-react';
+import { Space, Button, Dropdown, Menu } from '@arco-design/web-react';
 import Link from 'next/link';
-
+import { useState } from 'react';
+import { ImportModal } from './import_modal';
 export default function ListNav(props) {
+    const [importType, setImportType] = useState('');
     return (
         <div className="nav">
             <div>
@@ -13,10 +15,59 @@ export default function ListNav(props) {
                 </Link>
             </div>
             <Space>
-                <Button type="primary" onClick={props.addGraph}>
+                <Dropdown
+                    droplist={
+                        <Menu>
+                            <Menu.Item
+                                onClick={() => {
+                                    setImportType('DBML');
+                                }}
+                            >
+                                DBML
+                            </Menu.Item>
+                            <Menu.Item
+                                onClick={() => {
+                                    setImportType('PostgreSQL');
+                                }}
+                            >
+                                PostgreSQL
+                            </Menu.Item>
+                            <Menu.Item
+                                onClick={() => {
+                                    setImportType('MySQL');
+                                }}
+                            >
+                                MySQL
+                            </Menu.Item>
+                            <Menu.Item
+                                onClick={() => {
+                                    setImportType('MSSQL');
+                                }}
+                            >
+                                MSSQL
+                            </Menu.Item>
+                        </Menu>
+                    }
+                    position="br"
+                >
+                    <Button type="outline" shape="round" size="mini">
+                        import
+                    </Button>
+                </Dropdown>
+                <Button
+                    type="primary"
+                    shape="round"
+                    size="mini"
+                    onClick={props.addGraph}
+                >
                     + New graph
                 </Button>
             </Space>
+            <ImportModal
+                addGraph={props.addGraph}
+                importType={importType}
+                setImportType={setImportType}
+            ></ImportModal>
         </div>
     );
 }

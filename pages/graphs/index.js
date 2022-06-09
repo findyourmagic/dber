@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 import { db } from '../../data/db';
 import ListNav from '../../components/list_nav';
 
-const addGraph = async () => {
+const addGraph = async (graph = {}) => {
     const id = global.crypto.randomUUID();
     const now = new Date().valueOf();
     await db.graphs.add({
@@ -28,6 +28,7 @@ const addGraph = async () => {
         },
         createdAt: now,
         updatedAt: now,
+        ...graph,
     });
     global.location.href = `/graphs/detail?id=${id}`;
 };

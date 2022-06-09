@@ -8,7 +8,7 @@ const exportSQL = (tableDict, linkDict, databaseType = 'postgres') => {
             return {
                 name: table.name,
                 note: table.note,
-                fields: Object.values(table.fields).map(field => {
+                fields: table.fields.map(field => {
                     return {
                         ...field,
                         type: {
@@ -29,10 +29,7 @@ const exportSQL = (tableDict, linkDict, databaseType = 'postgres') => {
                         ...endpoint,
                         tableName: tableDict[endpoint.id].name,
                         fieldNames: [
-                            tableDict[endpoint.id].fields.find(field => {
-                                if (field.id == endpoint.fieldId) return true;
-                                return false;
-                            }).name,
+                            tableDict[endpoint.id].fields.find(field => field.id == endpoint.fieldId).name,
                         ],
                     };
                 }),
