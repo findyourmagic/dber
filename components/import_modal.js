@@ -3,6 +3,9 @@ import { Parser } from '@dbml/core';
 import { useState } from 'react';
 import { db } from '../data/db';
 
+/**
+ * It saves a graph to the database.
+ */
 const save = async ({
     id,
     tableDict,
@@ -29,6 +32,10 @@ const save = async ({
     }
 };
 
+/**
+ * It's a modal that allows you to import a graph from a string
+ * @returns Modal component
+ */
 export function ImportModal({ importType, setImportType, addGraph }) {
     const [value, setValue] = useState('');
 

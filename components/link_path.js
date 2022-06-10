@@ -4,6 +4,18 @@ const gripWidth = 10;
 const gripRadius = gripWidth / 2;
 const margin = 3;
 
+/**
+ * It takes a link object and returns a path element that connects the two tables
+ * @param props - The props object that is passed to the component.
+ * {
+ *      link,
+ *      tableDict,
+ *      linkDict,
+ *      TableWidth,
+ *      setEditingLink,
+ *  }
+ * @returns A svg path is being returned.
+ */
 export default function LinkPath(props) {
     const {
         link,

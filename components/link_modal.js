@@ -1,5 +1,10 @@
 import { Modal, Button, Space, Popconfirm } from '@arco-design/web-react';
 
+/**
+ * It renders a modal that allows the user to change the relation of a link or delete the link
+ * @param props - { editingLink, setEditingLink, setLinkDict }
+ * @returns  Modal component
+ */
 export default function LinkModal(props) {
     const { editingLink, setEditingLink, setLinkDict } = props;
     const changeRelation = relation => {

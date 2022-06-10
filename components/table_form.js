@@ -4,7 +4,18 @@ import classNames from 'classnames';
 import SelectInput from './select_input';
 import fieldTypes from '../data/filed_typs';
 
+/**
+ * It takes the current fields array, checks if the current index is less than the length of the array,
+ * and if so, swaps the current index with the next index
+ * @param props - The props passed to the component
+ * @param ref - This is a reference to the form element.
+ * @returns A React component
+ */
 function TalbeFormItem(props, ref) {
+    /**
+     * If the index of the current field is greater than 0, then swap the current field with the field
+     * above it
+     */
     const moveUp = () => {
         props.setFields(fields => {
             if (props.index > 0) {
@@ -19,6 +30,10 @@ function TalbeFormItem(props, ref) {
         });
     };
 
+    /**
+     * It takes the current fields array, checks if the current index is less than the length of the
+     * array, and if so, swaps the current index with the next index
+     */
     const moveDown = () => {
         props.setFields(fields => {
             if (props.index < fields.length - 1) {
@@ -165,8 +180,14 @@ function TalbeFormItem(props, ref) {
     );
 }
 
+/* A forwardRef function that is used to forward the ref to the child component. */
 const TalbeRefFormItem = forwardRef(TalbeFormItem);
 
+/**
+ * It renders a form for editing a table
+ * @param props - The props passed to the component.
+ * @returns A TableForm component
+ */
 export default function TalbeForm(props) {
     const [fields, setFields] = useState(props.table.fields);
     const [name, setName] = useState(props.table.name);

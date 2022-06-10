@@ -1,4 +1,10 @@
 import { Button } from '@arco-design/web-react';
+
+/**
+ * It renders a table with a title, a list of fields, and a button to edit the table
+ * @param props - {
+ * @returns A table component with a title and a list of fields.
+ */
 export default function Table(props) {
     const {
         table,

@@ -2,6 +2,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { Modal, Notification } from '@arco-design/web-react';
 import { db } from '../data/db';
 
+/**
+ * It returns a state object that contains the graph data, and a set of functions to update the graph
+ * data
+ * @returns An object with the following properties:
+ * {
+ *  tableDict,
+ *  setTableDict,
+ *  linkDict,
+ *  setLinkDict,
+ *  box,
+ *  setBox,
+ *  name,
+ *  setName,
+ *  }
+ */
 export default function useGraphState() {
     const [tableDict, setTableDict] = useState({});
     const [linkDict, setLinkDict] = useState({});
@@ -19,6 +34,10 @@ export default function useGraphState() {
 
     const [id, setId] = useState(null);
     const [inited, setInited] = useState(false);
+
+    /**
+     * It takes a graph object and sets the state of the app to match the graph object
+     */
     const loadGraph = graph => {
         if (graph.tableDict) setTableDict(graph.tableDict);
         if (graph.linkDict) setLinkDict(graph.linkDict);
@@ -48,6 +67,12 @@ export default function useGraphState() {
 
     useEffect(() => {
         if (!id) return;
+
+        /**
+         * > If the graph is in the local storage, and the graph in the local storage is newer than the
+         * graph in the database, then ask the user if they want to load the graph from the local
+         * storage
+         */
         const initGraph = async () => {
             const graph = await db.graphs.get(id);
             const storageGraph = JSON.parse(window.localStorage.getItem(id));
@@ -92,6 +117,7 @@ export default function useGraphState() {
         );
     }, [id, inited, box, linkDict, tableDict, name]);
 
+    /* A callback function that is used to update the viewbox of the svg. */
     const resizeHandler = useCallback(() => {
         setBox(state => {
             return {

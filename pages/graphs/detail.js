@@ -41,7 +41,9 @@ export default function Home() {
         y: 0,
     });
 
-    // compute the distance from the pointer to svg origin when mousedown
+    /**
+     * It sets the offset to the mouse position relative to the box, and sets the mode to 'draging'
+     */
     const mouseDownHanlder = e => {
         if (e.target.tagName == 'svg') {
             setOffset({
@@ -52,6 +54,11 @@ export default function Home() {
         }
     };
 
+    /**
+     * It sets the moving table to the table that was clicked on, and sets the mode to moving
+     * @param e - the event object
+     * @param table - the table object that was clicked on
+     */
     const tableMouseDownHanlder = (e, table) => {
         const { x: cursorX, y: cursorY } = getSVGCursor(e);
 
@@ -66,6 +73,10 @@ export default function Home() {
         e.stopPropagation();
     };
 
+    /**
+     * When the user releases the mouse button, if the user was in linking mode, and the user is not
+     * linking the same table to itself, then add a new link to the link dictionary
+     */
     const mouseUpHanlder = e => {
         if (mode == 'linking') {
             const row = e.target.classList.contains('row')
@@ -134,6 +145,10 @@ export default function Home() {
         setMovingTable(null);
     };
 
+    /**
+     * It takes a mouse event and returns the cursor position in SVG coordinates
+     * @returns The cursor position in the SVG coordinate system.
+     */
     const getSVGCursor = ({ clientX, clientY }) => {
         let point = svg.current.createSVGPoint();
         point.x = clientX;
@@ -145,6 +160,12 @@ export default function Home() {
         return cursor;
     };
 
+    /**
+     * > When the mouse is moving, if the mode is 'draging', then update the box state with the new x
+     * and y values. If the mode is 'moving', then update the tableDict state with the new x and y
+     * values. If the mode is 'linking', then update the linkStat state with the new endX and endY
+     * values
+     */
     const mouseMoveHanlder = e => {
         if (!mode) return;
         if (mode == 'draging') {
@@ -185,6 +206,10 @@ export default function Home() {
         }
     };
 
+    /**
+     * `wheelHandler` is a function that takes an event object as an argument and returns a function
+     * that takes a state object as an argument and returns a new state object
+     */
     const wheelHandler = e => {
         const { deltaY } = e;
         setBox(state => {
@@ -206,6 +231,9 @@ export default function Home() {
         });
     };
 
+    /**
+     * It creates a new table object and adds it to the table dictionary
+     */
     const addTable = () => {
         setTableDict(state => {
             const id = window.crypto.randomUUID();
@@ -230,6 +258,10 @@ export default function Home() {
         });
     };
 
+    /**
+     * It takes a table object, updates the tableDict state with the new table object, and then sets
+     * the editingTable state to null
+     */
     const updateTable = table => {
         if (table) {
             setTableDict(state => {
@@ -245,6 +277,9 @@ export default function Home() {
         setEditingTable(null);
     };
 
+    /**
+     * It removes a table from the table dictionary, and removes any links that are connected to that table
+     */
     const removeTable = tableId => {
         setTableDict(state => {
             const newState = { ...state };
@@ -269,6 +304,9 @@ export default function Home() {
         setEditingTable(null);
     };
 
+    /**
+     * It sets the editing table to the table that was clicked.
+     */
     const tableClickHandler = table => {
         setEditingTable(table);
     };
@@ -282,6 +320,10 @@ export default function Home() {
         endY: null,
     });
 
+    /**
+     * It sets the linkStat object to the current mouse position and the table and field that the mouse
+     * is over
+     */
     const gripMouseDownHandler = e => {
         const { x, y } = getSVGCursor(e);
         const row = e.currentTarget.closest('.row');

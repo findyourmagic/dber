@@ -12,6 +12,10 @@ import { useState, useEffect } from 'react';
 import { db } from '../../data/db';
 import ListNav from '../../components/list_nav';
 
+/**
+ * It adds a new graph to the database
+ * @param [graph] - The graph object to be added.
+ */
 const addGraph = async (graph = {}) => {
     const id = global.crypto.randomUUID();
     const now = new Date().valueOf();
@@ -33,6 +37,10 @@ const addGraph = async (graph = {}) => {
     global.location.href = `/graphs/detail?id=${id}`;
 };
 
+/**
+ * It fetches all the graphs from the database and displays them in a list
+ * @returns Home component
+ */
 export default function Home() {
     const [graphs, setGraphs] = useState([]);
 

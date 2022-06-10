@@ -11,6 +11,12 @@ import Link from 'next/link';
 import exportSQL from '../utils/export-sql';
 import { db } from '../data/db';
 
+/**
+ * It renders a nav bar with a title, a save button, a demo button, a clear button, an export button,
+ * and a name input
+ * @param props - the props passed to the component
+ * @returns A Nav component that takes in a title, a save button, a demo button, a clear button, an export button
+ */
 export default function Nav(props) {
     const save = async () => {
         const id = new URLSearchParams(global.location.search).get('id');

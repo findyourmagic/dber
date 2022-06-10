@@ -1,5 +1,10 @@
 import { Modal, Notification } from '@arco-design/web-react';
 
+/**
+ * It's a modal that displays the command to be exported
+ * @returns Modal component
+ */
+
 export function ExportModal({ command, setCommand }) {
     const copy = async () => {
         try {

@@ -2,6 +2,13 @@ import { Space, Button, Dropdown, Menu } from '@arco-design/web-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ImportModal } from './import_modal';
+
+/**
+ * It renders a nav bar with a link to the home page, a button to add a new graph, and a dropdown menu
+ * with a list of import options
+ * @param props - the props passed to the component
+ * @returns List Nav component
+ */
 export default function ListNav(props) {
     const [importType, setImportType] = useState('');
     return (
