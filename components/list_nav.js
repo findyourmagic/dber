@@ -15,10 +15,10 @@ export default function ListNav(props) {
         <div className="nav">
             <div>
                 <Link href="/" passHref>
-                    <span>
+                    <a href="javascript:;">
                         <strong>DBER</strong> | Database design tool based on
                         entity relation diagram
-                    </span>
+                    </a>
                 </Link>
             </div>
             <Space>
