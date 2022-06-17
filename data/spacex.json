@@ -1,0 +1,727 @@
+{
+    "id": "b9028252-8734-43f4-89cd-39849286d8ec",
+    "tableDict": {
+        "f6c10829-2bf2-4b0b-8fd1-e7ac4e6e410b": {
+            "id": "f6c10829-2bf2-4b0b-8fd1-e7ac4e6e410b",
+            "name": "capsule",
+            "x": 20.31690216064453,
+            "y": 0.8118114471435547,
+            "fields": [
+                {
+                    "id": "e7543bc5-c4a3-49b0-af24-16acc1d879ca",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "1054bed8-41fd-4b96-8a3e-4839e86dc6ca",
+                    "name": "serial",
+                    "not_null": true,
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "06d79cb1-deb2-4ed0-9312-de4b9c559082",
+                    "name": "status",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "059a75d3-86de-470c-b3f1-e7c063c7bf68",
+                    "name": "dragon",
+                    "not_null": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "ad738fe6-d159-4a79-9cf3-1cb7a5761192",
+                    "name": "reuse_count",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "01eac2f3-b64c-47ab-bc73-77968ed4a105",
+                    "name": "water_landings",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "d6ecb02b-428e-4570-a6c3-bcf76d1d518a",
+                    "name": "land_landings",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "dba167c9-bcf2-4f91-9777-61988a2af61d",
+                    "name": "last_update",
+                    "type": "VARCHAR"
+                }
+            ]
+        },
+        "3457494b-06b0-42a9-9bde-8f1c0681b142": {
+            "id": "3457494b-06b0-42a9-9bde-8f1c0681b142",
+            "name": "core",
+            "x": -1.662811279296875,
+            "y": 339.60548400878906,
+            "fields": [
+                {
+                    "id": "faf303d2-7480-410d-9fd3-0c8ad05d26be",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "fd9d50f0-9437-4291-bfdc-b8766004b1b2",
+                    "name": "serial",
+                    "not_null": true,
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "86b88fe5-2cd6-4712-9e6b-daf0982be1f3",
+                    "name": "block",
+                    "type": "INT"
+                },
+                {
+                    "id": "26b827df-a08d-4465-bbdc-aae489578356",
+                    "name": "status",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "daf48a64-2e07-4bd5-8b88-05b2c5ca64d1",
+                    "name": "reuse_count",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "e1e0a5a9-f5fa-4051-81fc-dd0f430923eb",
+                    "name": "rtls_attempts",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "2e7cbee6-9bca-4030-b6c5-df2bf383554f",
+                    "name": "rtls_landings",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "05df570f-4445-4f33-be13-473911199e9b",
+                    "name": "asds_attempts",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "05ed7ef0-1386-49b7-a668-9b322c580212",
+                    "name": "asds_landings",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "63ab7caf-0fcd-4968-916d-cfa332c8e4a3",
+                    "name": "last_update",
+                    "type": "VARCHAR"
+                }
+            ]
+        },
+        "ed121af3-eb09-422b-b8fe-303dfb272e8b": {
+            "id": "ed121af3-eb09-422b-b8fe-303dfb272e8b",
+            "name": "crew",
+            "x": 69.77308654785156,
+            "y": -111.62432861328125,
+            "fields": [
+                {
+                    "id": "b21becca-41ef-49f5-87a9-3dff7411c249",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                }
+            ]
+        },
+        "87bfc39f-a135-46d7-bed7-bb5cc61b257c": {
+            "id": "87bfc39f-a135-46d7-bed7-bb5cc61b257c",
+            "name": "dragon",
+            "x": 312.1395263671875,
+            "y": 24.3756103515625,
+            "fields": [
+                {
+                    "id": "7f3ce63d-de09-4772-b211-17fa130089f6",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                }
+            ]
+        },
+        "2b62ff08-449c-4e1e-9927-5e4a10d801e5": {
+            "id": "2b62ff08-449c-4e1e-9927-5e4a10d801e5",
+            "name": "rocket",
+            "x": 316.95440673828125,
+            "y": 147.61802291870117,
+            "fields": [
+                {
+                    "id": "6cf338a8-fb39-480d-aacf-542ec6832e54",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                }
+            ]
+        },
+        "a7bdd7ef-eaf7-49ba-bff4-b879e7bfca53": {
+            "id": "a7bdd7ef-eaf7-49ba-bff4-b879e7bfca53",
+            "name": "landpad",
+            "x": 311.849609375,
+            "y": 284.5332221984863,
+            "fields": [
+                {
+                    "id": "a5dbfcf3-1064-4211-88f8-4516c47c6e3b",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "580e2cb6-e542-4ab1-bd74-0bcbd3c61030",
+                    "name": "name",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "e56d6f5d-2f74-4cc3-bb1c-7e2dae8a969b",
+                    "name": "full_name",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "f68f5834-e82e-470f-b0c5-d238659dbe00",
+                    "name": "status",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "74c76436-6055-425f-9b4b-30eea90d4e7e",
+                    "name": "type",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "9ac9a320-612b-4022-8039-109e3a3e9c73",
+                    "name": "locality",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "56c37522-9629-486b-b263-7fe89f413f8b",
+                    "name": "region",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "6e500fba-342c-4ebe-9fa6-eed2064a9643",
+                    "name": "latitude",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "9dfebee5-6e3f-4746-9f6c-2d39f089f881",
+                    "name": "longitude",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "966c7cfd-cafa-42b8-8107-9e78dbfc538b",
+                    "name": "attempted_landings",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "990a6c8f-d785-4c49-b44c-d58a1586612b",
+                    "name": "successful_landings",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "2919f5fb-a182-4a16-9564-0e4ffbd460db",
+                    "name": "details",
+                    "type": "VARCHAR"
+                }
+            ]
+        },
+        "66e6edb0-d45c-4f7e-b334-dec67b9186bb": {
+            "id": "66e6edb0-d45c-4f7e-b334-dec67b9186bb",
+            "name": "mission",
+            "x": 395.776611328125,
+            "y": -154.20775604248047,
+            "fields": [
+                {
+                    "id": "80d8e79f-da24-4164-b58b-bea4b8ef9645",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "21800b1d-de72-43d7-b2fc-6e1fa7799e82",
+                    "name": "name",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "c2cee9bb-c273-4e0d-a2bd-1ca8f8cde380",
+                    "name": "details",
+                    "type": "VARCHAR"
+                }
+            ]
+        },
+        "a2854635-4453-4b42-897f-b513c14c32b0": {
+            "id": "a2854635-4453-4b42-897f-b513c14c32b0",
+            "name": "launch",
+            "x": 647.3829956054688,
+            "y": -159.66927337646484,
+            "fields": [
+                {
+                    "id": "5cec04c2-f21a-4a99-ac80-ba30c17e0107",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "0557e13d-f0fd-4aaa-941a-d3327a0252e5",
+                    "name": "flight_number",
+                    "type": "INT"
+                },
+                {
+                    "id": "e3c4396a-11a5-4d25-bdf3-0944141260fa",
+                    "name": "name",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "8c667b61-ea7b-4fef-bc6f-67ea104c3b7e",
+                    "name": "date_utc",
+                    "type": "DATETIME"
+                },
+                {
+                    "id": "b6953ab8-d56e-4dee-92d3-6341f084c032",
+                    "name": "date_local",
+                    "type": "DATETIME"
+                },
+                {
+                    "id": "95c53246-c28a-4134-808d-c5d5d5f0d14f",
+                    "name": "date_precision",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "ff6da274-45c3-459b-a4b9-8f0648d3bdbe",
+                    "name": "static_fire_date_utc",
+                    "type": "DATETIME"
+                },
+                {
+                    "id": "5ea64d4c-85ac-42d6-9308-5a4ac2ca0237",
+                    "name": "tdb",
+                    "type": "BOOLEAN"
+                },
+                {
+                    "id": "64f54ab2-ab3a-4502-8ce5-e64d8f7c6199",
+                    "name": "net",
+                    "type": "BOOLEAN"
+                },
+                {
+                    "id": "adcbb960-bbc4-45b5-8b9d-95eb67b30689",
+                    "name": "window",
+                    "type": "INT"
+                },
+                {
+                    "id": "faa84872-e345-4450-90e9-dc958cad7b3a",
+                    "name": "rocket",
+                    "type": "UUID"
+                },
+                {
+                    "id": "f8495651-bbba-46d9-b69d-c63b013a525e",
+                    "name": "launch_success",
+                    "type": "BOOLEAN"
+                },
+                {
+                    "id": "7a5b4a8b-7bbf-4ac7-a471-1ba46c62f84b",
+                    "name": "upcoming",
+                    "type": "BOOLEAN"
+                },
+                {
+                    "id": "e3b7e0a3-9d9a-41e3-a4b8-2c1d388e6a26",
+                    "name": "details",
+                    "type": "VARCHAR"
+                }
+            ]
+        },
+        "08ffd841-3fc6-4d76-8efb-55ad368db8e8": {
+            "id": "08ffd841-3fc6-4d76-8efb-55ad368db8e8",
+            "name": "launchpad",
+            "x": 620.1926879882812,
+            "y": 348.6057548522949,
+            "fields": [
+                {
+                    "id": "516f4687-bccf-4161-aeae-11b5cf839fa7",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "15232f24-1a6f-4c5d-81f9-9ccab138f877",
+                    "name": "name",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "d6ff6243-9a3a-4767-91b3-b7d06dd4bb7c",
+                    "name": "full_name",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "bdd7817a-a69b-49d1-8aba-7348d58f6d3e",
+                    "name": "status",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "6c90f6e4-8048-4aed-9868-ef9e90135c17",
+                    "name": "locality",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "fd96d590-2011-4449-b6cc-6fe33fe61265",
+                    "name": "region",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "23141120-a7ec-476e-947d-46754a0924b3",
+                    "name": "latitude",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "c80f2290-c848-467e-8b70-c97ca9da4898",
+                    "name": "longitude",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "7a4e9c30-52b8-400d-8409-80178f859d07",
+                    "name": "attempted_launches",
+                    "not_null": true,
+                    "type": "INT"
+                },
+                {
+                    "id": "b2e50fce-81d9-4112-b1ab-adcbabc6e8bf",
+                    "name": "successful_launches",
+                    "not_null": true,
+                    "type": "INT"
+                }
+            ]
+        },
+        "e6874542-0c07-488c-96cf-f1b4ea241995": {
+            "id": "e6874542-0c07-488c-96cf-f1b4ea241995",
+            "name": "payload",
+            "x": 904.2288818359375,
+            "y": -103.34548430144787,
+            "fields": [
+                {
+                    "id": "4ba1fcfa-e38f-463d-b11e-50e9fae67ae7",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "fc563b1e-0453-48d5-86b2-586c9b2deb89",
+                    "name": "name",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "6b3dcb61-6cd2-42d3-86c5-ecf73dadd7d7",
+                    "name": "type",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "1a03eced-c9e3-48a4-9cc1-76556af79a8f",
+                    "name": "reused",
+                    "type": "BOOLEAN"
+                },
+                {
+                    "id": "9b9dabc3-51ea-41fa-83f8-1bd573458f9b",
+                    "name": "customers",
+                    "type": "VARCHAR[]"
+                },
+                {
+                    "id": "e617de1a-ff52-4923-969d-7a172a6d1213",
+                    "name": "norad_ids",
+                    "type": "INT[]"
+                },
+                {
+                    "id": "5183d817-7487-4808-85b4-ec10c86e5657",
+                    "name": "nationality",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "1693ac27-8fa5-4bd3-8146-ab6d4d6b1e8d",
+                    "name": "manufacturer",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "39b4e126-da39-4fd5-ad15-317bf6fd0d3b",
+                    "name": "mass_kg",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "6d563d31-d244-45b2-9845-7b193683d295",
+                    "name": "mass_lbs",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "d0047098-820c-43c3-b808-9c411304012f",
+                    "name": "orbit",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "6ad8a1aa-e8e8-4d2a-a55c-33f31cda40aa",
+                    "name": "reference_system",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "01eef233-8983-43c4-a360-103f081baf0e",
+                    "name": "regime",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "3ef296bc-a279-445c-823b-1f363c5ec2ff",
+                    "name": "longitude",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "19d510d3-55d3-4818-ac45-00e9363aba17",
+                    "name": "semi_major_axis_km",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "e8c639e6-0f26-4c6c-8e73-6f97ffeb504d",
+                    "name": "eccentricity",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "83e269fe-0668-4024-a129-4db7470bd8ea",
+                    "name": "periapsis_km",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "6bca28cb-ee3b-453b-8e37-16e69740fe95",
+                    "name": "apoapsis_km",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "37bd077d-4417-49fe-ab1b-4f089b048087",
+                    "name": "inclination_deg",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "f5df0e8f-28c5-4142-bf08-cf55b43a598a",
+                    "name": "period_min",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "163d2f5f-3944-45d2-80ad-a15bcda6b426",
+                    "name": "lifespan_years",
+                    "type": "INT"
+                },
+                {
+                    "id": "e358876d-12e2-4a27-b196-1b00ca46719a",
+                    "name": "epoch",
+                    "type": "DATETIME"
+                },
+                {
+                    "id": "5e66e3b2-5c3f-4d21-a013-40c13fc0afc8",
+                    "name": "mean_motion",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "58eb8e36-032c-4bf1-9c21-5272d9494e3e",
+                    "name": "raan",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "97ef4740-54e5-4361-852c-f9c19ec9b6cd",
+                    "name": "arg_of_pericenter",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "57290dcf-a85c-4cc4-88f7-f96e1dd95de6",
+                    "name": "mean_anomaly",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "a51ddda6-d871-41dc-ab6b-0188d437a5e8",
+                    "name": "mass_returned_kg",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "ec714dd8-a83b-4eeb-9264-4770b33033bb",
+                    "name": "mass_returned_lbs",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "e4d9743b-fa0c-4bd7-8a14-54827706c004",
+                    "name": "flight_time_sec",
+                    "type": "INT"
+                },
+                {
+                    "id": "555249e4-6c43-4331-a685-4ce4958963ee",
+                    "name": "manifest",
+                    "type": "VARCHAR"
+                }
+            ]
+        },
+        "dec9086b-8287-4a4a-b236-faf8a15c839c": {
+            "id": "dec9086b-8287-4a4a-b236-faf8a15c839c",
+            "name": "ship",
+            "x": 1169.684326171875,
+            "y": -36.95626640319824,
+            "fields": [
+                {
+                    "id": "3a95243f-6bbf-4626-a7ef-063973b20c48",
+                    "name": "id",
+                    "pk": true,
+                    "unique": true,
+                    "type": "UUID"
+                },
+                {
+                    "id": "653335fa-a597-4cbc-8c76-e3de259ba9b9",
+                    "name": "name",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "4a143478-d5b7-44f0-9bc2-9b415f1ca3f1",
+                    "name": "model",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "cf4c2a58-5922-45cf-a0e6-c206ab4635e3",
+                    "name": "type",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "8e89707b-7e4a-4904-b30e-ccf832dd2421",
+                    "name": "roles",
+                    "type": "VARCHAR[]"
+                },
+                {
+                    "id": "17b5265c-5c48-4bf1-8dfc-98e53c7fd11b",
+                    "name": "active",
+                    "type": "BOOLEAN"
+                },
+                {
+                    "id": "e118503e-799a-4597-a0c4-b244de81e81e",
+                    "name": "imo",
+                    "type": "INT"
+                },
+                {
+                    "id": "3fb2c8ea-9a65-4d66-bd86-3a4f4147e78b",
+                    "name": "mmsi",
+                    "type": "INT"
+                },
+                {
+                    "id": "80ae8e1b-e505-4883-87c3-a580f2f63d7c",
+                    "name": "abs",
+                    "type": "INT"
+                },
+                {
+                    "id": "0b3b6464-9153-4c6a-a804-9616cb0aa366",
+                    "name": "class",
+                    "type": "INT"
+                },
+                {
+                    "id": "ff9e04de-4d9e-42f2-a82b-fbb6b0aea534",
+                    "name": "mass_kg",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "c9f1f213-9d17-49b1-9e07-f12a4fa95499",
+                    "name": "mass_lbs",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "8fdb1cb0-2975-43fd-ac0d-ffd40adeebbc",
+                    "name": "year_built",
+                    "type": "INT"
+                },
+                {
+                    "id": "2b55e213-e1a5-4b4d-b8d0-a53a57ac4810",
+                    "name": "home_port",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "7f24d343-51b3-4e8b-adbc-4c1f124171df",
+                    "name": "status",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "88913eeb-38f9-4526-bf7d-3720abc9b181",
+                    "name": "speed_kn",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "c589819d-823f-4e57-b1a3-ff09edee805d",
+                    "name": "course_deg",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "9fa5b58b-3173-41ce-903b-3ebb2d4d4c10",
+                    "name": "latitude",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "6f1a22bf-70b3-4e2b-8179-948c8bca5fbd",
+                    "name": "longitude",
+                    "type": "FLOAT"
+                },
+                {
+                    "id": "5ecdeec9-39f8-4ca8-b47a-dc334fd52512",
+                    "name": "link",
+                    "type": "VARCHAR"
+                },
+                {
+                    "id": "d71e6612-eed7-45d5-adcb-dfad2be2f29c",
+                    "name": "image",
+                    "type": "VARCHAR"
+                }
+            ]
+        }
+    },
+    "linkDict": {
+        "db44be04-da59-473f-8bcf-1c2590c4901e": {
+            "id": "db44be04-da59-473f-8bcf-1c2590c4901e",
+            "endpoints": [
+                {
+                    "id": "87bfc39f-a135-46d7-bed7-bb5cc61b257c",
+                    "relation": "1",
+                    "fieldId": "7f3ce63d-de09-4772-b211-17fa130089f6"
+                },
+                {
+                    "id": "f6c10829-2bf2-4b0b-8fd1-e7ac4e6e410b",
+                    "relation": "*",
+                    "fieldId": "059a75d3-86de-470c-b3f1-e7c063c7bf68"
+                }
+            ]
+        },
+        "f413bb57-0775-4ad1-839d-1f1b88b0a9de": {
+            "id": "f413bb57-0775-4ad1-839d-1f1b88b0a9de",
+            "endpoints": [
+                {
+                    "id": "2b62ff08-449c-4e1e-9927-5e4a10d801e5",
+                    "relation": "1",
+                    "fieldId": "6cf338a8-fb39-480d-aacf-542ec6832e54"
+                },
+                {
+                    "id": "a2854635-4453-4b42-897f-b513c14c32b0",
+                    "relation": "*",
+                    "fieldId": "faa84872-e345-4450-90e9-dc958cad7b3a"
+                }
+            ]
+        }
+    },
+    "box": {
+        "w": 2214.3661301781253,
+        "h": 1219.7373637030196,
+        "x": -397.8229480508105,
+        "y": -302.7157040934959,
+        "clientH": 764,
+        "clientW": 1387
+    },
+    "name": "SpaceX API(example)",
+    "updatedAt": 1655451359641
+}
