@@ -75,25 +75,6 @@ export default function Nav(props) {
                     + Add New Table
                 </Button>
                 <Popconfirm
-                    title="Are you sure to fill the playground with demo data?"
-                    okText="Yes"
-                    cancelText="No"
-                    position="br"
-                    onOk={() => {
-                        props.setTableDict(props.defaultTables);
-                        props.setLinkDict(props.defaultLinks);
-                    }}
-                >
-                    <Button
-                        type="outline"
-                        shape="round"
-                        size="mini"
-                        status="danger"
-                    >
-                        Demo graph
-                    </Button>
-                </Popconfirm>
-                <Popconfirm
                     title="Are you sure you want to delete all the tables?"
                     okText="Yes"
                     cancelText="No"

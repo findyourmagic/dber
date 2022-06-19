@@ -5,8 +5,6 @@ import TableForm from '../../components/table_form';
 import LinkPath from '../../components/link_path';
 import LinkModal from '../../components/link_modal';
 import { ExportModal } from '../../components/export_modal';
-import defaultTables from '../../data/default_tables';
-import defaultLinks from '../../data/default_links';
 import Nav from '../../components/nav';
 import Table from '../../components/table';
 import useGraphState from '../../hooks/use-graph-state';
@@ -365,8 +363,6 @@ export default function Home() {
                 addTable={addTable}
                 setTableDict={setTableDict}
                 setLinkDict={setLinkDict}
-                defaultTables={defaultTables}
-                defaultLinks={defaultLinks}
                 tableDict={tableDict}
                 linkDict={linkDict}
                 box={box}
