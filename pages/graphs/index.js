@@ -6,20 +6,25 @@ import {
     Space,
     Avatar,
     Popconfirm,
+    Notification
 } from '@arco-design/web-react';
 import { IconEdit, IconDelete } from '@arco-design/web-react/icon';
 import { useState, useEffect } from 'react';
 import { db } from '../../data/db';
 import ListNav from '../../components/list_nav';
+import northwindTraders from '../../data/northwind_traders.json'
+import blog from '../../data/blog.json'
+import spaceX from '../../data/spacex.json'
 
 /**
  * It adds a new graph to the database
  * @param [graph] - The graph object to be added.
  */
-const addGraph = async (graph = {}) => {
+const addGraph = async (graph = {}, sampleGraph = {}) => {
     const id = global.crypto.randomUUID();
     const now = new Date().valueOf();
     await db.graphs.add({
+        ...sampleGraph,
         id,
         name: 'Untitled graph',
         box: {
@@ -37,6 +42,26 @@ const addGraph = async (graph = {}) => {
     global.location.href = `/graphs/detail?id=${id}`;
 };
 
+const addSample = async (sampleGraph = {}) => {
+    const id = global.crypto.randomUUID();
+    const now = new Date().valueOf();
+    await db.graphs.add({
+        ...sampleGraph,
+        id,
+        box: {
+            x: 0,
+            y: 0,
+            w: global.innerWidth,
+            h: global.innerHeight,
+            clientW: global.innerWidth,
+            clientH: global.innerHeight,
+        },
+        createdAt: now,
+        updatedAt: now,
+    });
+};
+
+
 /**
  * It fetches all the graphs from the database and displays them in a list
  * @returns Home component
@@ -46,6 +71,22 @@ export default function Home() {
 
     useEffect(() => {
         const initGraphs = async () => {
+            let inited = false;
+            try {
+                inited = await db.meta.count();
+                console.log(inited);
+            } catch (e) {
+                console.log(e);
+            }
+
+            if (!inited) {
+                await db.meta.add({inited: true});
+                await addSample(northwindTraders);
+                await addSample(blog);
+                await addSample(spaceX);
+                Notification.success({ title: 'Sample data generated success.'})
+            }
+
             try {
                 const data = await db.graphs.toArray();
                 if (data && data.length) setGraphs(data);
