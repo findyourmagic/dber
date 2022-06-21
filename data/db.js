@@ -3,7 +3,7 @@ import Dexie from 'dexie';
 
 export const db = new Dexie('graphDB');
 
-db.version(1).stores({
+db.version(2).stores({
     graphs: 'id',
-    meta: '++id, inited'
+    meta: '++id, inited',
 });

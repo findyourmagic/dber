@@ -6,15 +6,15 @@ import {
     Space,
     Avatar,
     Popconfirm,
-    Notification
+    Notification,
 } from '@arco-design/web-react';
 import { IconEdit, IconDelete } from '@arco-design/web-react/icon';
 import { useState, useEffect } from 'react';
 import { db } from '../../data/db';
 import ListNav from '../../components/list_nav';
-import northwindTraders from '../../data/northwind_traders.json'
-import blog from '../../data/blog.json'
-import spaceX from '../../data/spacex.json'
+import northwindTraders from '../../data/northwind_traders.json';
+import blog from '../../data/blog.json';
+import spaceX from '../../data/spacex.json';
 
 /**
  * It adds a new graph to the database
@@ -61,7 +61,6 @@ const addSample = async (sampleGraph = {}) => {
     });
 };
 
-
 /**
  * It fetches all the graphs from the database and displays them in a list
  * @returns Home component
@@ -80,11 +79,15 @@ export default function Home() {
             }
 
             if (!inited) {
-                await db.meta.add({inited: true});
-                await addSample(northwindTraders);
-                await addSample(blog);
-                await addSample(spaceX);
-                Notification.success({ title: 'Sample data generated success.'})
+                await db.meta.add({ inited: true });
+                await Promise.all(
+                    [northwindTraders, blog, spaceX].map(item =>
+                        addSample(item)
+                    )
+                );
+                Notification.success({
+                    title: 'Sample data generated success.',
+                });
             }
 
             try {
