@@ -131,6 +131,18 @@ export default function Nav(props) {
                             >
                                 MSSQL
                             </Menu.Item>
+                            <Menu.Item
+                                onClick={() => {
+                                    const sql = exportSQL(
+                                        props.tableDict,
+                                        props.linkDict,
+                                        'dbml'
+                                    );
+                                    props.setCommand(sql);
+                                }}
+                            >
+                                DBML
+                            </Menu.Item>
                         </Menu>
                     }
                     position="br"
