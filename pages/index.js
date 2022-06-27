@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import { Button } from '@arco-design/web-react';
+import { Button, PageHeader, Space } from '@arco-design/web-react';
+
 export default function Home() {
     return (
         <>
@@ -12,9 +13,19 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="index-container">
-                <h2>DBER</h2>
-                <div>Database design tool based on entity relation diagram</div>
-                <Button href="/graphs">Graphs</Button>
+                <PageHeader
+                    style={{ background: 'var(--color-bg-2)' }}
+                    title="DBER"
+                    subTitle="Database design tool based on entity relation diagram"
+                    extra={
+                        <Space>
+                            <Button href="/graphs" type="primary">
+                                Graphs
+                            </Button>
+                            <Button type="primary">Github</Button>
+                        </Space>
+                    }
+                />
             </div>
         </>
     );
