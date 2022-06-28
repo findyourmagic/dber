@@ -1,5 +1,11 @@
 import Head from 'next/head';
-import { Button, PageHeader, Space } from '@arco-design/web-react';
+import {
+    Button,
+    Card,
+    PageHeader,
+    Space,
+    Typography,
+} from '@arco-design/web-react';
 
 export default function Home() {
     return (
@@ -20,12 +26,17 @@ export default function Home() {
                     extra={
                         <Space>
                             <Button href="/graphs" type="primary">
-                                Graphs
+                                Get started
                             </Button>
                             <Button type="primary">Github</Button>
                         </Space>
                     }
                 />
+                <Typography.Title className="tc">
+                    <p>Simply easy</p>
+                    <strong>Data modeling & Database designing</strong>
+                    <p>Open source tool for free.</p>
+                </Typography.Title>
             </div>
         </>
     );
