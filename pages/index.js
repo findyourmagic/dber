@@ -32,11 +32,25 @@ export default function Home() {
                         </Space>
                     }
                 />
-                <Typography.Title className="tc">
-                    <p>Simply easy</p>
-                    <strong>Data modeling & Database designing</strong>
-                    <p>Open source tool for free.</p>
-                </Typography.Title>
+                <div className="index-bg">
+                    <Typography.Title className="tc">
+                        <p>Simply easy</p>
+                        <strong>Data modeling & Database designing</strong>
+                        <p>Open source tool for free.</p>
+                    </Typography.Title>
+                    <Button
+                        href="/graphs"
+                        type="primary"
+                        status="success"
+                        shape="round"
+                        size="large"
+                        className="start-button"
+                    >
+                        <strong>
+                            Get started free & no registration required.
+                        </strong>
+                    </Button>
+                </div>
             </div>
         </>
     );
