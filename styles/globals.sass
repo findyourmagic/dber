@@ -7,13 +7,6 @@ a
 .tc
     text-align: center
 
-// .index-container
-//     min-height: 30vh
-//     display: flex
-//     flex-direction: column
-//     align-items: center
-//     justify-content: space-around
-
 .nav
     display: flex
     justify-content: space-between
@@ -168,7 +161,7 @@ label
 
 
 .index-bg
-    height: 80vh
+    padding: 8rem 0 12rem 0
     background-color: var(--color-primary-light-1)
     background-image: url('/images/bg.svg')
     background-size: cover
@@ -178,5 +171,80 @@ label
     align-items: center
     justify-content: center
 
+.mark
+    background-color: var(--color-primary-light-1)
 
+.hero
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    padding: 0 20px
+    h1
+        font-size: 3rem
+        font-weight: bolder
+        color: var(--color-primary-light-1)
+        margin-bottom: 1rem
+    p
+        font-size: 1.5rem
+        color: var(--color-primary-light-1)
+        margin-bottom: 1rem
+    a
+        color: var(--color-primary-light-1)
+        text-decoration: none
+        font-size: 1.5rem
+        font-weight: bolder
+        margin-bottom: 1rem
+    button
+        width: 100%
+        font-size: 1.5rem
+        font-weight: bolder
+        color: var(--color-primary-light-1)
+        background-color: var(--color-primary-dark-1)
+        border: none
+        border-radius: 3px
+        margin-bottom: 1rem
+        cursor: pointer
+        transition: all .3s ease-in-out
+        &:hover
+            background-color: var(--color-primary-dark-2)
+            color: var(--color-primary-light-1)
+            transition: all .3s ease-in-out
 
+.index-video-container
+    position: relative
+    overflow: hidden
+    video
+        height: 500px
+        width: 100%
+        top: 0
+        left: 0
+        filter: blur(2px) brightness(.5)
+        position: relative
+        z-index: 1
+        object-fit: cover
+
+    .faq
+        max-width: 1200px
+        width: 100%
+        left: 50%
+        transform: translate(-50%, -50%)
+        margin: 0 auto
+        position: absolute
+        top: 50%
+        z-index: 2
+        padding: 20px
+        border-radius: 4px
+        color: #fff
+        h2
+            font-size: 2rem
+            font-weight: bolder
+            margin-bottom: 1rem
+        dt
+            font-size: 1.5rem
+            font-weight: bolder
+            margin-bottom: 1rem
+
+        dd
+            font-size: 1.5rem
+            margin: 0 0 2rem 0
