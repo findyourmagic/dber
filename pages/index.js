@@ -26,7 +26,12 @@ export default function Home() {
             </Head>
             <div className="index-container">
                 <PageHeader
-                    style={{ background: 'var(--color-bg-2)' }}
+                    style={{
+                        background: 'var(--color-bg-2)',
+                        position: 'sticky',
+                        top: 0,
+                        boxShadow: '1px 1px 1px rgba(0, 0, 0, 0.1)',
+                    }}
                     title="DBER"
                     subTitle="Database design tool based on entity relation diagram"
                     extra={
