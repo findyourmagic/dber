@@ -109,7 +109,7 @@ export default function Home() {
                         <dl>
                             <dt>Where is the data stored?</dt>
                             <dd>
-                                Stored in local storage and indexDB, so it's
+                                Stored in local storage and indexDB, so it is
                                 best to make a backup before cleaning the
                                 browser.
                             </dd>
