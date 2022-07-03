@@ -2,7 +2,7 @@
 const withSvgr = require('next-plugin-svgr');
 
 const nextConfig = withSvgr({
-    reactStrictMode: true,
+    reactStrictMode: false,
     poweredByHeader: false,
 });
 
