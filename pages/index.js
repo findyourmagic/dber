@@ -31,6 +31,7 @@ export default function Home() {
                         position: 'sticky',
                         top: 0,
                         boxShadow: '1px 1px 1px rgba(0, 0, 0, 0.1)',
+                        zIndex: 2,
                     }}
                     title="DBER"
                     subTitle="Database design tool based on entity relation diagram"
@@ -43,8 +44,9 @@ export default function Home() {
                                 type="primary"
                                 icon={<IconGithub className="arco-icon" />}
                                 style={{ backgroundColor: '#333' }}
+                                href="https://github.com/findyourmagic/dber"
                             >
-                                Github
+                                Repository
                             </Button>
                         </Space>
                     }
@@ -66,32 +68,35 @@ export default function Home() {
                             fontSize: '2em',
                             height: 'auto',
                         }}
-                        shape="round"
                     >
                         Get started
                     </Button>
                 </div>
-                <Steps
-                    labelPlacement="vertical"
-                    current={5}
-                    style={{
-                        maxWidth: '1200px',
-                        margin: '100px auto',
-                    }}
-                >
-                    <Step
-                        title="Design data structures"
-                        description="Visually"
-                    />
-                    <Step
-                        title="Create relationships"
-                        description="Drag and drop"
-                    />
-                    <Step
-                        title="Export SQL scripts"
-                        description="It's that simple"
-                    />
-                </Steps>
+
+                <div className="index-steps">
+                    <Steps
+                        labelPlacement="vertical"
+                        current={5}
+                        style={{
+                            maxWidth: '1200px',
+                            margin: '100px auto',
+                        }}
+                    >
+                        <Step
+                            title="Design data structures"
+                            description="Visually"
+                        />
+                        <Step
+                            title="Create relationships"
+                            description="Drag and drop"
+                        />
+                        <Step
+                            title="Export SQL scripts"
+                            description="It's that simple"
+                        />
+                    </Steps>
+                </div>
+
                 <div className="index-video-container">
                     <div className="faq">
                         <h2>FAQ</h2>
@@ -102,10 +107,11 @@ export default function Home() {
                             </dd>
                         </dl>
                         <dl>
-                            <dt>How is the data saved?</dt>
+                            <dt>Where is the data stored?</dt>
                             <dd>
-                                Saved in local storage and indexDB, so it's best
-                                to make a backup before cleaning the browser.
+                                Stored in local storage and indexDB, so it's
+                                best to make a backup before cleaning the
+                                browser.
                             </dd>
                         </dl>
                         <dl>
@@ -116,6 +122,22 @@ export default function Home() {
                         </dl>
                     </div>
                     <video src="/detail.mp4" muted autoPlay loop></video>
+                </div>
+                <div className="index-footer">
+                    <div>
+                        <strong>DBER</strong> | Database design tool based on
+                        entity relation diagram
+                    </div>
+                    <Button href="/graphs" type="text">
+                        Get started free & no registration required.
+                    </Button>
+                    <Button
+                        type="text"
+                        icon={<IconGithub className="arco-icon" />}
+                        href="https://github.com/findyourmagic/dber"
+                    >
+                        Repository
+                    </Button>
                 </div>
             </div>
         </>
