@@ -7,13 +7,6 @@ a
 .tc
     text-align: center
 
-// .index-container
-//     min-height: 30vh
-//     display: flex
-//     flex-direction: column
-//     align-items: center
-//     justify-content: space-around
-
 .nav
     display: flex
     justify-content: space-between
@@ -165,3 +158,81 @@ label
 .table-form-label
     width: 55px
     display: inline-block
+
+.index-bg
+    padding: 8rem 0 12rem 0
+    background-color: var(--color-primary-light-1)
+    background-image: url('/images/bg.svg')
+    background-size: cover
+    background-position: center
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+
+.mark
+    background-color: var(--color-primary-light-1)
+
+.index-video-container
+    position: relative
+    overflow: hidden
+    video
+        height: 700px
+        width: 100%
+        top: 0
+        left: 0
+        filter: blur(2px) brightness(.5)
+        position: relative
+        z-index: 1
+        object-fit: cover
+
+    .faq
+        max-width: 1200px
+        width: 100%
+        left: 50%
+        transform: translate(-50%, -50%)
+        margin: 0 auto
+        position: absolute
+        top: 50%
+        z-index: 2
+        padding: 20px
+        border-radius: 4px
+        color: #fff
+        h2
+            font-size: 2rem
+            font-weight: bolder
+            margin-bottom: 1rem
+        dt
+            font-size: 1.5rem
+            font-weight: bolder
+            margin-bottom: 1rem
+
+        dd
+            font-size: 1.5rem
+            margin: 0 0 2rem 0
+
+.index-steps
+    margin: -10px 0 0 0
+    overflow: hidden
+    background-image: radial-gradient(rgba(0, 0, 0, .1) 1px, rgba(0, 0, 0, 0) 1px)
+    background-size: 12px 12px
+
+.index-footer
+    display: flex
+    align-items: center
+    justify-content: space-around
+    flex-direction: column
+    padding: 150px
+    margin: -10px 0 0 0
+    overflow: hidden
+    background: rgba(0, 0, 0, 0.1)
+    color: #666
+    &>div
+        color: #000
+        font-size: 1.5rem
+    a span
+        color: #666
+    button span
+        color: #666
+    button svg
+        color: #666
