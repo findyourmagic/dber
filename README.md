@@ -1,6 +1,10 @@
 # DBER | Database design tool based on entity relation diagram
 
+[中文](README-CN.md)
 
+## Website and Demo
+
+https://dber.tech
 
 ## Features
 
