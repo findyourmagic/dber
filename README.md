@@ -46,6 +46,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Inspired by
 
-https://dbdiagram.io/
+[dbdiagram](https://dbdiagram.io/)
 
-https://x6.antv.vision/
+[antv x6](https://x6.antv.vision/)
