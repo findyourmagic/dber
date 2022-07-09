@@ -14,9 +14,9 @@ https://dber.tech
 
 ## 技术栈
 
-React
+SVG
 
-Next.js
+Next.js(React)
 
 DBML
 

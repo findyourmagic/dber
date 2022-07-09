@@ -14,9 +14,9 @@ https://dber.tech
 
 ## Tech stack
 
-React
+SVG
 
-Next.js
+Next.js(React)
 
 DBML
 
