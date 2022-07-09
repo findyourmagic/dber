@@ -6,6 +6,8 @@
 
 https://dber.tech
 
+![Demo Gif](./dber.gif)
+
 ## 功能
 
 1. 可视化数据库结构设计

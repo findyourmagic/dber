@@ -6,6 +6,8 @@
 
 https://dber.tech
 
+![Demo Gif](./dber.gif)
+
 ## Features
 
 1. Design data structures Visually
