@@ -48,6 +48,6 @@ yarn dev
 
 ## 受到以下作品启发
 
-https://dbdiagram.io/
+[dbdiagram](https://dbdiagram.io/)
 
-https://x6.antv.vision/
+[antv x6](https://x6.antv.vision/)
