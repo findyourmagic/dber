@@ -183,8 +183,8 @@
                 },
                 {
                     "id": "3553e2cc-a143-48d4-8245-8f70c266a237",
-                    "name": "blog_id",
-                    "type": "INTEGER",
+                    "name": "name",
+                    "type": "VARCHAR",
                     "note": "",
                     "dbdefault": "",
                     "not_null": "on"
