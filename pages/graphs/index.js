@@ -168,7 +168,13 @@ export default function Home() {
                 ) : (
                     <div className="tc">
                         <Empty />
-                        <Button type="primary" onClick={addGraph} size="large">
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                addGraph();
+                            }}
+                            size="large"
+                        >
                             Create new graph now.
                         </Button>
                     </div>

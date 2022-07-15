@@ -65,7 +65,9 @@ export default function ListNav(props) {
                     type="primary"
                     shape="round"
                     size="mini"
-                    onClick={props.addGraph}
+                    onClick={() => {
+                        props.addGraph();
+                    }}
                 >
                     + New graph
                 </Button>
