@@ -92,7 +92,10 @@ export default function Home() {
 
             try {
                 const data = await db.graphs.toArray();
-                if (data && data.length) setGraphs(data);
+                if (data && data.length) {
+                    data.sort((a, b) => b.createdAt - a.createdAt);
+                    setGraphs(data);
+                }
             } catch (e) {
                 console.log(e);
             }
