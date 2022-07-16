@@ -36,7 +36,7 @@ const save = async ({
  * It's a modal that allows you to import a graph from a string
  * @returns Modal component
  */
-export function ImportModal({ importType, setImportType, addGraph }) {
+export default function ImportModal({ importType, setImportType, addGraph }) {
     const [value, setValue] = useState('');
 
     const handleOk = async () => {

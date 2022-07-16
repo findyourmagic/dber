@@ -24,6 +24,8 @@ DBML
 
 ArcoDesign
 
+Dexie(indexDB)
+
 ## Getting Started
 
 First, Clone the repository or download the source code.

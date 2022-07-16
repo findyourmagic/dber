@@ -1,7 +1,8 @@
 import { Space, Button, Dropdown, Menu } from '@arco-design/web-react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { ImportModal } from './import_modal';
+const ImportModal = dynamic(() => import('./import_modal'), { ssr: false });
 
 /**
  * It renders a nav bar with a link to the home page, a button to add a new graph, and a dropdown menu
@@ -11,6 +12,7 @@ import { ImportModal } from './import_modal';
  */
 export default function ListNav(props) {
     const [importType, setImportType] = useState('');
+
     return (
         <div className="nav">
             <div>

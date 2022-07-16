@@ -24,6 +24,8 @@ DBML
 
 ArcoDesign
 
+Dexie(indexDB)
+
 ## 开始
 
 克隆本仓库或者下载代码.
