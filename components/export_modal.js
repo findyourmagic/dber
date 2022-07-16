@@ -5,7 +5,7 @@ import { Modal, Notification } from '@arco-design/web-react';
  * @returns Modal component
  */
 
-export function ExportModal({ command, setCommand }) {
+export default function ExportModal({ command, setCommand }) {
     const copy = async () => {
         try {
             await window.navigator.clipboard.writeText(command);

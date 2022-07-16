@@ -1,13 +1,17 @@
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { useState, useRef, useMemo } from 'react';
 import { Drawer } from '@arco-design/web-react';
 import TableForm from '../../components/table_form';
 import LinkPath from '../../components/link_path';
 import LinkModal from '../../components/link_modal';
-import { ExportModal } from '../../components/export_modal';
 import Nav from '../../components/nav';
 import Table from '../../components/table';
 import useGraphState from '../../hooks/use-graph-state';
+
+const ExportModal = dynamic(() => import('../../components/export_modal'), {
+    ssr: false,
+});
 
 export default function Home() {
     const {
