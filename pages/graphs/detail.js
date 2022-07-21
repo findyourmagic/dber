@@ -343,7 +343,7 @@ export default function Home() {
         e.stopPropagation();
     };
 
-    const TableWidth = 220;
+    const TableWidth = 240;
 
     const [committing, setCommitting] = useState(false);
 

@@ -60,11 +60,14 @@ export default function Table(props) {
                                     className="start-grip grip"
                                     onMouseDown={gripMouseDownHandler}
                                 ></div>
-                                <span>{field.name}</span>
-                                <div
+                                <div className="field-content">
+                                    <div>{field.name}</div>
+                                    <div className="field-type">{field.type}</div>
+                                </div>
+                                {/*<div
                                     className="end-grip grip"
                                     onMouseDown={gripMouseDownHandler}
-                                ></div>
+                                ></div>*/}
                             </div>
                         );
                     })}
