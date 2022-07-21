@@ -39,13 +39,13 @@ export default function LinkPath(props) {
 
     const sourceFieldPosition = {
         x: sourceTable.x,
-        y: sourceTable.y + sourceFieldIndex * 30 + 50 + gripRadius,
+        y: sourceTable.y + sourceFieldIndex * 32 + 50 + gripRadius,
         ...endpoints[0],
     };
 
     const targetFieldPosition = {
         x: targetTable.x,
-        y: targetTable.y + targetFieldIndex * 30 + 50 + gripRadius,
+        y: targetTable.y + targetFieldIndex * 32 + 50 + gripRadius,
         ...endpoints[1],
     };
 
@@ -96,8 +96,9 @@ export default function LinkPath(props) {
     C ${x + control} ${y} ${midX} ${midY} ${midX} ${midY}
     C ${midX} ${midY} ${x1 - control} ${y1} ${x1} ${y1}`}
                 stroke="black"
-                strokeWidth="2"
+                strokeWidth="1"
                 fill="none"
+                className="path-line"
             />
             <foreignObject
                 x={(x + control + midX) / 2 - 10}

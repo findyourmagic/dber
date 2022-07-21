@@ -20,7 +20,7 @@ export default function Table(props) {
         gripMouseDownHandler,
     } = props;
 
-    const height = table.fields.length * 30 + 52;
+    const height = table.fields.length * 32 + 52;
     return (
         <foreignObject
             x={table.x}

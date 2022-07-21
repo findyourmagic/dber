@@ -352,7 +352,7 @@ export default function TableForm(props) {
                     droppingId={droppingId}
                     setDroppingId={setDroppingId}
                     setDraggingId={setDraggingId}
-                ></TableRefFormItem>
+                />
             ))}
             <Button onClick={addItem} type="outline" long>
                 + Add field

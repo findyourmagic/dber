@@ -21,6 +21,7 @@ export default function useGraphState() {
     const [tableDict, setTableDict] = useState({});
     const [linkDict, setLinkDict] = useState({});
     const [name, setName] = useState('Untitled graph');
+    const [theme, setTheme] = useState(null);
 
     // viewbox of svg
     const [box, setBox] = useState({
@@ -117,6 +118,15 @@ export default function useGraphState() {
         );
     }, [id, inited, box, linkDict, tableDict, name]);
 
+    useEffect(() => {
+        const t = theme || window.localStorage.getItem('theme') || 'light';
+        t === 'dark'
+            ? document.body.setAttribute('arco-theme', 'dark')
+            : document.body.removeAttribute('arco-theme');
+        window.localStorage.setItem('theme', t);
+        if (theme === null) setTheme(t);
+    }, [theme]);
+
     /* A callback function that is used to update the viewbox of the svg. */
     const resizeHandler = useCallback(() => {
         setBox(state => {
@@ -153,5 +163,7 @@ export default function useGraphState() {
         setBox,
         name,
         setName,
+        theme,
+        setTheme,
     };
 }

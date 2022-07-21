@@ -12,6 +12,7 @@ import { IconEdit, IconDelete } from '@arco-design/web-react/icon';
 import { useState, useEffect } from 'react';
 import { db } from '../../data/db';
 import ListNav from '../../components/list_nav';
+import useGraphState from '../../hooks/use-graph-state';
 import northwindTraders from '../../data/northwind_traders.json';
 import blog from '../../data/blog.json';
 import spaceX from '../../data/spacex.json';
@@ -66,6 +67,7 @@ const addSample = async (sampleGraph = {}) => {
  * @returns Home component
  */
 export default function Home() {
+    const { theme, setTheme } = useGraphState();
     const [graphs, setGraphs] = useState([]);
 
     useEffect(() => {
@@ -118,7 +120,7 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <ListNav addGraph={addGraph} />
+            <ListNav addGraph={addGraph} theme={theme} setTheme={setTheme} />
             <div className="graph-container">
                 {graphs && graphs.length ? (
                     <List

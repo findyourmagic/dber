@@ -23,6 +23,8 @@ export default function Home() {
         setBox,
         name,
         setName,
+        theme,
+        setTheme,
     } = useGraphState();
 
     const tables = useMemo(() => Object.values(tableDict), [tableDict]);
@@ -362,7 +364,7 @@ export default function Home() {
             <ExportModal
                 command={command}
                 setCommand={setCommand}
-            ></ExportModal>
+            />
             <Nav
                 addTable={addTable}
                 setTableDict={setTableDict}
@@ -373,6 +375,8 @@ export default function Home() {
                 name={name}
                 setName={setName}
                 setCommand={setCommand}
+                theme={theme}
+                setTheme={setTheme}
             />
             <svg
                 className="main"
@@ -444,14 +448,14 @@ export default function Home() {
                         removeTable={removeTable}
                         committing={committing}
                         setCommitting={setCommitting}
-                    ></TableForm>
+                    />
                 ) : null}
             </Drawer>
             <LinkModal
                 editingLink={editingLink}
                 setEditingLink={setEditingLink}
                 setLinkDict={setLinkDict}
-            ></LinkModal>
+            />
         </div>
     );
 }
