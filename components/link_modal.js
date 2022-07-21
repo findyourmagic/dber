@@ -15,13 +15,13 @@ export default function LinkModal(props) {
                 [linkId]: {
                     ...state[linkId],
                     endpoints: state[linkId].endpoints.map(endpoint => {
-                        if (endpoint.fieldId == fieldId) {
+                        if (endpoint.fieldId === fieldId) {
                             return {
                                 ...endpoint,
                                 relation,
                             };
                         }
-                        if (relation == '*' && endpoint.fieldId != fieldId) {
+                        if (relation === '*' && endpoint.fieldId !== fieldId) {
                             return {
                                 ...endpoint,
                                 relation: '1',

@@ -33,8 +33,8 @@ export default function LinkPath(props) {
     ];
 
     const [sourceFieldIndex, targetFieldIndex] = [
-        sourceTable.fields.findIndex(field => field.id == endpoints[0].fieldId),
-        targetTable.fields.findIndex(field => field.id == endpoints[1].fieldId),
+        sourceTable.fields.findIndex(field => field.id === endpoints[0].fieldId),
+        targetTable.fields.findIndex(field => field.id === endpoints[1].fieldId),
     ];
 
     const sourceFieldPosition = {
