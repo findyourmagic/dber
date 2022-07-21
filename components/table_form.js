@@ -11,7 +11,7 @@ import fieldTypes from '../data/filed_typs';
  * @param ref - This is a reference to the form element.
  * @returns A React component
  */
-function TalbeFormItem(props, ref) {
+function TableFormItem(props, ref) {
     /**
      * If the index of the current field is greater than 0, then swap the current field with the field
      * above it
@@ -54,11 +54,11 @@ function TalbeFormItem(props, ref) {
             className={classNames({
                 dropping:
                     props.draggingId &&
-                    props.droppingId == props.field.id &&
-                    props.droppingId != props.draggingId &&
-                    props.index != props.draggingIndex - 1,
+                    props.droppingId === props.field.id &&
+                    props.droppingId !== props.draggingId &&
+                    props.index !== props.draggingIndex - 1,
                 dragging:
-                    props.draggingId && props.draggingId == props.field.id,
+                    props.draggingId && props.draggingId === props.field.id,
                 'table-form': true,
             })}
             draggable="true"
@@ -181,14 +181,14 @@ function TalbeFormItem(props, ref) {
 }
 
 /* A forwardRef function that is used to forward the ref to the child component. */
-const TalbeRefFormItem = forwardRef(TalbeFormItem);
+const TableRefFormItem = forwardRef(TableFormItem);
 
 /**
  * It renders a form for editing a table
  * @param props - The props passed to the component.
  * @returns A TableForm component
  */
-export default function TalbeForm(props) {
+export default function TableForm(props) {
     const [fields, setFields] = useState(props.table.fields);
     const [name, setName] = useState(props.table.name);
     const forms = useRef([]);
@@ -237,7 +237,7 @@ export default function TalbeForm(props) {
 
     const removeItem = id => {
         setFields(state => {
-            const fields = state.filter(item => item.id != id);
+            const fields = state.filter(item => item.id !== id);
             return fields.length ? fields : [];
         });
     };
@@ -249,7 +249,7 @@ export default function TalbeForm(props) {
 
     const onDragStart = id => {
         setDraggingId(id);
-        setDraggingIndex(fields.findIndex(item => item.id == id));
+        setDraggingIndex(fields.findIndex(item => item.id === id));
     };
 
     const onDrop = id => {
@@ -289,7 +289,7 @@ export default function TalbeForm(props) {
         setDraggingId(null);
     };
 
-    const unShiftFileds = () => {
+    const unShiftFields = () => {
         const draggingIndex = fields.findIndex(item => item.id === draggingId);
         setFields(state => {
             const _fields = [...state];
@@ -304,13 +304,13 @@ export default function TalbeForm(props) {
     return (
         <Space direction="vertical">
             <div
-                className={droppingId == 'root' ? 'dropping' : ''}
+                className={droppingId === 'root' ? 'dropping' : ''}
                 onDragOver={e => {
-                    if (draggingIndex != 0) setDroppingId('root');
+                    if (draggingIndex !== 0) setDroppingId('root');
                     e.preventDefault();
                 }}
                 onDrop={e => {
-                    unShiftFileds();
+                    unShiftFields();
                 }}
             >
                 <Space>
@@ -338,7 +338,7 @@ export default function TalbeForm(props) {
                 </Space>
             </div>
             {fields.map((field, index) => (
-                <TalbeRefFormItem
+                <TableRefFormItem
                     field={field}
                     key={field.id}
                     index={index}
@@ -352,7 +352,7 @@ export default function TalbeForm(props) {
                     droppingId={droppingId}
                     setDroppingId={setDroppingId}
                     setDraggingId={setDraggingId}
-                ></TalbeRefFormItem>
+                />
             ))}
             <Button onClick={addItem} type="outline" long>
                 + Add field

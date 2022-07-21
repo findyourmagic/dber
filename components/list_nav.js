@@ -1,4 +1,5 @@
-import { Space, Button, Dropdown, Menu } from '@arco-design/web-react';
+import { Space, Button, Dropdown, Menu, Switch } from '@arco-design/web-react';
+import { IconSunFill, IconMoonFill } from '@arco-design/web-react/icon';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -59,13 +60,12 @@ export default function ListNav(props) {
                     }
                     position="br"
                 >
-                    <Button type="outline" shape="round" size="mini">
+                    <Button type="outline" size="mini">
                         import
                     </Button>
                 </Dropdown>
                 <Button
                     type="primary"
-                    shape="round"
                     size="mini"
                     onClick={() => {
                         props.addGraph();
@@ -73,12 +73,21 @@ export default function ListNav(props) {
                 >
                     + New graph
                 </Button>
+                <Switch
+                    type="round"
+                    checkedIcon={<IconMoonFill />}
+                    uncheckedIcon={<IconSunFill />}
+                    checked={props.theme === 'dark'}
+                    onChange={(e) => {
+                        props.setTheme(e ? 'dark' : 'light');
+                    }}
+                />
             </Space>
             <ImportModal
                 addGraph={props.addGraph}
                 importType={importType}
                 setImportType={setImportType}
-            ></ImportModal>
+            />
         </div>
     );
 }

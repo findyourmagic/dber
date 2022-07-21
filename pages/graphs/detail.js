@@ -23,6 +23,8 @@ export default function Home() {
         setBox,
         name,
         setName,
+        theme,
+        setTheme,
     } = useGraphState();
 
     const tables = useMemo(() => Object.values(tableDict), [tableDict]);
@@ -46,8 +48,8 @@ export default function Home() {
     /**
      * It sets the offset to the mouse position relative to the box, and sets the mode to 'draging'
      */
-    const mouseDownHanlder = e => {
-        if (e.target.tagName == 'svg') {
+    const mouseDownHandler = e => {
+        if (e.target.tagName === 'svg') {
             setOffset({
                 x: box.x + (e.clientX * box.w) / global.innerWidth,
                 y: box.y + (e.clientY * box.h) / global.innerHeight,
@@ -61,7 +63,7 @@ export default function Home() {
      * @param e - the event object
      * @param table - the table object that was clicked on
      */
-    const tableMouseDownHanlder = (e, table) => {
+    const tableMouseDownHandler = (e, table) => {
         const { x: cursorX, y: cursorY } = getSVGCursor(e);
 
         setMovingTable({
@@ -79,8 +81,8 @@ export default function Home() {
      * When the user releases the mouse button, if the user was in linking mode, and the user is not
      * linking the same table to itself, then add a new link to the link dictionary
      */
-    const mouseUpHanlder = e => {
-        if (mode == 'linking') {
+    const mouseUpHandler = e => {
+        if (mode === 'linking') {
             const row = e.target.classList.contains('row')
                 ? e.target
                 : e.target.closest('.row');
@@ -96,7 +98,7 @@ export default function Home() {
                                 `${link.endpoints[1].id} ${link.endpoints[1].fieldId}`,
                             ]
                                 .sort()
-                                .join(' ') ==
+                                .join(' ') ===
                             [
                                 `${linkStat.startTableId} ${linkStat.startField}`,
                                 `${endTableId} ${endField}`,
@@ -104,7 +106,7 @@ export default function Home() {
                                 .sort()
                                 .join(' ')
                     ) &&
-                    linkStat.startTableId != endTableId
+                    linkStat.startTableId !== endTableId
                 ) {
                     setLinkDict(state => {
                         const id = window.crypto.randomUUID();
@@ -168,9 +170,9 @@ export default function Home() {
      * values. If the mode is 'linking', then update the linkStat state with the new endX and endY
      * values
      */
-    const mouseMoveHanlder = e => {
+    const mouseMoveHandler = e => {
         if (!mode) return;
-        if (mode == 'draging') {
+        if (mode === 'draging') {
             setBox(state => {
                 return {
                     w: state.w,
@@ -183,7 +185,7 @@ export default function Home() {
             });
         }
 
-        if (mode == 'moving') {
+        if (mode === 'moving') {
             const { x: cursorX, y: cursorY } = getSVGCursor(e);
 
             setTableDict(state => {
@@ -198,7 +200,7 @@ export default function Home() {
             });
         }
 
-        if (mode == 'linking') {
+        if (mode === 'linking') {
             const { x, y } = getSVGCursor(e);
             setLinkStat({
                 ...linkStat,
@@ -294,7 +296,7 @@ export default function Home() {
             Object.keys(newState).forEach(key => {
                 if (
                     newState[key].endpoints.find(
-                        endpoint => endpoint.id == tableId
+                        endpoint => endpoint.id === tableId
                     )
                 ) {
                     delete newState[key];
@@ -362,7 +364,7 @@ export default function Home() {
             <ExportModal
                 command={command}
                 setCommand={setCommand}
-            ></ExportModal>
+            />
             <Nav
                 addTable={addTable}
                 setTableDict={setTableDict}
@@ -373,13 +375,15 @@ export default function Home() {
                 name={name}
                 setName={setName}
                 setCommand={setCommand}
+                theme={theme}
+                setTheme={setTheme}
             />
             <svg
                 className="main"
                 viewBox={`${box.x} ${box.y} ${box.w} ${box.h}`}
-                onMouseDown={mouseDownHanlder}
-                onMouseUp={mouseUpHanlder}
-                onMouseMove={mouseMoveHanlder}
+                onMouseDown={mouseDownHandler}
+                onMouseUp={mouseUpHandler}
+                onMouseMove={mouseMoveHandler}
                 onWheel={wheelHandler}
                 ref={svg}
             >
@@ -401,7 +405,7 @@ export default function Home() {
                             key={table.id}
                             table={table}
                             TableWidth={TableWidth}
-                            tableMouseDownHanlder={tableMouseDownHanlder}
+                            tableMouseDownHandler={tableMouseDownHandler}
                             tableClickHandler={tableClickHandler}
                             gripMouseDownHandler={gripMouseDownHandler}
                         />
@@ -409,7 +413,7 @@ export default function Home() {
                 })}
 
                 <rect x="0" y="0" width="2" height="2"></rect>
-                {mode == 'linking' &&
+                {mode === 'linking' &&
                     linkStat.startX != null &&
                     linkStat.endX != null && (
                         <line
@@ -444,14 +448,14 @@ export default function Home() {
                         removeTable={removeTable}
                         committing={committing}
                         setCommitting={setCommitting}
-                    ></TableForm>
+                    />
                 ) : null}
             </Drawer>
             <LinkModal
                 editingLink={editingLink}
                 setEditingLink={setEditingLink}
                 setLinkDict={setLinkDict}
-            ></LinkModal>
+            />
         </div>
     );
 }
