@@ -48,6 +48,12 @@ yarn dev
 
 使用浏览器打开 [http://localhost:3000](http://localhost:3000) 查看结果.
 
+## 使用docker构建
+```bash
+docker-compose up -d
+```
+使用浏览器打开 [http://localhost:3000](http://localhost:3000) 查看结果.
+
 ## 受到以下作品启发
 
 [dbdiagram](https://dbdiagram.io/)
