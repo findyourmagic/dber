@@ -1,0 +1,8 @@
+version: '3'
+services:
+  dber:
+    image: dber:latest
+    container_name: dber
+    build: .
+    ports:
+     - "3000:3000"
