@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import {
     List,
     Button,
@@ -133,11 +134,9 @@ export default function Home() {
                                 key={item.id}
                                 extra={
                                     <Space>
-                                        <Button
-                                            type="primary"
-                                            icon={<IconEdit />}
-                                            href={`/graphs/detail?id=${item.id}`}
-                                        ></Button>
+                                        <Link href={`/graphs/detail?id=${item.id}`}>
+                                            <Button type="primary" icon={<IconEdit />} />
+                                        </Link>
                                         <Popconfirm
                                             title="Are you sure to delete this graph?"
                                             okText="Yes"
@@ -151,7 +150,7 @@ export default function Home() {
                                                 type="primary"
                                                 status="danger"
                                                 icon={<IconDelete />}
-                                            ></Button>
+                                            />
                                         </Popconfirm>
                                     </Space>
                                 }
