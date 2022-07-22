@@ -1,8 +1,9 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useState, useRef, useMemo } from 'react';
-import { Drawer } from '@arco-design/web-react';
+import { Drawer, Modal, Tag } from '@arco-design/web-react';
 import TableForm from '../../components/table_form';
+import FieldForm from '../../components/field_form';
 import LinkPath from '../../components/link_path';
 import LinkModal from '../../components/link_modal';
 import Nav from '../../components/nav';
@@ -38,6 +39,7 @@ export default function Home() {
     const [movingTable, setMovingTable] = useState();
 
     const [editingTable, setEditingTable] = useState();
+    const [editingField, setEditingField] = useState();
 
     // offset of svg origin
     const [offset, setOffset] = useState({
@@ -279,6 +281,7 @@ export default function Home() {
             });
         }
         setEditingTable(null);
+        setEditingField(null);
     };
 
     /**
@@ -313,6 +316,10 @@ export default function Home() {
      */
     const tableClickHandler = table => {
         setEditingTable(table);
+    };
+
+    const handlerEditingField = field => {
+        setEditingField(field);
     };
 
     const [linkStat, setLinkStat] = useState({
@@ -352,6 +359,8 @@ export default function Home() {
     const [command, setCommand] = useState('');
 
     const [formChange, setFormChange] = useState(false);
+
+    const fieldRef = useRef(null);
 
     return (
         <div className="graph">
@@ -410,6 +419,7 @@ export default function Home() {
                             tableMouseDownHandler={tableMouseDownHandler}
                             tableClickHandler={tableClickHandler}
                             gripMouseDownHandler={gripMouseDownHandler}
+                            handlerEditingField={handlerEditingField}
                         />
                     );
                 })}
@@ -460,6 +470,38 @@ export default function Home() {
                     />
                 ) : null}
             </Drawer>
+            <Modal
+                title={
+                    <div style={{ textAlign: 'left' }}>
+                        Edit {editingField ? <Tag color="arcoblue">{editingField.table.name}</Tag> : ''} Field
+                    </div>
+                }
+                visible={editingField}
+                onCancel={() => {
+                    setEditingField(false);
+                }}
+                onOk={() => {
+                    fieldRef.current.submit();
+                }}
+                escToExit={!formChange}
+                maskClosable={!formChange}
+                afterClose={() => {
+                    setFormChange(false);
+                }}
+                style={{ width: 580 }}
+                okText="Commit"
+                cancelText="Cancel"
+            >
+                {editingField ? (
+                    <FieldForm
+                        {...editingField}
+                        ref={fieldRef}
+                        updateTable={updateTable}
+                        formChange={formChange}
+                        setFormChange={setFormChange}
+                    />
+                ) : null}
+            </Modal>
             <LinkModal
                 editingLink={editingLink}
                 setEditingLink={setEditingLink}

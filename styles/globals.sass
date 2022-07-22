@@ -94,6 +94,12 @@ a
     line-height: 32px
     box-sizing: border-box
 
+    &:hover
+        .field-type
+            display: none
+        .grip-setting
+            display: block
+
 .field-content
     display: flex
     justify-content: space-between
@@ -118,6 +124,12 @@ a
     right: auto
     left: 5px
 
+.grip-setting
+    position: absolute
+    right: 5px
+    top: -1.5px
+    display: none
+
 .path-label
     border: 1px solid var(--color-border-3)
     background: var(--color-bg-3)
@@ -137,6 +149,28 @@ a
 
 .path-line
     stroke: var(--color-border-3)
+
+.table-tips
+    width: 180px
+    margin: -8px
+    .head
+        padding-bottom: 6px
+        margin-bottom: 6px
+        border-bottom: 1px solid var(--color-border-3)
+    .field-name
+        color: var(--color-text-1)
+        font-weight: 500
+    .field-type
+        margin-left: 8px
+        text-transform: lowercase
+        color: rgb(var(--orange-4))
+    .content
+        font-size: 12px
+    .field-item
+        display: flex
+        span
+            margin-right: 8px
+            color: var(--color-text-3)
 
 .drawer-btns
     position: fixed

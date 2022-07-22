@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, forwardRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Space, Input, Card, Popconfirm, Form, Checkbox, Select } from '@arco-design/web-react';
 import classNames from 'classnames';
 import fieldTypes from '../data/filed_typs';
@@ -163,7 +163,7 @@ function TableFormItem(props) {
 }
 
 /* A forwardRef function that is used to forward the ref to the child component. */
-const TableRefFormItem = forwardRef(TableFormItem);
+// const TableRefFormItem = forwardRef(TableFormItem);
 
 /**
  * It renders a form for editing a table
