@@ -351,6 +351,8 @@ export default function Home() {
 
     const [command, setCommand] = useState('');
 
+    const [formChange, setFormChange] = useState(false);
+
     return (
         <div className="graph">
             <Head>
@@ -428,7 +430,7 @@ export default function Home() {
             </svg>
 
             <Drawer
-                width={500}
+                width={620}
                 title="Edit Table"
                 visible={editingTable}
                 okText="Commit"
@@ -440,6 +442,11 @@ export default function Home() {
                 onCancel={() => {
                     setEditingTable(false);
                 }}
+                escToExit={!formChange}
+                maskClosable={!formChange}
+                afterClose={() => {
+                    setFormChange(false);
+                }}
             >
                 {editingTable ? (
                     <TableForm
@@ -448,6 +455,8 @@ export default function Home() {
                         removeTable={removeTable}
                         committing={committing}
                         setCommitting={setCommitting}
+                        formChange={formChange}
+                        setFormChange={setFormChange}
                     />
                 ) : null}
             </Drawer>
