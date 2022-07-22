@@ -3,18 +3,24 @@ import { Button } from '@arco-design/web-react';
 /**
  * It renders a table with a title, a list of fields, and a button to edit the table
  * @param props - {
+ *            table,
+ *            TableWidth,
+ *            tableMouseDownHandler,
+ *            tableClickHandler,
+ *            gripMouseDownHandler,
+ *        }
  * @returns A table component with a title and a list of fields.
  */
 export default function Table(props) {
     const {
         table,
         TableWidth,
-        tableMouseDownHanlder,
+        tableMouseDownHandler,
         tableClickHandler,
         gripMouseDownHandler,
     } = props;
 
-    const height = table.fields.length * 30 + 52;
+    const height = table.fields.length * 32 + 52;
     return (
         <foreignObject
             x={table.x}
@@ -23,7 +29,7 @@ export default function Table(props) {
             height={height}
             key={table.id}
             onMouseDown={e => {
-                tableMouseDownHanlder(e, table);
+                tableMouseDownHandler(e, table);
             }}
             // onMouseUp={(e) => {
             //     tableMouseUpHandler(e, table);
@@ -54,11 +60,14 @@ export default function Table(props) {
                                     className="start-grip grip"
                                     onMouseDown={gripMouseDownHandler}
                                 ></div>
-                                <span>{field.name}</span>
-                                <div
+                                <div className="field-content">
+                                    <div>{field.name}</div>
+                                    <div className="field-type">{field.type}</div>
+                                </div>
+                                {/*<div
                                     className="end-grip grip"
                                     onMouseDown={gripMouseDownHandler}
-                                ></div>
+                                ></div>*/}
                             </div>
                         );
                     })}

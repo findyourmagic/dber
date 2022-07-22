@@ -76,13 +76,13 @@ export default function ImportModal({ importType, setImportType, addGraph }) {
                     id,
                     endpoints: ref.endpoints.map(endpoint => {
                         const table = Object.values(tableDict).find(
-                            table => table.name == endpoint.tableName
+                            table => table.name === endpoint.tableName
                         );
                         return {
                             id: table.id,
                             relation: endpoint.relation,
                             fieldId: table.fields.find(
-                                field => field.name == endpoint.fieldNames[0]
+                                field => field.name === endpoint.fieldNames[0]
                             ).id,
                         };
                     }),

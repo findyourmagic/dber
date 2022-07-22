@@ -31,7 +31,9 @@ a
     position: absolute
     left: 0
     top: 0
-    cursor: grab
+    background-color: var(--color-bg-2)
+    &:active
+        cursor: grab
 
 .aside
     position: absolute
@@ -56,42 +58,54 @@ a
     height: 100vh
 
 .table
-    background: rgba(255, 255, 255, 0.6)
-    color: #333
-    border: 1px solid gray
-    box-shadow: #666 0 0 3px
+    background: var(--color-bg-3)
+    color: var(--color-text-2)
+    border: 1px solid var(--color-border-2)
     margin: 3px
-    border-radius: 3px
+    border-radius: var(--border-radius-medium)
     overflow: hidden
     user-select: none
 
     &:hover
         border: 1px solid rgb(var(--primary-6))
+    &:active
+        cursor: move
 
     &-title
         display: flex
         height: 44px
         justify-content: space-between
         align-items: center
-        padding: 5px
+        padding: 8px
+        color: var(--color-text-1)
         box-sizing: border-box
-        background: rgba(var(--primary-4), 0.7)
+        background: var(--color-fill-2)
+        font-weight: 600
+        cursor: move
 
 .row
-    background: rgba(255, 255, 255, 0.1)
     position: relative
-    padding: 0 20px
+    padding: 0 8px 0 20px
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
-    border-top: 1px solid rgb(121, 121, 121)
-    height: 30px
-    line-height: 30px
+    border-top: 1px solid var(--color-border-2)
+    height: 32px
+    line-height: 32px
     box-sizing: border-box
 
+.field-content
+    display: flex
+    justify-content: space-between
+
+    .field-type
+        font-size: 12px
+        color: var(--color-text-3)
+        text-transform: lowercase
+
 .grip
-    width: 12px
-    height: 12px
+    width: 8px
+    height: 8px
     border-radius: 50%
     background: rgb(var(--primary-3))
     position: absolute
@@ -105,19 +119,24 @@ a
     left: 5px
 
 .path-label
-    border: #333 1px solid
-    background: #fff
+    border: 1px solid var(--color-border-3)
+    background: var(--color-bg-3)
+    color: var(--color-text-1)
     text-align: center
     position: relative
     z-index: 3
     box-sizing: border-box
     vertical-align: center
-    font-weight: bolder
     border-radius: 50%
     padding: 0
     width: 20px
     height: 20px
     line-height: 20px
+    font-size: 12px
+    font-family: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto
+
+.path-line
+    stroke: var(--color-border-3)
 
 .drawer-btns
     position: fixed
@@ -151,9 +170,14 @@ label
 
 .graph-container
     padding-top: 100px
+    height: 100vh
+    background-color: var(--color-bg-2)
 .graph-list
     max-width: 1024px
     margin: 0 auto
+
+    .arco-list-header
+        background: var(--color-fill-2)
 
 .table-form-label
     width: 55px

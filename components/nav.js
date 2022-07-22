@@ -6,7 +6,9 @@ import {
     Menu,
     Notification,
     Input,
+    Switch,
 } from '@arco-design/web-react';
+import { IconSunFill, IconMoonFill } from '@arco-design/web-react/icon';
 import Link from 'next/link';
 import exportSQL from '../utils/export-sql';
 import { db } from '../data/db';
@@ -52,6 +54,7 @@ export default function Nav(props) {
             <Space>
                 <Input
                     type="text"
+                    size="mini"
                     value={props.name}
                     onChange={value => {
                         props.setName(value);
@@ -61,17 +64,11 @@ export default function Nav(props) {
                     onClick={save}
                     type="primary"
                     status="success"
-                    shape="round"
                     size="mini"
                 >
                     Save
                 </Button>
-                <Button
-                    onClick={props.addTable}
-                    type="primary"
-                    shape="round"
-                    size="mini"
-                >
+                <Button onClick={props.addTable} type="primary" size="mini">
                     + Add New Table
                 </Button>
                 <Popconfirm
@@ -84,12 +81,7 @@ export default function Nav(props) {
                         props.setLinkDict({});
                     }}
                 >
-                    <Button
-                        type="outline"
-                        shape="round"
-                        size="mini"
-                        status="danger"
-                    >
+                    <Button type="outline" status="danger" size="mini">
                         Clear
                     </Button>
                 </Popconfirm>
@@ -147,10 +139,19 @@ export default function Nav(props) {
                     }
                     position="br"
                 >
-                    <Button type="outline" shape="round" size="mini">
+                    <Button type="outline" size="mini">
                         Export SQL
                     </Button>
                 </Dropdown>
+                <Switch
+                    type="round"
+                    checkedIcon={<IconMoonFill />}
+                    uncheckedIcon={<IconSunFill />}
+                    checked={props.theme === 'dark'}
+                    onChange={(e) => {
+                        props.setTheme(e ? 'dark' : 'light');
+                    }}
+                />
             </Space>
         </nav>
     );
