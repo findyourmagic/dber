@@ -6,4 +6,3 @@ services:
     build: .
     ports:
      - "3000:3000"
-    command: '--dev'

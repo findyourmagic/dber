@@ -5,7 +5,6 @@ COPY . /opt/dber
 WORKDIR /opt/dber
 RUN chmod +x start.sh
 RUN npm install
+RUN npm run build
 
 ENTRYPOINT ["/bin/sh","/opt/dber/start.sh"]
-CMD ["--dev"]
-
