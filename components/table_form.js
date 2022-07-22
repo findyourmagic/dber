@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Space, Input, Card, Popconfirm, Form, Checkbox, Select } from '@arco-design/web-react';
 import classNames from 'classnames';
+import { nanoid } from 'nanoid';
 import fieldTypes from '../data/filed_typs';
 
 /**
@@ -198,7 +199,7 @@ export default function TableForm(props) {
     const addItem = (index) => {
         const newState = [...fields];
         newState.splice(index + 1, 0, {
-            id: window.crypto.randomUUID(),
+            id: nanoid(),
             name: 'new item' + newState.length,
             type: '',
             unique: false,

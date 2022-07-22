@@ -2,6 +2,7 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useState, useRef, useMemo } from 'react';
 import { Drawer, Modal, Tag } from '@arco-design/web-react';
+import { nanoid } from 'nanoid';
 import TableForm from '../../components/table_form';
 import FieldForm from '../../components/field_form';
 import LinkPath from '../../components/link_path';
@@ -111,7 +112,7 @@ export default function Home() {
                     linkStat.startTableId !== endTableId
                 ) {
                     setLinkDict(state => {
-                        const id = window.crypto.randomUUID();
+                        const id = nanoid();
                         return {
                             ...state,
                             [id]: {
@@ -242,7 +243,7 @@ export default function Home() {
      */
     const addTable = () => {
         setTableDict(state => {
-            const id = window.crypto.randomUUID();
+            const id = nanoid();
             return {
                 ...state,
                 [id]: {
@@ -252,7 +253,7 @@ export default function Home() {
                     y: box.y + box.h / 2 - 200 + tables.length * 20,
                     fields: [
                         {
-                            id: window.crypto.randomUUID(),
+                            id: nanoid(),
                             name: 'id',
                             type: 'INTEGER',
                             pk: true,

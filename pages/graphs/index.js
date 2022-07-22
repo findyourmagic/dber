@@ -11,6 +11,7 @@ import {
 } from '@arco-design/web-react';
 import { IconEdit, IconDelete } from '@arco-design/web-react/icon';
 import { useState, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 import { db } from '../../data/db';
 import ListNav from '../../components/list_nav';
 import useGraphState from '../../hooks/use-graph-state';
@@ -23,7 +24,7 @@ import spaceX from '../../data/spacex.json';
  * @param [graph] - The graph object to be added.
  */
 const addGraph = async (graph = {}, sampleGraph = {}) => {
-    const id = global.crypto.randomUUID();
+    const id = nanoid();
     const now = new Date().valueOf();
     await db.graphs.add({
         ...sampleGraph,
@@ -45,7 +46,7 @@ const addGraph = async (graph = {}, sampleGraph = {}) => {
 };
 
 const addSample = async (sampleGraph = {}) => {
-    const id = global.crypto.randomUUID();
+    const id = nanoid();
     const now = new Date().valueOf();
     await db.graphs.add({
         ...sampleGraph,
