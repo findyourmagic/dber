@@ -48,6 +48,18 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Run in the production mode:
+
+```bash
+npm run build && npm run start
+```
+
+Export static pages:
+
+```bash
+npm run gen
+```
+
 ## Build & Startup with docker
 ```bash
 docker-compose up -d

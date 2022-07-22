@@ -48,6 +48,20 @@ yarn dev
 
 使用浏览器打开 [http://localhost:3000](http://localhost:3000) 查看结果.
 
+在生产模式下运行:
+
+```bash
+
+```bash
+npm run build && npm run start
+```
+
+导出静态页面:
+
+```bash
+npm run gen
+```
+
 ## 使用docker构建
 ```bash
 docker-compose up -d
