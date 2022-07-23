@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useState, useRef, useMemo } from 'react';
-import { Drawer } from '@arco-design/web-react';
+import { Drawer, Modal, Tag } from '@arco-design/web-react';
+import { nanoid } from 'nanoid';
 import TableForm from '../../components/table_form';
+import FieldForm from '../../components/field_form';
 import LinkPath from '../../components/link_path';
 import LinkModal from '../../components/link_modal';
 import Nav from '../../components/nav';
@@ -38,6 +40,7 @@ export default function Home() {
     const [movingTable, setMovingTable] = useState();
 
     const [editingTable, setEditingTable] = useState();
+    const [editingField, setEditingField] = useState();
 
     // offset of svg origin
     const [offset, setOffset] = useState({
@@ -109,7 +112,7 @@ export default function Home() {
                     linkStat.startTableId !== endTableId
                 ) {
                     setLinkDict(state => {
-                        const id = window.crypto.randomUUID();
+                        const id = nanoid();
                         return {
                             ...state,
                             [id]: {
@@ -240,7 +243,7 @@ export default function Home() {
      */
     const addTable = () => {
         setTableDict(state => {
-            const id = window.crypto.randomUUID();
+            const id = nanoid();
             return {
                 ...state,
                 [id]: {
@@ -250,7 +253,7 @@ export default function Home() {
                     y: box.y + box.h / 2 - 200 + tables.length * 20,
                     fields: [
                         {
-                            id: window.crypto.randomUUID(),
+                            id: nanoid(),
                             name: 'id',
                             type: 'INTEGER',
                             pk: true,
@@ -279,6 +282,7 @@ export default function Home() {
             });
         }
         setEditingTable(null);
+        setEditingField(null);
     };
 
     /**
@@ -313,6 +317,10 @@ export default function Home() {
      */
     const tableClickHandler = table => {
         setEditingTable(table);
+    };
+
+    const handlerEditingField = field => {
+        setEditingField(field);
     };
 
     const [linkStat, setLinkStat] = useState({
@@ -350,6 +358,10 @@ export default function Home() {
     const [editingLink, setEditingLink] = useState(null);
 
     const [command, setCommand] = useState('');
+
+    const [formChange, setFormChange] = useState(false);
+
+    const fieldRef = useRef(null);
 
     return (
         <div className="graph">
@@ -408,6 +420,7 @@ export default function Home() {
                             tableMouseDownHandler={tableMouseDownHandler}
                             tableClickHandler={tableClickHandler}
                             gripMouseDownHandler={gripMouseDownHandler}
+                            handlerEditingField={handlerEditingField}
                         />
                     );
                 })}
@@ -428,7 +441,7 @@ export default function Home() {
             </svg>
 
             <Drawer
-                width={500}
+                width={620}
                 title="Edit Table"
                 visible={editingTable}
                 okText="Commit"
@@ -440,6 +453,11 @@ export default function Home() {
                 onCancel={() => {
                     setEditingTable(false);
                 }}
+                escToExit={!formChange}
+                maskClosable={!formChange}
+                afterClose={() => {
+                    setFormChange(false);
+                }}
             >
                 {editingTable ? (
                     <TableForm
@@ -448,9 +466,43 @@ export default function Home() {
                         removeTable={removeTable}
                         committing={committing}
                         setCommitting={setCommitting}
+                        formChange={formChange}
+                        setFormChange={setFormChange}
                     />
                 ) : null}
             </Drawer>
+            <Modal
+                title={
+                    <div style={{ textAlign: 'left' }}>
+                        Edit {editingField ? <Tag color="arcoblue">{editingField.table.name}</Tag> : ''} Field
+                    </div>
+                }
+                visible={editingField}
+                onCancel={() => {
+                    setEditingField(false);
+                }}
+                onOk={() => {
+                    fieldRef.current.submit();
+                }}
+                escToExit={!formChange}
+                maskClosable={!formChange}
+                afterClose={() => {
+                    setFormChange(false);
+                }}
+                style={{ width: 580 }}
+                okText="Commit"
+                cancelText="Cancel"
+            >
+                {editingField ? (
+                    <FieldForm
+                        {...editingField}
+                        ref={fieldRef}
+                        updateTable={updateTable}
+                        formChange={formChange}
+                        setFormChange={setFormChange}
+                    />
+                ) : null}
+            </Modal>
             <LinkModal
                 editingLink={editingLink}
                 setEditingLink={setEditingLink}

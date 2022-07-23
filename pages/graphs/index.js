@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import {
     List,
     Button,
@@ -10,6 +11,7 @@ import {
 } from '@arco-design/web-react';
 import { IconEdit, IconDelete } from '@arco-design/web-react/icon';
 import { useState, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 import { db } from '../../data/db';
 import ListNav from '../../components/list_nav';
 import useGraphState from '../../hooks/use-graph-state';
@@ -22,7 +24,7 @@ import spaceX from '../../data/spacex.json';
  * @param [graph] - The graph object to be added.
  */
 const addGraph = async (graph = {}, sampleGraph = {}) => {
-    const id = global.crypto.randomUUID();
+    const id = nanoid();
     const now = new Date().valueOf();
     await db.graphs.add({
         ...sampleGraph,
@@ -44,7 +46,7 @@ const addGraph = async (graph = {}, sampleGraph = {}) => {
 };
 
 const addSample = async (sampleGraph = {}) => {
-    const id = global.crypto.randomUUID();
+    const id = nanoid();
     const now = new Date().valueOf();
     await db.graphs.add({
         ...sampleGraph,
@@ -133,11 +135,9 @@ export default function Home() {
                                 key={item.id}
                                 extra={
                                     <Space>
-                                        <Button
-                                            type="primary"
-                                            icon={<IconEdit />}
-                                            href={`/graphs/detail?id=${item.id}`}
-                                        ></Button>
+                                        <Link href={`/graphs/detail?id=${item.id}`}>
+                                            <Button type="primary" icon={<IconEdit />} />
+                                        </Link>
                                         <Popconfirm
                                             title="Are you sure to delete this graph?"
                                             okText="Yes"
@@ -151,7 +151,7 @@ export default function Home() {
                                                 type="primary"
                                                 status="danger"
                                                 icon={<IconDelete />}
-                                            ></Button>
+                                            />
                                         </Popconfirm>
                                     </Space>
                                 }

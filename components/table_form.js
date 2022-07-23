@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef, forwardRef } from 'react';
-import { Button, Space, Input, Card, Popconfirm } from '@arco-design/web-react';
+import { useState, useEffect } from 'react';
+import { Button, Space, Input, Card, Popconfirm, Form, Checkbox, Select } from '@arco-design/web-react';
 import classNames from 'classnames';
-import SelectInput from './select_input';
+import { nanoid } from 'nanoid';
 import fieldTypes from '../data/filed_typs';
 
 /**
@@ -11,7 +11,7 @@ import fieldTypes from '../data/filed_typs';
  * @param ref - This is a reference to the form element.
  * @returns A React component
  */
-function TableFormItem(props, ref) {
+function TableFormItem(props) {
     /**
      * If the index of the current field is greater than 0, then swap the current field with the field
      * above it
@@ -48,9 +48,11 @@ function TableFormItem(props, ref) {
         });
     };
 
+    const { field } = props;
+    const index = `A${props.index}`;
+
     return (
-        <form
-            ref={ref}
+        <Card
             className={classNames({
                 dropping:
                     props.draggingId &&
@@ -77,111 +79,92 @@ function TableFormItem(props, ref) {
                 props.onDrop(props.field.id);
             }}
         >
-            <Card>
-                <input
-                    type="hidden"
-                    name="id"
-                    defaultValue={props.field.id || ''}
-                />
-                <Space direction="vertical">
-                    <Space>
-                        <label className="table-form-label">Name:</label>
-                        <Input
-                            type="text"
-                            name="name"
-                            defaultValue={props.field.name || ''}
-                        />
-                        <label className="table-form-label">Type:</label>
-                        <SelectInput
-                            defaultValue={props.field.type || ''}
-                            options={fieldTypes}
-                            width={150}
-                            name="type"
-                        ></SelectInput>
-                    </Space>
-                    <Space>
-                        <label className="table-form-label">Note:</label>
-
-                        <Input
-                            type="text"
-                            name="note"
-                            placeholder="note"
-                            defaultValue={props.field.note || ''}
-                        />
-                        <label className="table-form-label">Default:</label>
-                        <Input
-                            type="text"
-                            name="dbdefault"
-                            placeholder="default"
-                            defaultValue={props.field.dbdefault || ''}
-                        />
-                    </Space>
-                    <Space
-                        style={{
-                            width: '100%',
-                            justifyContent: 'space-between',
-                        }}
+            <Form.Item hidden field={`${index}.id`} initialValue={field.id}>
+                <Input />
+            </Form.Item>
+            <Space direction="vertical" style={{ width: '100%' }}>
+                <Space className="table-form-item">
+                    <Form.Item
+                        label="Name"
+                        field={`${index}.name`}
+                        initialValue={field.name}
+                        rules={[{ required: true, message: 'Please enter field name' }]}
                     >
-                        <label>
-                            Primary&nbsp;
-                            <input
-                                type="checkbox"
-                                name="pk"
-                                defaultChecked={props.field.pk || false}
-                            />
-                        </label>
-                        <label>
-                            Unique&nbsp;
-                            <input
-                                type="checkbox"
-                                name="unique"
-                                defaultChecked={props.field.unique || false}
-                            />
-                        </label>
-                        <label>
-                            Not Null&nbsp;
-                            <input
-                                type="checkbox"
-                                name="not_null"
-                                defaultChecked={props.field.not_null || false}
-                            />
-                        </label>
-                        <label>
-                            Increment&nbsp;
-                            <input
-                                type="checkbox"
-                                name="increment"
-                                defaultChecked={props.field.increment || false}
-                            />
-                        </label>
-                    </Space>
-                    <Space>
-                        <Button onClick={moveUp} type="primary">
-                            ↑ Move up
-                        </Button>
-                        <Button onClick={moveDown} type="primary">
-                            ↓ Move down
-                        </Button>
-
-                        <Popconfirm
-                            title="Are you sure delete this field?"
-                            onOk={() => {
-                                props.removeItem(props.field.id);
-                            }}
-                            okText="Yes"
-                            cancelText="No"
-                        >
-                            <Button status="danger">Remove field</Button>
-                        </Popconfirm>
-                    </Space>
+                        <Input allowClear />
+                    </Form.Item>
+                    <Form.Item
+                        label="Type"
+                        field={`${index}.type`}
+                        initialValue={field.type}
+                        rules={[{ required: true, message: 'Please choose field type' }]}
+                    >
+                        <Select style={{ width: '100%' }} allowCreate>
+                            {fieldTypes.map(item => (
+                                <Select.Option key={item} value={item}>
+                                    {item}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
                 </Space>
-            </Card>
-        </form>
+                <Space className="table-form-item">
+                    <Form.Item label="Comment" field={`${index}.note`} initialValue={field.note || ''}>
+                        <Input allowClear placeholder="note" />
+                    </Form.Item>
+                    <Form.Item label="Default" field={`${index}.dbdefault`} initialValue={field.dbdefault || ''}>
+                        <Input allowClear placeholder="default" />
+                    </Form.Item>
+                </Space>
+                <Space className="table-form-item">
+                    <Form.Item noStyle field={`${index}.pk`} initialValue={field.pk}>
+                        <Checkbox defaultChecked={field.pk}>Primary</Checkbox>
+                    </Form.Item>
+                    <Form.Item noStyle field={`${index}.unique`} initialValue={field.unique}>
+                        <Checkbox defaultChecked={field.unique}>Unique</Checkbox>
+                    </Form.Item>
+                    <Form.Item noStyle field={`${index}.not_null`} initialValue={field.not_null}>
+                        <Checkbox defaultChecked={field.not_null}>Not Null</Checkbox>
+                    </Form.Item>
+                    <Form.Item noStyle field={`${index}.increment`} initialValue={field.increment}>
+                        <Checkbox defaultChecked={field.increment}>Increment</Checkbox>
+                    </Form.Item>
+                </Space>
+
+                <Space className="table-form-item">
+                    <Button onClick={moveUp} type="primary" size="small" long>
+                        ↑ Move up
+                    </Button>
+                    <Button onClick={moveDown} type="primary" size="small" long>
+                        ↓ Move down
+                    </Button>
+
+                    <Popconfirm
+                        title="Are you sure delete this field?"
+                        onOk={() => {
+                            props.removeItem(props.field.id);
+                        }}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button status="danger" size="small" long>Remove field</Button>
+                    </Popconfirm>
+                    <Button
+                        onClick={() => props.addItem(props.index)}
+                        type="outline"
+                        status="success"
+                        size="small"
+                        long
+                    >
+                        + Add field after
+                    </Button>
+                </Space>
+            </Space>
+        </Card>
     );
 }
 
 /* A forwardRef function that is used to forward the ref to the child component. */
-const TableRefFormItem = forwardRef(TableFormItem);
+// const TableRefFormItem = forwardRef(TableFormItem);
 
 /**
  * It renders a form for editing a table
@@ -191,48 +174,37 @@ const TableRefFormItem = forwardRef(TableFormItem);
 export default function TableForm(props) {
     const [fields, setFields] = useState(props.table.fields);
     const [name, setName] = useState(props.table.name);
-    const forms = useRef([]);
+    const [form] = Form.useForm();
 
     useEffect(() => {
         setFields(props.table.fields);
     }, [props.table]);
 
-    useEffect(() => {
-        forms.current = forms.current.slice(0, fields.length);
-    }, [fields]);
-
-    const save = () => {
-        const updatedFields = forms.current.map(form => {
-            return [...new FormData(form).entries()].reduce((prev, cur) => {
-                prev[cur[0]] = cur[1];
-                return prev;
-            }, {});
-        });
-        const table = { ...props.table, name, fields: updatedFields };
+    const save = (values) => {
+        const table = { ...props.table, name, fields: Object.values(values) };
         delete table.x;
         delete table.y;
+
+        console.log(table);
         props.updateTable(table);
         props.setCommitting(false);
     };
 
     useEffect(() => {
         if (props.committing) {
-            save();
+            form.submit();
         }
     }, [props.committing]);
 
-    const addItem = () => {
-        setFields(state => {
-            return [
-                ...state,
-                {
-                    id: window.crypto.randomUUID(),
-                    name: 'new item' + state.length,
-                    type: 'INTEGER',
-                    unique: false,
-                },
-            ];
+    const addItem = (index) => {
+        const newState = [...fields];
+        newState.splice(index + 1, 0, {
+            id: nanoid(),
+            name: 'new item' + newState.length,
+            type: '',
+            unique: false,
         });
+        setFields(newState);
     };
 
     const removeItem = id => {
@@ -302,7 +274,7 @@ export default function TableForm(props) {
     };
 
     return (
-        <Space direction="vertical">
+        <Space direction="vertical" style={{ width: '100%' }}>
             <div
                 className={droppingId === 'root' ? 'dropping' : ''}
                 onDragOver={e => {
@@ -312,51 +284,62 @@ export default function TableForm(props) {
                 onDrop={e => {
                     unShiftFields();
                 }}
+                style={{ display: 'flex', alignItems: 'center' }}
             >
-                <Space>
-                    <label>Table Name:</label>
-                    <Input
-                        defaultValue={props.table.name}
-                        type="text"
-                        onChange={value => {
-                            setName(value);
-                        }}
-                    ></Input>
-                    <Popconfirm
-                        position="br"
-                        title="Are you sure you want to delete this table?"
-                        okText="Yes"
-                        cancelText="No"
-                        onOk={() => {
-                            props.removeTable(props.table.id);
-                        }}
-                    >
-                        <Button type="outline" status="warning">
-                            Delete table
-                        </Button>
-                    </Popconfirm>
-                </Space>
-            </div>
-            {fields.map((field, index) => (
-                <TableRefFormItem
-                    field={field}
-                    key={field.id}
-                    index={index}
-                    ref={dom => (forms.current[index] = dom)}
-                    removeItem={removeItem}
-                    setFields={setFields}
-                    onDragStart={onDragStart}
-                    onDrop={onDrop}
-                    draggingIndex={draggingIndex}
-                    draggingId={draggingId}
-                    droppingId={droppingId}
-                    setDroppingId={setDroppingId}
-                    setDraggingId={setDraggingId}
+                <label>Table Name:</label>
+                <Input
+                    defaultValue={props.table.name}
+                    type="text"
+                    onChange={value => {
+                        setName(value);
+                    }}
+                    style={{ width: 200, margin: '0 8px' }}
                 />
-            ))}
-            <Button onClick={addItem} type="outline" long>
-                + Add field
-            </Button>
+                <Popconfirm
+                    position="br"
+                    title="Are you sure you want to delete this table?"
+                    okText="Yes"
+                    cancelText="No"
+                    onOk={() => {
+                        props.removeTable(props.table.id);
+                    }}
+                >
+                    <Button type="outline" status="warning">
+                        Delete table
+                    </Button>
+                </Popconfirm>
+            </div>
+
+            <Form
+                onSubmit={save}
+                form={form}
+                labelAlign="left"
+                requiredSymbol={false}
+                labelCol={{ span: 6 }}
+                wrapperCol={{ span: 18 }}
+                onValuesChange={(changedValues, allValues) => {
+                    if (!props.formChange) props.setFormChange(true);
+                }}
+                scrollToFirstError
+            >
+                {fields.map((field, index) => (
+                    <TableFormItem
+                        field={field}
+                        key={field.id}
+                        index={index}
+                        addItem={addItem}
+                        removeItem={removeItem}
+                        setFields={setFields}
+                        onDragStart={onDragStart}
+                        onDrop={onDrop}
+                        draggingIndex={draggingIndex}
+                        draggingId={draggingId}
+                        droppingId={droppingId}
+                        setDroppingId={setDroppingId}
+                        setDraggingId={setDraggingId}
+                    />
+                ))}
+            </Form>
         </Space>
     );
 }

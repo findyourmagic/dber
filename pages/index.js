@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import {
     Button,
     Card,
@@ -37,9 +38,12 @@ export default function Home() {
                     subTitle="Database design tool based on entity relation diagram"
                     extra={
                         <Space>
-                            <Button href="/graphs" type="primary">
-                                Get started free & no registration required.
-                            </Button>
+                            <Link href="/graphs">
+                                <Button type="primary">
+                                    Get started free & no registration required.
+                                </Button>
+                            </Link>
+
                             <Button
                                 type="primary"
                                 icon={<IconGithub className="arco-icon" />}
@@ -59,18 +63,19 @@ export default function Home() {
                         </p>
                         <p>Open source and free.</p>
                     </Typography.Title>
-                    <Button
-                        href="/graphs"
-                        type="primary"
-                        size="large"
-                        className="start-button"
-                        style={{
-                            fontSize: '2em',
-                            height: 'auto',
-                        }}
-                    >
-                        Get started
-                    </Button>
+                    <Link href="/graphs">
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="start-button"
+                            style={{
+                                fontSize: '2em',
+                                height: 'auto',
+                            }}
+                        >
+                            Get started
+                        </Button>
+                    </Link>
                 </div>
 
                 <div className="index-steps">
@@ -128,9 +133,11 @@ export default function Home() {
                         <strong>DBER</strong> | Database design tool based on
                         entity relation diagram
                     </div>
-                    <Button href="/graphs" type="text">
-                        Get started free & no registration required.
-                    </Button>
+                    <Link href="/graphs">
+                        <Button type="text">
+                            Get started free & no registration required.
+                        </Button>
+                    </Link>
                     <Button
                         type="text"
                         icon={<IconGithub className="arco-icon" />}

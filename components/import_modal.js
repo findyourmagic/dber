@@ -1,6 +1,7 @@
 import { Modal, Notification, Input } from '@arco-design/web-react';
 import { Parser } from '@dbml/core';
 import { useState } from 'react';
+import { nanoid } from 'nanoid';
 import { db } from '../data/db';
 
 /**
@@ -47,7 +48,7 @@ export default function ImportModal({ importType, setImportType, addGraph }) {
             const tableDict = {};
             const linkDict = {};
             graph.tables.forEach((table, index) => {
-                const id = window.crypto.randomUUID();
+                const id = nanoid();
                 tableDict[id] = {
                     id,
                     name: table.name,
@@ -55,7 +56,7 @@ export default function ImportModal({ importType, setImportType, addGraph }) {
                     x: index * 220,
                     y: 20,
                     fields: table.fields.map(field => {
-                        const fieldId = window.crypto.randomUUID();
+                        const fieldId = nanoid();
                         return {
                             id: fieldId,
                             increment: field.increment,
@@ -71,7 +72,7 @@ export default function ImportModal({ importType, setImportType, addGraph }) {
             });
 
             graph.refs.forEach(ref => {
-                const id = window.crypto.randomUUID();
+                const id = nanoid();
                 linkDict[id] = {
                     id,
                     endpoints: ref.endpoints.map(endpoint => {
@@ -88,7 +89,7 @@ export default function ImportModal({ importType, setImportType, addGraph }) {
                     }),
                 };
             });
-            const graphId = window.crypto.randomUUID();
+            const graphId = nanoid();
             await save({
                 id: graphId,
                 name: graph.name,
