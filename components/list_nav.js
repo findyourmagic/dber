@@ -87,6 +87,7 @@ export default function ListNav(props) {
                 addGraph={props.addGraph}
                 importType={importType}
                 setImportType={setImportType}
+                theme={props.theme}
             />
         </div>
     );
