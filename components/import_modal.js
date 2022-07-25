@@ -1,7 +1,8 @@
-import { Modal, Notification, Input } from '@arco-design/web-react';
+import { Modal, Notification } from '@arco-design/web-react';
 import { Parser } from '@dbml/core';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
+import Editor from '@monaco-editor/react';
 import { db } from '../data/db';
 
 /**
@@ -37,7 +38,7 @@ const save = async ({
  * It's a modal that allows you to import a graph from a string
  * @returns Modal component
  */
-export default function ImportModal({ importType, setImportType, addGraph }) {
+export default function ImportModal({ importType, setImportType, addGraph, theme }) {
     const [value, setValue] = useState('');
 
     const handleOk = async () => {
@@ -131,11 +132,20 @@ export default function ImportModal({ importType, setImportType, addGraph }) {
             onCancel={() => setImportType('')}
             style={{ width: 'auto' }}
         >
-            <Input.TextArea
-                value={value}
-                placeholder={`Paste your ${importType} content here.`}
-                style={{ height: '400px', width: '500px' }}
-                onChange={e => setValue(e)}
+            <Editor
+                language={importType === 'DBML' ? 'apex' : 'sql'}
+                width="680px"
+                height="80vh"
+                theme={theme === 'dark' ? 'vs-dark' : 'vs'}
+                options={{
+                    minimap: { enabled: false },
+                    scrollbar: { // 滚动条设置
+                        verticalScrollbarSize: 6, // 竖滚动条
+                        horizontalScrollbarSize: 6, // 横滚动条
+                    },
+                    lineNumbers: 'off', // 控制行号的出现on | off
+                }}
+                onChange={setValue}
             />
         </Modal>
     );

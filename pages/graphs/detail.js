@@ -376,6 +376,7 @@ export default function Home() {
             <ExportModal
                 command={command}
                 setCommand={setCommand}
+                theme={theme}
             />
             <Nav
                 addTable={addTable}

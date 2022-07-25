@@ -11,6 +11,7 @@
     "dependencies": {
         "@arco-design/web-react": "^2.31.3",
         "@dbml/core": "^2.4.0",
+        "@monaco-editor/react": "^4.4.5",
         "classnames": "^2.3.1",
         "dexie": "^3.2.2",
         "install": "^0.13.0",
