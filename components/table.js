@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Button, Popover, Space, Tag, Popconfirm, Input } from '@arco-design/web-react';
-import { IconEdit, IconDelete, IconMessage, IconPlus, IconMinus } from '@arco-design/web-react/icon';
+import { IconEdit, IconDelete, IconMessage, IconPlus, IconMinus, IconPalette } from '@arco-design/web-react/icon';
+
+import themes from '../data/theme';
 
 /**
  * It renders a table with a title, a list of fields, and a button to edit the table
@@ -62,8 +64,8 @@ export default function Table(props) {
             //     tableMouseUpHandler(e, table);
             // }}
         >
-            <div className="table">
-                <div className="table-title">
+            <div className="table" style={{ borderColor: table.theme }}>
+                <div className="table-title" style={{ background: table.theme }}>
                     <span>
                         {table.name}
                     </span>
@@ -108,6 +110,32 @@ export default function Table(props) {
                                 icon={<IconMessage />}
                             />
                         </Popconfirm>
+                        <Popover
+                            position="tr"
+                            title="Theme"
+                            content={
+                                <Space warp direction="vertical" size="medium" style={{ margin: '8px 0 4px' }}>
+                                    {themes.map(list => (
+                                        <Space size="medium" key={list.toString()}>
+                                            {list.map(item => (
+                                                <Button
+                                                    key={item}
+                                                    shape="circle"
+                                                    style={{ background: item }}
+                                                    onClick={() => props.updateTable({ ...props.table, theme: item })}
+                                                />
+                                            ))}
+                                        </Space>
+                                    ))}
+                                </Space>
+                            }
+                            trigger="click"
+                        >
+                            <Button
+                                size="mini"
+                                icon={<IconPalette />}
+                            />
+                        </Popover>
                         <Popconfirm
                             position="tr"
                             title="Are you sure you want to delete this table?"
