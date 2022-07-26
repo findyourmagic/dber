@@ -20,7 +20,7 @@ a
     padding: 10px
     background-color: var(--color-bg-1)
     color: var(--color-text-1)
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.7)
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.16)
     a
         color: var(--color-text-1)
         text-decoration: none
@@ -61,27 +61,38 @@ a
     background: var(--color-bg-3)
     color: var(--color-text-2)
     border: 1px solid var(--color-border-2)
-    margin: 3px
+    margin: 4px
     border-radius: var(--border-radius-medium)
     overflow: hidden
     user-select: none
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.08)
 
     &:hover
         border: 1px solid rgb(var(--primary-6))
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.12)
     &:active
         cursor: move
 
     &-title
         display: flex
-        height: 44px
+        height: 40px
         justify-content: space-between
         align-items: center
-        padding: 8px
+        padding: 0 8px
         color: var(--color-text-1)
         box-sizing: border-box
         background: var(--color-fill-2)
         font-weight: 600
         cursor: move
+    &-comment
+        padding: 0 8px
+        height: 24px
+        line-height: 24px
+        font-size: 12px
+        color: var(--color-text-3)
+        background: var(--color-neutral-3)
+        &.no-comment
+            color: var(--color-text-4)
 
 .row
     position: relative
@@ -99,6 +110,8 @@ a
             display: none
         .grip-setting
             display: block
+        .grip-setting-btn
+            margin-left: 4px
 
 .field-content
     display: flex

@@ -52,7 +52,7 @@ export default function Home() {
      * It sets the offset to the mouse position relative to the box, and sets the mode to 'draging'
      */
     const mouseDownHandler = e => {
-        if (e.target.tagName === 'svg') {
+        if (e.target.tagName === 'svg' && e.button !== 2) {
             setOffset({
                 x: box.x + (e.clientX * box.w) / global.innerWidth,
                 y: box.y + (e.clientY * box.h) / global.innerHeight,
@@ -67,6 +67,7 @@ export default function Home() {
      * @param table - the table object that was clicked on
      */
     const tableMouseDownHandler = (e, table) => {
+        if (e.button === 2) return;
         const { x: cursorX, y: cursorY } = getSVGCursor(e);
 
         setMovingTable({
@@ -77,7 +78,7 @@ export default function Home() {
 
         setMode('moving');
         e.preventDefault();
-        e.stopPropagation();
+        // e.stopPropagation();
     };
 
     /**
@@ -315,7 +316,7 @@ export default function Home() {
     /**
      * It sets the editing table to the table that was clicked.
      */
-    const tableClickHandler = table => {
+    const handlerEditingTable = table => {
         setEditingTable(table);
     };
 
@@ -362,6 +363,72 @@ export default function Home() {
     const [formChange, setFormChange] = useState(false);
 
     const fieldRef = useRef(null);
+
+    const [addField, setAddField] = useState(null);
+
+    const handlerAddField = (table, index) => {
+        table.fields.splice(index + 1, 0, {
+            id: nanoid(),
+            name: 'new item' + table.fields.length,
+            type: 'VARCHAR',
+            unique: false,
+        });
+        setTableDict(state => {
+            return {
+                ...state,
+                [table.id]: {
+                    ...state[table.id],
+                    ...table,
+                },
+            };
+        });
+        handlerEditingField({ field: table.fields[index + 1], table });
+        setAddField({ index: index + 1, table });
+    };
+
+    const removeField = (table, index) => {
+        table.fields.splice(index, 1);
+        setTableDict(state => {
+            return {
+                ...state,
+                [table.id]: {
+                    ...state[table.id],
+                    ...table,
+                },
+            };
+        });
+    };
+
+    const handlerRemoveField = (table, index) => {
+        // if (table.fields.length === 1) {
+        //     return Modal.confirm({
+        //         title: (
+        //             <>
+        //                 Are you sure delete table <Tag color="arcoblue">{table.name}</Tag> field <Tag color="arcoblue">{table.fields[index].name}</Tag>?
+        //             </>
+        //         ),
+        //         content: 'This table only one field, and will be delete table.',
+        //         okText: 'Delete',
+        //         cancelText: 'Cancel',
+        //         onOk: () => {
+        //             removeTable(table.id);
+        //         },
+        //     });
+        // }
+
+        Modal.confirm({
+            title: (
+                <>
+                    Are you sure delete table <Tag color="arcoblue">{table.name}</Tag> field <Tag color="arcoblue">{table.fields[index].name}</Tag>?
+                </>
+            ),
+            okText: 'Delete',
+            cancelText: 'Cancel',
+            onOk: () => {
+                removeField(table, index);
+            },
+        });
+    };
 
     return (
         <div className="graph">
@@ -419,9 +486,13 @@ export default function Home() {
                             table={table}
                             TableWidth={TableWidth}
                             tableMouseDownHandler={tableMouseDownHandler}
-                            tableClickHandler={tableClickHandler}
+                            handlerEditingTable={handlerEditingTable}
                             gripMouseDownHandler={gripMouseDownHandler}
                             handlerEditingField={handlerEditingField}
+                            handlerAddField={handlerAddField}
+                            handlerRemoveField={handlerRemoveField}
+                            removeTable={removeTable}
+                            updateTable={updateTable}
                         />
                     );
                 })}
@@ -480,9 +551,13 @@ export default function Home() {
                 }
                 visible={editingField}
                 onCancel={() => {
+                    if (addField?.index) {
+                        removeField(addField.table, addField.index);
+                    }
                     setEditingField(false);
                 }}
                 onOk={() => {
+                    setAddField(null);
                     fieldRef.current.submit();
                 }}
                 escToExit={!formChange}
