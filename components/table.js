@@ -27,6 +27,11 @@ export default function Table(props) {
         handlerRemoveField,
     } = props;
 
+    const handlerContextMenu = e => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     const RenderTableTips = ({ field }) => (
         <div className="table-tips">
             <div className="head">
@@ -63,6 +68,7 @@ export default function Table(props) {
             // onMouseUp={(e) => {
             //     tableMouseUpHandler(e, table);
             // }}
+            onContextMenu={handlerContextMenu}
         >
             <div className="table" style={{ borderColor: table.theme }}>
                 <div className="table-title" style={{ background: table.theme }}>

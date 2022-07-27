@@ -38,11 +38,14 @@ const save = async ({
  * It's a modal that allows you to import a graph from a string
  * @returns Modal component
  */
-export default function ImportModal({ importType, setImportType, addGraph, theme }) {
+export default function ImportModal({ importType, setImportType, addGraph, theme, handlerImportTable }) {
     const [value, setValue] = useState('');
 
     const handleOk = async () => {
-        if (!value) return;
+        if (!value) {
+            setImportType('');
+            return;
+        }
         try {
             const result = await Parser.parse(value, importType.toLowerCase());
             const graph = result.schemas[0];
@@ -54,7 +57,7 @@ export default function ImportModal({ importType, setImportType, addGraph, theme
                     id,
                     name: table.name,
                     note: table.note,
-                    x: index * 220,
+                    x: index * 260,
                     y: 20,
                     fields: table.fields.map(field => {
                         const fieldId = nanoid();
@@ -90,6 +93,14 @@ export default function ImportModal({ importType, setImportType, addGraph, theme
                     }),
                 };
             });
+
+            if (handlerImportTable) {
+                handlerImportTable({ tableDict, linkDict });
+                setValue('');
+                setImportType('');
+                return;
+            }
+
             const graphId = nanoid();
             await save({
                 id: graphId,
@@ -131,6 +142,7 @@ export default function ImportModal({ importType, setImportType, addGraph, theme
             cancelText="Close"
             onCancel={() => setImportType('')}
             style={{ width: 'auto' }}
+            unmountOnExit
         >
             <Editor
                 language={importType === 'DBML' ? 'apex' : 'sql'}

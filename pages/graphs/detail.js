@@ -1,19 +1,30 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useState, useRef, useMemo } from 'react';
-import { Drawer, Modal, Tag } from '@arco-design/web-react';
+import { Drawer, Modal, Notification, Tag } from '@arco-design/web-react';
 import { nanoid } from 'nanoid';
+import { useContextMenu } from 'react-contexify';
+
 import TableForm from '../../components/table_form';
 import FieldForm from '../../components/field_form';
 import LinkPath from '../../components/link_path';
 import LinkModal from '../../components/link_modal';
 import Nav from '../../components/nav';
 import Table from '../../components/table';
+import ContextMenu from '../../components/context_menu';
 import useGraphState from '../../hooks/use-graph-state';
+import { db } from '../../data/db';
+import exportSQL from '../../utils/export-sql';
 
 const ExportModal = dynamic(() => import('../../components/export_modal'), {
     ssr: false,
 });
+const ImportModal = dynamic(() => import('../../components/import_modal'), {
+    ssr: false,
+});
+
+
+const MENU_ID = 'svg-menu';
 
 export default function Home() {
     const {
@@ -59,6 +70,17 @@ export default function Home() {
             });
             setMode('draging');
         }
+    };
+
+    const [importType, setImportType] = useState('');
+
+    const { show } = useContextMenu({
+        id: MENU_ID,
+    });
+
+    const contextMenuHandler = e => {
+        e.preventDefault();
+        show(e);
     };
 
     /**
@@ -239,10 +261,34 @@ export default function Home() {
         });
     };
 
+    const saveGraph = async () => {
+        const id = new URLSearchParams(global.location.search).get('id');
+        try {
+            await db.graphs.put({
+                id,
+                tableDict,
+                linkDict,
+                box,
+                name,
+                updatedAt: new Date().valueOf(),
+            });
+            Notification.success({
+                title: 'Save success',
+            });
+        } catch (e) {
+            Notification.error({
+                title: 'Save failed',
+            });
+        }
+    };
+
     /**
      * It creates a new table object and adds it to the table dictionary
      */
-    const addTable = () => {
+    const addTable = ({
+        x = box.x + box.w / 2 - 200 + tables.length * 20,
+        y = box.y + box.h / 2 - 200 + tables.length * 20
+    }) => {
         setTableDict(state => {
             const id = nanoid();
             return {
@@ -250,8 +296,8 @@ export default function Home() {
                 [id]: {
                     id,
                     name: `Table Name ${tables.length + 1}`,
-                    x: box.x + box.w / 2 - 200 + tables.length * 20,
-                    y: box.y + box.h / 2 - 200 + tables.length * 20,
+                    x,
+                    y,
                     fields: [
                         {
                             id: nanoid(),
@@ -430,6 +476,17 @@ export default function Home() {
         });
     };
 
+    const handlerImportTable = ({ tableDict, linkDict }) => {
+        setTableDict(state => ({
+            ...state,
+            ...tableDict,
+        }));
+        setLinkDict(state => ({
+            ...state,
+            ...linkDict,
+        }));
+    };
+
     return (
         <div className="graph">
             <Head>
@@ -457,6 +514,7 @@ export default function Home() {
                 setCommand={setCommand}
                 theme={theme}
                 setTheme={setTheme}
+                saveGraph={saveGraph}
             />
             <svg
                 className="main"
@@ -464,6 +522,7 @@ export default function Home() {
                 onMouseDown={mouseDownHandler}
                 onMouseUp={mouseUpHandler}
                 onMouseMove={mouseMoveHandler}
+                onContextMenu={contextMenuHandler}
                 onWheel={wheelHandler}
                 ref={svg}
             >
@@ -583,6 +642,23 @@ export default function Home() {
                 editingLink={editingLink}
                 setEditingLink={setEditingLink}
                 setLinkDict={setLinkDict}
+            />
+            <ImportModal
+                handlerImportTable={handlerImportTable}
+                importType={importType}
+                setImportType={setImportType}
+                theme={theme}
+            />
+            <ContextMenu
+                theme={theme}
+                menuId={MENU_ID}
+                addTable={addTable}
+                setImportType={setImportType}
+                saveGraph={saveGraph}
+                setCommand={val => {
+                    const sql = exportSQL(tableDict, linkDict, val);
+                    setCommand(sql);
+                }}
             />
         </div>
     );

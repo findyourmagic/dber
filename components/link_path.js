@@ -89,6 +89,11 @@ export default function LinkPath(props) {
     const midX = x1 - (x1 - x) / 2;
     const midY = y1 - (y1 - y) / 2;
 
+    const handlerContextMenu = e => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     return (
         <>
             <path
@@ -111,6 +116,7 @@ export default function LinkPath(props) {
                         fieldId: source.fieldId,
                     });
                 }}
+                onContextMenu={handlerContextMenu}
             >
                 <div
                     style={{ cursor: 'pointer', userSelect: 'none' }}
@@ -130,6 +136,7 @@ export default function LinkPath(props) {
                         fieldId: target.fieldId,
                     });
                 }}
+                onContextMenu={handlerContextMenu}
             >
                 <div
                     style={{ cursor: 'pointer', userSelect: 'none' }}

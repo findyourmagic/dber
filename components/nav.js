@@ -20,27 +20,6 @@ import { db } from '../data/db';
  * @returns A Nav component that takes in a title, a save button, a demo button, a clear button, an export button
  */
 export default function Nav(props) {
-    const save = async () => {
-        const id = new URLSearchParams(global.location.search).get('id');
-        try {
-            await db.graphs.put({
-                id,
-                tableDict: props.tableDict,
-                linkDict: props.linkDict,
-                box: props.box,
-                name: props.name,
-                updatedAt: new Date().valueOf(),
-            });
-            Notification.success({
-                title: 'Save success',
-            });
-        } catch (e) {
-            Notification.error({
-                title: 'Save failed',
-            });
-        }
-    };
-
     return (
         <nav className="nav">
             <div>
@@ -61,7 +40,7 @@ export default function Nav(props) {
                     }}
                 />
                 <Button
-                    onClick={save}
+                    onClick={() => props.saveGraph()}
                     type="primary"
                     status="success"
                     size="mini"
