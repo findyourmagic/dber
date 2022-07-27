@@ -1,5 +1,8 @@
-import { Button, Popover, Space, Tag } from '@arco-design/web-react';
-import { IconEdit } from '@arco-design/web-react/icon';
+import { useState } from 'react';
+import { Button, Popover, Space, Tag, Popconfirm, Input } from '@arco-design/web-react';
+import { IconEdit, IconDelete, IconMessage, IconPlus, IconMinus, IconPalette } from '@arco-design/web-react/icon';
+
+import themes from '../data/theme';
 
 /**
  * It renders a table with a title, a list of fields, and a button to edit the table
@@ -7,7 +10,7 @@ import { IconEdit } from '@arco-design/web-react/icon';
  *            table,
  *            TableWidth,
  *            tableMouseDownHandler,
- *            tableClickHandler,
+ *            handlerEditingTable,
  *            gripMouseDownHandler,
  *        }
  * @returns A table component with a title and a list of fields.
@@ -17,9 +20,11 @@ export default function Table(props) {
         table,
         TableWidth,
         tableMouseDownHandler,
-        tableClickHandler,
+        handlerEditingTable,
         gripMouseDownHandler,
         handlerEditingField,
+        handlerAddField,
+        handlerRemoveField,
     } = props;
 
     const RenderTableTips = ({ field }) => (
@@ -42,7 +47,9 @@ export default function Table(props) {
         </div>
     )
 
-    const height = table.fields.length * 32 + 52;
+    const [note, setNote] = useState(table.note);
+
+    const height = table.fields.length * 32 + 52 + 24;
     return (
         <foreignObject
             x={table.x}
@@ -57,20 +64,100 @@ export default function Table(props) {
             //     tableMouseUpHandler(e, table);
             // }}
         >
-            <div className="table">
-                <div className="table-title">
-                    <span>{table.name}</span>
-                    <Button
-                        size="mini"
-                        onClick={() => {
-                            tableClickHandler(table);
-                        }}
-                    >
-                        Edit
-                    </Button>
+            <div className="table" style={{ borderColor: table.theme }}>
+                <div className="table-title" style={{ background: table.theme }}>
+                    <span>
+                        {table.name}
+                    </span>
+
+                    <Space size={4}>
+                        <Button
+                            size="mini"
+                            onClick={() => {
+                                handlerEditingTable(table);
+                            }}
+                            icon={<IconEdit />}
+                        />
+                        <Popconfirm
+                            icon={null}
+                            position="tr"
+                            style={{ width: 480 }}
+                            title={
+                                <Space>
+                                    <label>Comment:</label>
+                                    <Input
+                                        style={{ width: 240 }}
+                                        defaultValue={table.note}
+                                        allowClear
+                                        placeholder="Please Enter Comment"
+                                        onChange={value => {
+                                            setNote(value);
+                                        }}
+                                    />
+                                </Space>
+                            }
+                            okText="Commit"
+                            cancelText="Cancel"
+                            onOk={() => {
+                                props.updateTable({ ...props.table, note });
+                            }}
+                            onCancel={() => {
+                                setNote(props.table.note);
+                            }}
+                        >
+                            <Button
+                                size="mini"
+                                icon={<IconMessage />}
+                            />
+                        </Popconfirm>
+                        <Popover
+                            position="tr"
+                            title="Theme"
+                            content={
+                                <Space warp direction="vertical" size="medium" style={{ margin: '8px 0 4px' }}>
+                                    {themes.map(list => (
+                                        <Space size="medium" key={list.toString()}>
+                                            {list.map(item => (
+                                                <Button
+                                                    key={item}
+                                                    shape="circle"
+                                                    style={{ background: item }}
+                                                    onClick={() => props.updateTable({ ...props.table, theme: item })}
+                                                />
+                                            ))}
+                                        </Space>
+                                    ))}
+                                </Space>
+                            }
+                            trigger="click"
+                        >
+                            <Button
+                                size="mini"
+                                icon={<IconPalette />}
+                            />
+                        </Popover>
+                        <Popconfirm
+                            position="tr"
+                            title="Are you sure you want to delete this table?"
+                            okText="Yes"
+                            cancelText="No"
+                            onOk={() => {
+                                props.removeTable(table.id);
+                            }}
+                        >
+                            <Button
+                                status='danger'
+                                size="mini"
+                                icon={<IconDelete />}
+                            />
+                        </Popconfirm>
+                    </Space>
+                </div>
+                <div className={`table-comment ${note ? '' : 'no-comment'}`}>
+                    {table.note || 'No Comment'}
                 </div>
                 {table.fields &&
-                    table.fields.map(field => (
+                    table.fields.map((field, index) => (
                         <Popover key={field.id} position="rt" content={<RenderTableTips field={field} />}>
                             <div
                                 className="row"
@@ -102,6 +189,24 @@ export default function Table(props) {
                                         icon={<IconEdit />}
                                         onClick={() => {
                                             handlerEditingField({ field, table });
+                                        }}
+                                    />
+                                    <Button
+                                        status="success"
+                                        className="grip-setting-btn"
+                                        size="mini"
+                                        icon={<IconPlus />}
+                                        onClick={() => {
+                                            handlerAddField(table, index);
+                                        }}
+                                    />
+                                    <Button
+                                        status='danger'
+                                        className="grip-setting-btn"
+                                        size="mini"
+                                        icon={<IconMinus />}
+                                        onClick={() => {
+                                            handlerRemoveField(table, index);
                                         }}
                                     />
                                 </div>

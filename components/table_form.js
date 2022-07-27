@@ -174,6 +174,7 @@ function TableFormItem(props) {
 export default function TableForm(props) {
     const [fields, setFields] = useState(props.table.fields);
     const [name, setName] = useState(props.table.name);
+    const [note, setNote] = useState(props.table.note);
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -181,7 +182,7 @@ export default function TableForm(props) {
     }, [props.table]);
 
     const save = (values) => {
-        const table = { ...props.table, name, fields: Object.values(values) };
+        const table = { ...props.table, name, note, fields: Object.values(values) };
         delete table.x;
         delete table.y;
 
@@ -309,6 +310,15 @@ export default function TableForm(props) {
                     </Button>
                 </Popconfirm>
             </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <label>Table Comment:</label>
+                <Input
+                    defaultValue={props.table.note}
+                    type="text"
+                    onChange={value => setNote(value)}
+                    style={{ width: 460, marginLeft: 8 }}
+                />
+            </div>
 
             <Form
                 onSubmit={save}
@@ -339,6 +349,17 @@ export default function TableForm(props) {
                         setDraggingId={setDraggingId}
                     />
                 ))}
+                {fields.length === 0 && (
+                    <Button
+                        onClick={() => addItem(0)}
+                        type="outline"
+                        status="success"
+                        size="small"
+                        long
+                    >
+                        + Add field
+                    </Button>
+                )}
             </Form>
         </Space>
     );

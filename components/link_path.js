@@ -39,13 +39,13 @@ export default function LinkPath(props) {
 
     const sourceFieldPosition = {
         x: sourceTable.x,
-        y: sourceTable.y + sourceFieldIndex * 32 + 50 + gripRadius,
+        y: sourceTable.y + sourceFieldIndex * 32 + 50 + gripRadius + 24,
         ...endpoints[0],
     };
 
     const targetFieldPosition = {
         x: targetTable.x,
-        y: targetTable.y + targetFieldIndex * 32 + 50 + gripRadius,
+        y: targetTable.y + targetFieldIndex * 32 + 50 + gripRadius + 24,
         ...endpoints[1],
     };
 
