@@ -112,7 +112,19 @@ export default function Table(props) {
                         </Popconfirm>
                         <Popover
                             position="tr"
-                            title="Theme"
+                            title={
+                                <>
+                                    Theme
+
+                                    <Button
+                                        size="mini"
+                                        style={{ float: 'right', fontSize: '12px' }}
+                                        onClick={() => props.updateTable({ ...props.table, theme: undefined })}
+                                    >
+                                        Clear
+                                    </Button>
+                                </>
+                            }
                             content={
                                 <Space warp direction="vertical" size="medium" style={{ margin: '8px 0 4px' }}>
                                     {themes.map(list => (
