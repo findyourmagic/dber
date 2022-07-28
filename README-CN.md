@@ -63,9 +63,25 @@ npm run gen
 ```
 
 ## 使用docker构建
+
+使用以下命令来构建Docker镜像:
+
+```
+docker build -t dber .
+```
+
+然后可以用Docker或者Docker Compose来启动服务:
+
+```
+docker run -p 3000:3000 dber
+```
+
+或者
+
 ```bash
 docker-compose up -d
 ```
+
 使用浏览器打开 [http://localhost:3000](http://localhost:3000) 查看结果.
 
 ## 受到以下作品启发

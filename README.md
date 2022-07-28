@@ -61,6 +61,21 @@ npm run gen
 ```
 
 ## Build & Startup with docker
+
+Build docker image with command:
+
+```
+docker build -t dber .
+```
+
+Then run it with docker or docker compose:
+
+```
+docker run -p 3000:3000 dber
+```
+
+OR
+
 ```bash
 docker-compose up -d
 ```

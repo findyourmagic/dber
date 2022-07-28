@@ -1,5 +1,6 @@
 {
     "name": "dber",
+    "version": "0.8.0",
     "private": true,
     "scripts": {
         "dev": "next dev",
