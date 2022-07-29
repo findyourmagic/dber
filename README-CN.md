@@ -51,8 +51,6 @@ yarn dev
 在生产模式下运行:
 
 ```bash
-
-```bash
 npm run build && npm run start
 ```
 
