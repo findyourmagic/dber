@@ -23,6 +23,7 @@ export default function LinkPath(props) {
         linkDict,
         TableWidth: width,
         setEditingLink,
+        editable,
     } = props;
     if (!tableDict) return null;
 
@@ -111,6 +112,7 @@ export default function LinkPath(props) {
                 width={20}
                 height={20}
                 onMouseDown={() => {
+                    if (!editable) return;
                     setEditingLink({
                         linkId: link.id,
                         fieldId: source.fieldId,
@@ -119,7 +121,7 @@ export default function LinkPath(props) {
                 onContextMenu={handlerContextMenu}
             >
                 <div
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    style={{ cursor: editable ? 'pointer' : 'default', userSelect: 'none' }}
                     className="path-label"
                 >
                     {source.relation}
@@ -131,6 +133,7 @@ export default function LinkPath(props) {
                 width={20}
                 height={20}
                 onMouseDown={() => {
+                    if (!editable) return;
                     setEditingLink({
                         linkId: link.id,
                         fieldId: target.fieldId,
@@ -139,7 +142,7 @@ export default function LinkPath(props) {
                 onContextMenu={handlerContextMenu}
             >
                 <div
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    style={{ cursor: editable ? 'pointer' : 'default', userSelect: 'none' }}
                     className="path-label"
                 >
                     {target.relation}

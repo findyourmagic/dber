@@ -4,14 +4,12 @@ import {
     Popconfirm,
     Dropdown,
     Menu,
-    Notification,
     Input,
     Switch,
 } from '@arco-design/web-react';
-import { IconSunFill, IconMoonFill } from '@arco-design/web-react/icon';
+import { IconSunFill, IconMoonFill, IconLeft } from '@arco-design/web-react/icon';
 import Link from 'next/link';
 import exportSQL from '../utils/export-sql';
-import { db } from '../data/db';
 
 /**
  * It renders a nav bar with a title, a save button, a demo button, a clear button, an export button,
@@ -20,35 +18,55 @@ import { db } from '../data/db';
  * @returns A Nav component that takes in a title, a save button, a demo button, a clear button, an export button
  */
 export default function Nav(props) {
+    if (!props.editable) {
+        return (
+            <nav className="nav">
+                <Space>
+                    <div className="nav-title">
+                        History Record: {props.name}
+                    </div>
+                    <Button
+                        onClick={props.applyHistory}
+                        type="primary"
+                        status="success"
+                        shape="round"
+                        style={{ marginLeft: 8 }}
+                    >
+                        Apply
+                    </Button>
+                </Space>
+            </nav>
+        );
+    }
+
     return (
         <nav className="nav">
-            <div>
+            <Space>
                 <Link href="/graphs" passHref>
                     <a href="javascript:;">
-                        <strong>DBER</strong> | Database design tool based on
-                        entity relation diagram
+                        <IconLeft style={{ fontSize: 20 }} />
                     </a>
                 </Link>
-            </div>
-            <Space>
                 <Input
                     type="text"
-                    size="mini"
                     value={props.name}
                     onChange={value => {
                         props.setName(value);
                     }}
                 />
+            </Space>
+
+            <Space>
                 <Button
                     onClick={() => props.saveGraph()}
                     type="primary"
                     status="success"
-                    size="mini"
+                    shape="round"
                 >
                     Save
                 </Button>
-                <Button onClick={props.addTable} type="primary" size="mini">
-                    + Add New Table
+                <Button onClick={props.addTable} type="primary" shape="round">
+                    + New Table
                 </Button>
                 <Popconfirm
                     title="Are you sure you want to delete all the tables?"
@@ -60,7 +78,7 @@ export default function Nav(props) {
                         props.setLinkDict({});
                     }}
                 >
-                    <Button type="outline" status="danger" size="mini">
+                    <Button type="outline" status="danger" shape="round">
                         Clear
                     </Button>
                 </Popconfirm>
@@ -118,12 +136,18 @@ export default function Nav(props) {
                     }
                     position="br"
                 >
-                    <Button type="outline" size="mini">
+                    <Button type="outline" shape="round">
                         Export SQL
                     </Button>
                 </Dropdown>
+                <Button
+                    onClick={props.handlerHistory}
+                    type="secondary"
+                    shape="round"
+                >
+                    History
+                </Button>
                 <Switch
-                    type="round"
                     checkedIcon={<IconMoonFill />}
                     uncheckedIcon={<IconSunFill />}
                     checked={props.theme === 'dark'}

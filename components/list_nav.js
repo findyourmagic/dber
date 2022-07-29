@@ -1,9 +1,6 @@
 import { Space, Button, Dropdown, Menu, Switch } from '@arco-design/web-react';
 import { IconSunFill, IconMoonFill } from '@arco-design/web-react/icon';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
-const ImportModal = dynamic(() => import('./import_modal'), { ssr: false });
 
 /**
  * It renders a nav bar with a link to the home page, a button to add a new graph, and a dropdown menu
@@ -12,7 +9,7 @@ const ImportModal = dynamic(() => import('./import_modal'), { ssr: false });
  * @returns List Nav component
  */
 export default function ListNav(props) {
-    const [importType, setImportType] = useState('');
+    const { setImportType } = props;
 
     return (
         <div className="nav">
@@ -60,13 +57,13 @@ export default function ListNav(props) {
                     }
                     position="br"
                 >
-                    <Button type="outline" size="mini">
+                    <Button type="outline" shape="round">
                         import
                     </Button>
                 </Dropdown>
                 <Button
                     type="primary"
-                    size="mini"
+                    shape="round"
                     onClick={() => {
                         props.addGraph();
                     }}
@@ -74,7 +71,6 @@ export default function ListNav(props) {
                     + New graph
                 </Button>
                 <Switch
-                    type="round"
                     checkedIcon={<IconMoonFill />}
                     uncheckedIcon={<IconSunFill />}
                     checked={props.theme === 'dark'}
@@ -83,12 +79,6 @@ export default function ListNav(props) {
                     }}
                 />
             </Space>
-            <ImportModal
-                addGraph={props.addGraph}
-                importType={importType}
-                setImportType={setImportType}
-                theme={props.theme}
-            />
         </div>
     );
 }
