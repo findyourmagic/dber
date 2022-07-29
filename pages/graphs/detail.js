@@ -23,7 +23,6 @@ const ImportModal = dynamic(() => import('../../components/import_modal'), {
     ssr: false,
 });
 
-
 const MENU_ID = 'svg-menu';
 
 export default function Home() {
@@ -287,7 +286,7 @@ export default function Home() {
      */
     const addTable = ({
         x = box.x + box.w / 2 - 200 + tables.length * 20,
-        y = box.y + box.h / 2 - 200 + tables.length * 20
+        y = box.y + box.h / 2 - 200 + tables.length * 20,
     }) => {
         setTableDict(state => {
             const id = nanoid();
@@ -328,6 +327,22 @@ export default function Home() {
                 };
             });
         }
+        setLinkDict(state => {
+            const newState = { ...state };
+            Object.keys(newState).forEach(key => {
+                if (
+                    newState[key].endpoints.some(
+                        endpoint =>
+                            endpoint.id === table.id &&
+                            !table.fields.some(
+                                field => field.id === endpoint.fieldId
+                            )
+                    )
+                )
+                    delete newState[key];
+            });
+            return newState;
+        });
         setEditingTable(null);
         setEditingField(null);
     };
@@ -433,7 +448,7 @@ export default function Home() {
     };
 
     const removeField = (table, index) => {
-        table.fields.splice(index, 1);
+        const [filed] = table.fields.splice(index, 1);
         setTableDict(state => {
             return {
                 ...state,
@@ -442,6 +457,19 @@ export default function Home() {
                     ...table,
                 },
             };
+        });
+        setLinkDict(state => {
+            const newState = { ...state };
+            Object.keys(newState).forEach(key => {
+                if (
+                    newState[key].endpoints.find(
+                        endpoint => endpoint.fieldId === filed.id
+                    )
+                ) {
+                    delete newState[key];
+                }
+            });
+            return newState;
         });
     };
 
@@ -465,7 +493,9 @@ export default function Home() {
         Modal.confirm({
             title: (
                 <>
-                    Are you sure delete table <Tag color="arcoblue">{table.name}</Tag> field <Tag color="arcoblue">{table.fields[index].name}</Tag>?
+                    Are you sure delete table
+                    <Tag color="arcoblue">{table.name}</Tag> field
+                    <Tag color="arcoblue">{table.fields[index].name}</Tag>?
                 </>
             ),
             okText: 'Delete',
@@ -605,7 +635,15 @@ export default function Home() {
             <Modal
                 title={
                     <div style={{ textAlign: 'left' }}>
-                        Edit {editingField ? <Tag color="arcoblue">{editingField.table.name}</Tag> : ''} Field
+                        Edit
+                        {editingField ? (
+                            <Tag color="arcoblue">
+                                {editingField.table.name}
+                            </Tag>
+                        ) : (
+                            ''
+                        )}
+                        Field
                     </div>
                 }
                 visible={editingField}

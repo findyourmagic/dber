@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Button, Space, Input, Card, Popconfirm, Form, Checkbox, Select } from '@arco-design/web-react';
+import {
+    Button,
+    Space,
+    Input,
+    Card,
+    Popconfirm,
+    Form,
+    Checkbox,
+    Select,
+} from '@arco-design/web-react';
 import classNames from 'classnames';
 import { nanoid } from 'nanoid';
 import fieldTypes from '../data/filed_typs';
@@ -88,7 +97,12 @@ function TableFormItem(props) {
                         label="Name"
                         field={`${index}.name`}
                         initialValue={field.name}
-                        rules={[{ required: true, message: 'Please enter field name' }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please enter field name',
+                            },
+                        ]}
                     >
                         <Input allowClear />
                     </Form.Item>
@@ -96,7 +110,12 @@ function TableFormItem(props) {
                         label="Type"
                         field={`${index}.type`}
                         initialValue={field.type}
-                        rules={[{ required: true, message: 'Please choose field type' }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please choose field type',
+                            },
+                        ]}
                     >
                         <Select style={{ width: '100%' }} allowCreate>
                             {fieldTypes.map(item => (
@@ -108,25 +127,55 @@ function TableFormItem(props) {
                     </Form.Item>
                 </Space>
                 <Space className="table-form-item">
-                    <Form.Item label="Comment" field={`${index}.note`} initialValue={field.note || ''}>
+                    <Form.Item
+                        label="Comment"
+                        field={`${index}.note`}
+                        initialValue={field.note || ''}
+                    >
                         <Input allowClear placeholder="note" />
                     </Form.Item>
-                    <Form.Item label="Default" field={`${index}.dbdefault`} initialValue={field.dbdefault || ''}>
+                    <Form.Item
+                        label="Default"
+                        field={`${index}.dbdefault`}
+                        initialValue={field.dbdefault || ''}
+                    >
                         <Input allowClear placeholder="default" />
                     </Form.Item>
                 </Space>
                 <Space className="table-form-item">
-                    <Form.Item noStyle field={`${index}.pk`} initialValue={field.pk}>
+                    <Form.Item
+                        noStyle
+                        field={`${index}.pk`}
+                        initialValue={field.pk}
+                    >
                         <Checkbox defaultChecked={field.pk}>Primary</Checkbox>
                     </Form.Item>
-                    <Form.Item noStyle field={`${index}.unique`} initialValue={field.unique}>
-                        <Checkbox defaultChecked={field.unique}>Unique</Checkbox>
+                    <Form.Item
+                        noStyle
+                        field={`${index}.unique`}
+                        initialValue={field.unique}
+                    >
+                        <Checkbox defaultChecked={field.unique}>
+                            Unique
+                        </Checkbox>
                     </Form.Item>
-                    <Form.Item noStyle field={`${index}.not_null`} initialValue={field.not_null}>
-                        <Checkbox defaultChecked={field.not_null}>Not Null</Checkbox>
+                    <Form.Item
+                        noStyle
+                        field={`${index}.not_null`}
+                        initialValue={field.not_null}
+                    >
+                        <Checkbox defaultChecked={field.not_null}>
+                            Not Null
+                        </Checkbox>
                     </Form.Item>
-                    <Form.Item noStyle field={`${index}.increment`} initialValue={field.increment}>
-                        <Checkbox defaultChecked={field.increment}>Increment</Checkbox>
+                    <Form.Item
+                        noStyle
+                        field={`${index}.increment`}
+                        initialValue={field.increment}
+                    >
+                        <Checkbox defaultChecked={field.increment}>
+                            Increment
+                        </Checkbox>
                     </Form.Item>
                 </Space>
 
@@ -146,7 +195,9 @@ function TableFormItem(props) {
                         okText="Yes"
                         cancelText="No"
                     >
-                        <Button status="danger" size="small" long>Remove field</Button>
+                        <Button status="danger" size="small" long>
+                            Remove field
+                        </Button>
                     </Popconfirm>
                     <Button
                         onClick={() => props.addItem(props.index)}
@@ -181,12 +232,16 @@ export default function TableForm(props) {
         setFields(props.table.fields);
     }, [props.table]);
 
-    const save = (values) => {
-        const table = { ...props.table, name, note, fields: Object.values(values) };
+    const save = values => {
+        const table = {
+            ...props.table,
+            name,
+            note,
+            fields: Object.values(values),
+        };
         delete table.x;
         delete table.y;
 
-        console.log(table);
         props.updateTable(table);
         props.setCommitting(false);
     };
@@ -197,7 +252,7 @@ export default function TableForm(props) {
         }
     }, [props.committing]);
 
-    const addItem = (index) => {
+    const addItem = index => {
         const newState = [...fields];
         newState.splice(index + 1, 0, {
             id: nanoid(),
