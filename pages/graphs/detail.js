@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import { Drawer, Modal, Tag } from '@arco-design/web-react';
 import { nanoid } from 'nanoid';
 import { useContextMenu } from 'react-contexify';
@@ -245,25 +245,52 @@ export default function Home() {
      * that takes a state object as an argument and returns a new state object
      */
     const wheelHandler = e => {
-        let { deltaY } = e;
-        setBox(state => {
-            if (state.w > 4000 && deltaY > 0) return state;
-            if (state.w < 600 && deltaY < 0) return state;
+        let { deltaY, deltaX } = e;
+        const cursor = getSVGCursor(e);
 
-            const cursor = getSVGCursor(e);
-            const widthHeightRatio = state.w / state.h;
-            deltaY = deltaY * 2;
-            const deltaX = deltaY * widthHeightRatio;
-            return {
-                x: state.x - ((cursor.x - state.x) / state.w) * deltaX,
-                y: state.y - ((cursor.y - state.y) / state.h) * deltaY,
-                w: state.w + deltaX,
-                h: state.h + deltaY,
-                clientH: state.clientH,
-                clientW: state.clientW,
-            };
-        });
+        if (!e.ctrlKey) {
+            setBox(state => {
+                if (state.w > 4000 && deltaY > 0) return state;
+                if (state.w < 600 && deltaY < 0) return state;
+
+                return {
+                    x: state.x + deltaX,
+                    y: state.y + deltaY,
+                    w: state.w,
+                    h: state.h,
+                    clientH: state.clientH,
+                    clientW: state.clientW,
+                };
+            });
+        } else {
+            setBox(state => {
+                if (state.w > 4000 && deltaY > 0) return state;
+                if (state.w < 600 && deltaY < 0) return state;
+
+                deltaY = deltaY * 2;
+                deltaX = deltaY * (state.w / state.h);
+
+                return {
+                    x: state.x - ((cursor.x - state.x) / state.w) * deltaX,
+                    y: state.y - ((cursor.y - state.y) / state.h) * deltaY,
+                    w: state.w + deltaX,
+                    h: state.h + deltaY,
+                    clientH: state.clientH,
+                    clientW: state.clientW,
+                };
+            });
+        }
+
+        e.preventDefault();
     };
+
+    useEffect(() => {
+        const instance = svg.current;
+        instance.addEventListener('wheel', wheelHandler, { passive: false });
+        return () => {
+            instance.removeEventListener('wheel', wheelHandler, { passive: false })
+        };
+    }, []);
 
     const updateGraph = () => {
         const id = new URLSearchParams(global.location.search).get('id');
@@ -639,7 +666,7 @@ export default function Home() {
                 onMouseUp={mouseUpHandler}
                 onMouseMove={mouseMoveHandler}
                 onContextMenu={contextMenuHandler}
-                onWheel={wheelHandler}
+                // onWheel={wheelHandler}
                 ref={svg}
             >
                 {links.map(link => {

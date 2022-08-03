@@ -28,7 +28,7 @@ export default function FieldForm(props) {
                 <div style={{ textAlign: 'left' }}>
                     Edit
                     {table ? (
-                        <Tag color="arcoblue">{table.name}</Tag>
+                        <Tag color="arcoblue" style={{ margin: '0 4px' }}>{table.name}</Tag>
                     ) : (
                         ''
                     )}
