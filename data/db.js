@@ -1,6 +1,7 @@
 /* Creating a database called graphDB and creating a table called graphs. */
 import Dexie from 'dexie';
 import { Notification } from '@arco-design/web-react';
+import { diffJson } from 'diff';
 
 export const db = new Dexie('graphDB');
 
@@ -28,13 +29,21 @@ export const saveGraph = async ({
             name,
             updatedAt: now,
         });
-        db.logs.add({
-            graphId: id,
+
+        const logJson = {
             tableDict: data.tableDict,
             linkDict: data.linkDict,
             name: data.name,
-            updatedAt: data.updatedAt,
-        });
+        };
+
+        if (diffJson({ tableDict, linkDict, name }, logJson).length > 1) {
+            db.logs.add({
+                graphId: id,
+                updatedAt: data.updatedAt,
+                ...logJson,
+            });
+        }
+
         Notification.success({
             title: 'Save success',
         });

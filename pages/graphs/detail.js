@@ -555,7 +555,6 @@ export default function Home() {
     }, [tableDict, linkDict]);
 
     useHotkeys('ctrl+e, cmd+e', async e => {
-        console.log({ tableDict, name });
         handlerExport('dbml');
         e.preventDefault();
     }, [tableDict, linkDict]);
