@@ -12,6 +12,9 @@ import themes from '../data/theme';
  *            tableMouseDownHandler,
  *            handlerEditingTable,
  *            gripMouseDownHandler,
+ *            handlerEditingField,
+ *            handlerAddField,
+ *            handlerRemoveField,
  *        }
  * @returns A table component with a title and a list of fields.
  */
@@ -25,6 +28,7 @@ export default function Table(props) {
         handlerEditingField,
         handlerAddField,
         handlerRemoveField,
+        editable,
     } = props;
 
     const handlerContextMenu = e => {
@@ -50,7 +54,7 @@ export default function Table(props) {
                 <div className="field-item note"><span>COMMENT:</span>{field.note}</div>
             </div>
         </div>
-    )
+    );
 
     const [note, setNote] = useState(table.note);
 
@@ -70,115 +74,124 @@ export default function Table(props) {
             // }}
             onContextMenu={handlerContextMenu}
         >
-            <div className="table" style={{ borderColor: table.theme }}>
+            <div
+                className={`table ${editable ? 'editable' : ''}`}
+                style={{ borderColor: table.theme }}
+            >
                 <div className="table-title" style={{ background: table.theme }}>
                     <span>
                         {table.name}
                     </span>
 
-                    <Space size={4}>
-                        <Button
-                            size="mini"
-                            onClick={() => {
-                                handlerEditingTable(table);
-                            }}
-                            icon={<IconEdit />}
-                        />
-                        <Popconfirm
-                            icon={null}
-                            position="tr"
-                            style={{ width: 480 }}
-                            title={
-                                <Space>
-                                    <label>Comment:</label>
-                                    <Input
-                                        style={{ width: 240 }}
-                                        defaultValue={table.note}
-                                        allowClear
-                                        placeholder="Please Enter Comment"
-                                        onChange={value => {
-                                            setNote(value);
-                                        }}
-                                    />
-                                </Space>
-                            }
-                            okText="Commit"
-                            cancelText="Cancel"
-                            onOk={() => {
-                                props.updateTable({ ...props.table, note });
-                            }}
-                            onCancel={() => {
-                                setNote(props.table.note);
-                            }}
-                        >
+                    {editable && (
+                        <Space size={4}>
                             <Button
                                 size="mini"
-                                icon={<IconMessage />}
+                                onClick={() => {
+                                    handlerEditingTable(table);
+                                }}
+                                icon={<IconEdit />}
                             />
-                        </Popconfirm>
-                        <Popover
-                            position="tr"
-                            title={
-                                <>
-                                    Theme
+                            <Popconfirm
+                                icon={null}
+                                position="tr"
+                                style={{ width: 480 }}
+                                title={
+                                    <Space>
+                                        <label>Comment:</label>
+                                        <Input
+                                            style={{ width: 240 }}
+                                            defaultValue={table.note}
+                                            allowClear
+                                            placeholder="Please Enter Comment"
+                                            onChange={value => {
+                                                setNote(value);
+                                            }}
+                                        />
+                                    </Space>
+                                }
+                                okText="Commit"
+                                cancelText="Cancel"
+                                onOk={() => {
+                                    props.updateTable({ ...props.table, note });
+                                }}
+                                onCancel={() => {
+                                    setNote(props.table.note);
+                                }}
+                            >
+                                <Button
+                                    size="mini"
+                                    icon={<IconMessage />}
+                                />
+                            </Popconfirm>
+                            <Popover
+                                position="tr"
+                                title={
+                                    <>
+                                        Theme
 
-                                    <Button
-                                        size="mini"
-                                        style={{ float: 'right', fontSize: '12px' }}
-                                        onClick={() => props.updateTable({ ...props.table, theme: undefined })}
-                                    >
-                                        Clear
-                                    </Button>
-                                </>
-                            }
-                            content={
-                                <Space warp direction="vertical" size="medium" style={{ margin: '8px 0 4px' }}>
-                                    {themes.map(list => (
-                                        <Space size="medium" key={list.toString()}>
-                                            {list.map(item => (
-                                                <Button
-                                                    key={item}
-                                                    shape="circle"
-                                                    style={{ background: item }}
-                                                    onClick={() => props.updateTable({ ...props.table, theme: item })}
-                                                />
-                                            ))}
-                                        </Space>
-                                    ))}
-                                </Space>
-                            }
-                            trigger="click"
-                        >
-                            <Button
-                                size="mini"
-                                icon={<IconPalette />}
-                            />
-                        </Popover>
-                        <Popconfirm
-                            position="tr"
-                            title="Are you sure you want to delete this table?"
-                            okText="Yes"
-                            cancelText="No"
-                            onOk={() => {
-                                props.removeTable(table.id);
-                            }}
-                        >
-                            <Button
-                                status='danger'
-                                size="mini"
-                                icon={<IconDelete />}
-                            />
-                        </Popconfirm>
-                    </Space>
+                                        <Button
+                                            size="mini"
+                                            style={{ float: 'right', fontSize: '12px' }}
+                                            onClick={() => props.updateTable({ ...props.table, theme: undefined })}
+                                        >
+                                            Clear
+                                        </Button>
+                                    </>
+                                }
+                                content={
+                                    <Space warp direction="vertical" size="medium" style={{ margin: '8px 0 4px' }}>
+                                        {themes.map(list => (
+                                            <Space size="medium" key={list.toString()}>
+                                                {list.map(item => (
+                                                    <Button
+                                                        key={item}
+                                                        shape="circle"
+                                                        style={{ background: item }}
+                                                        onClick={() => props.updateTable({ ...props.table, theme: item })}
+                                                    />
+                                                ))}
+                                            </Space>
+                                        ))}
+                                    </Space>
+                                }
+                                trigger="click"
+                            >
+                                <Button
+                                    size="mini"
+                                    icon={<IconPalette />}
+                                />
+                            </Popover>
+                            <Popconfirm
+                                position="tr"
+                                title="Are you sure you want to delete this table?"
+                                okText="Yes"
+                                cancelText="No"
+                                onOk={() => {
+                                    props.removeTable(table.id);
+                                }}
+                            >
+                                <Button
+                                    status='danger'
+                                    size="mini"
+                                    icon={<IconDelete />}
+                                />
+                            </Popconfirm>
+                        </Space>
+                    )}
                 </div>
                 <div className={`table-comment ${note ? '' : 'no-comment'}`}>
                     {table.note || 'No Comment'}
                 </div>
                 {table.fields &&
                     table.fields.map((field, index) => (
-                        <Popover key={field.id} position="rt" content={<RenderTableTips field={field} />}>
+                        <Popover
+                            key={field.id}
+                            position="rt"
+                            content={<RenderTableTips field={field} />}
+                        >
                             <div
-                                className="row"
+                                className={`row ${editable ? 'editable' : ''}`}
                                 key={field.id}
                                 tableid={table.id}
                                 fieldid={field.id}

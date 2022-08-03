@@ -3,42 +3,13 @@ import { Parser } from '@dbml/core';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import Editor from '@monaco-editor/react';
-import { db } from '../data/db';
 
-/**
- * It saves a graph to the database.
- */
-const save = async ({
-    id,
-    tableDict,
-    linkDict,
-    box,
-    name = 'Untitled Graph',
-}) => {
-    try {
-        await db.graphs.put({
-            id,
-            tableDict,
-            linkDict,
-            box,
-            name,
-            updatedAt: new Date().valueOf(),
-        });
-        Notification.success({
-            title: 'Save success',
-        });
-    } catch (e) {
-        Notification.error({
-            title: 'Save failed',
-        });
-    }
-};
 
 /**
  * It's a modal that allows you to import a graph from a string
  * @returns Modal component
  */
-export default function ImportModal({ importType, setImportType, addGraph, theme, handlerImportTable }) {
+export default function ImportModal({ importType, setImportType, theme, handlerImportTable }) {
     const [value, setValue] = useState('');
 
     const handleOk = async () => {
@@ -57,8 +28,8 @@ export default function ImportModal({ importType, setImportType, addGraph, theme
                     id,
                     name: table.name,
                     note: table.note,
-                    x: index * 260,
-                    y: 20,
+                    x: index * 260 + 60,
+                    y: 120,
                     fields: table.fields.map(field => {
                         const fieldId = nanoid();
                         return {
@@ -94,33 +65,9 @@ export default function ImportModal({ importType, setImportType, addGraph, theme
                 };
             });
 
-            if (handlerImportTable) {
-                handlerImportTable({ tableDict, linkDict });
-                setValue('');
-                setImportType('');
-                return;
-            }
-
-            const graphId = nanoid();
-            await save({
-                id: graphId,
-                name: graph.name,
-                tableDict,
-                linkDict,
-                box: {
-                    x: 0,
-                    y: 0,
-                    w: window.innerWidth,
-                    h: window.innerHeight,
-                    clientH: window.innerHeight,
-                    clientW: window.innerWidth,
-                },
-            });
-
-            // addGraph(graph);
+            handlerImportTable({ tableDict, linkDict });
             setValue('');
             setImportType('');
-            window.location.href = `/graphs/detail?id=${graphId}`;
         } catch (e) {
             console.log(e);
             Notification.error({

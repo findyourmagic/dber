@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import {
     List,
     Button,
@@ -12,24 +13,25 @@ import {
 import { IconEdit, IconDelete } from '@arco-design/web-react/icon';
 import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
-import { db } from '../../data/db';
+import { db, saveGraph } from '../../data/db';
 import ListNav from '../../components/list_nav';
 import useGraphState from '../../hooks/use-graph-state';
 import northwindTraders from '../../data/northwind_traders.json';
 import blog from '../../data/blog.json';
 import spaceX from '../../data/spacex.json';
 
+const ImportModal = dynamic(() => import('../../components/import_modal'), { ssr: false });
+
 /**
  * It adds a new graph to the database
  * @param [graph] - The graph object to be added.
  */
-const addGraph = async (graph = {}, sampleGraph = {}) => {
-    const id = nanoid();
+const addSample = async (graph = {}, id) => {
+    const graphId = id || nanoid();
     const now = new Date().valueOf();
     await db.graphs.add({
-        ...sampleGraph,
-        id,
-        name: 'Untitled graph',
+        ...graph,
+        id: graphId,
         box: {
             x: 0,
             y: 0,
@@ -40,28 +42,13 @@ const addGraph = async (graph = {}, sampleGraph = {}) => {
         },
         createdAt: now,
         updatedAt: now,
-        ...graph,
     });
-    global.location.href = `/graphs/detail?id=${id}`;
 };
 
-const addSample = async (sampleGraph = {}) => {
+const addGraph = async () => {
     const id = nanoid();
-    const now = new Date().valueOf();
-    await db.graphs.add({
-        ...sampleGraph,
-        id,
-        box: {
-            x: 0,
-            y: 0,
-            w: global.innerWidth,
-            h: global.innerHeight,
-            clientW: global.innerWidth,
-            clientH: global.innerHeight,
-        },
-        createdAt: now,
-        updatedAt: now,
-    });
+    await addSample({ name: 'Untitled graph' }, id);
+    global.location.href = `/graphs/detail?id=${id}`;
 };
 
 /**
@@ -71,6 +58,7 @@ const addSample = async (sampleGraph = {}) => {
 export default function Home() {
     const { theme, setTheme } = useGraphState();
     const [graphs, setGraphs] = useState([]);
+    const [importType, setImportType] = useState('');
 
     useEffect(() => {
         const initGraphs = async () => {
@@ -112,6 +100,25 @@ export default function Home() {
         setGraphs(state => state.filter(item => item.id !== id));
     };
 
+    const handlerImportTable = async ({ tableDict, linkDict }, name) => {
+        const graphId = nanoid();
+        await saveGraph({
+            id: graphId,
+            name,
+            tableDict,
+            linkDict,
+            box: {
+                x: 0,
+                y: 0,
+                w: window.innerWidth,
+                h: window.innerHeight,
+                clientH: window.innerHeight,
+                clientW: window.innerWidth,
+            },
+        });
+        window.location.href = `/graphs/detail?id=${graphId}`;
+    };
+
     return (
         <>
             <Head>
@@ -122,7 +129,12 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <ListNav addGraph={addGraph} theme={theme} setTheme={setTheme} />
+            <ListNav
+                addGraph={addGraph}
+                setImportType={setImportType}
+                theme={theme}
+                setTheme={setTheme}
+            />
             <div className="graph-container">
                 {graphs && graphs.length ? (
                     <List
@@ -185,6 +197,12 @@ export default function Home() {
                     </div>
                 )}
             </div>
+            <ImportModal
+                importType={importType}
+                setImportType={setImportType}
+                theme={theme}
+                handlerImportTable={handlerImportTable}
+            />
         </>
     );
 }

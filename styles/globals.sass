@@ -15,6 +15,7 @@ a
     top: 0
     left: 0
     width: 100vw
+    height: 48px
     z-index: 2
     box-sizing: border-box
     padding: 10px
@@ -70,8 +71,15 @@ a
     &:hover
         border: 1px solid rgb(var(--primary-6))
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.12)
-    &:active
-        cursor: move
+
+    &:active,
+    &-title
+        cursor: default
+
+    &.editable
+        &:active,
+        .table-title
+            cursor: move
 
     &-title
         display: flex
@@ -83,7 +91,7 @@ a
         box-sizing: border-box
         background: var(--color-fill-2)
         font-weight: 600
-        cursor: move
+
     &-comment
         padding: 0 8px
         height: 24px
@@ -105,7 +113,7 @@ a
     line-height: 32px
     box-sizing: border-box
 
-    &:hover
+    &.editable:hover
         .field-type
             display: none
         .grip-setting
@@ -244,6 +252,64 @@ label
 .react-contexify__theme--dark
     .react-contexify__separator
         background-color: var(--color-border-2) !important
+
+.custom-radio-card
+    padding: 10px 16px
+    border: 1px solid var(--color-border-2)
+    border-radius: 4px
+    width: 100%
+    box-sizing: border-box
+    cursor: pointer
+    margin-top: 8px
+    margin-bottom: 8px
+    position: relative
+
+.custom-radio-card-dot
+    height: 8px
+    width: 8px
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    border-radius: 100%
+    border: 1px solid var(--color-border-2)
+    box-sizing: border-box
+
+.custom-radio-card-title
+    color: var(--color-text-1)
+    font-size: 14px
+    font-weight: bold
+    margin-bottom: 4px
+
+.custom-radio-card-secondary
+    color: var(--color-text-3)
+
+.custom-radio-card:hover,
+.custom-radio-card-checked,
+.custom-radio-card:hover .custom-radio-card-dot,
+.custom-radio-card-checked .custom-radio-card-dot
+    border-color: rgb(var(--primary-6))
+
+.custom-radio-card-checked
+    background-color: var(--color-primary-light-1)
+
+.custom-radio-card:hover .custom-radio-card-title,
+.custom-radio-card-checked .custom-radio-card-title,
+.custom-radio-card:hover .custom-radio-card-secondary,
+.custom-radio-card-checked .custom-radio-card-secondary
+    color: rgb(var(--primary-6))
+
+.custom-radio-card-checked .custom-radio-card-dot
+    background-color: rgb(var(--primary-6))
+
+.delete-btn
+    position: absolute
+    right: 2px
+    top: 0
+    padding: 8px
+    color: var(--color-text-3)
+    font-size: 12px
+    &:hover
+        color: rgb(var(--primary-6))
 
 .index-bg
     padding: 8rem 0 12rem 0

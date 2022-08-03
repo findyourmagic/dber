@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Modal, Notification } from '@arco-design/web-react';
+import { Modal } from '@arco-design/web-react';
 import { db } from '../data/db';
 
 /**
