@@ -1,9 +1,10 @@
-import { Modal, Notification } from '@arco-design/web-react';
+import { Modal, Notification, Tabs } from '@arco-design/web-react';
 import { Parser } from '@dbml/core';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import Editor from '@monaco-editor/react';
 
+const TabPane = Tabs.TabPane;
 
 /**
  * It's a modal that allows you to import a graph from a string
@@ -91,6 +92,15 @@ export default function ImportModal({ importType, setImportType, theme, handlerI
             style={{ width: 'auto' }}
             unmountOnExit
         >
+            <Tabs
+                defaultActiveTab={importType}
+                onChange={val => setImportType(val)}
+            >
+                <TabPane key="DBML" title="DBML" />
+                <TabPane key="PostgreSQL" title="PostgreSQL" />
+                <TabPane key="MySQL" title="MySQL" />
+                <TabPane key="MSSQL" title="MSSQL" />
+            </Tabs>
             <Editor
                 language={importType === 'DBML' ? 'apex' : 'sql'}
                 width="680px"

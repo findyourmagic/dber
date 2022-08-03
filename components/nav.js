@@ -2,14 +2,11 @@ import {
     Button,
     Space,
     Popconfirm,
-    Dropdown,
-    Menu,
     Input,
     Switch,
 } from '@arco-design/web-react';
 import { IconSunFill, IconMoonFill, IconLeft } from '@arco-design/web-react/icon';
 import Link from 'next/link';
-import exportSQL from '../utils/export-sql';
 
 /**
  * It renders a nav bar with a title, a save button, a demo button, a clear button, an export button,
@@ -50,9 +47,7 @@ export default function Nav(props) {
                 <Input
                     type="text"
                     value={props.name}
-                    onChange={value => {
-                        props.setName(value);
-                    }}
+                    onChange={value => props.setName(value)}
                 />
             </Space>
 
@@ -82,64 +77,13 @@ export default function Nav(props) {
                         Clear
                     </Button>
                 </Popconfirm>
-                <Dropdown
-                    droplist={
-                        <Menu>
-                            <Menu.Item
-                                onClick={() => {
-                                    const sql = exportSQL(
-                                        props.tableDict,
-                                        props.linkDict
-                                    );
-                                    props.setCommand(sql);
-                                }}
-                            >
-                                PostgreSQL
-                            </Menu.Item>
-                            <Menu.Item
-                                onClick={() => {
-                                    const sql = exportSQL(
-                                        props.tableDict,
-                                        props.linkDict,
-                                        'mysql'
-                                    );
-                                    props.setCommand(sql);
-                                }}
-                            >
-                                MySQL
-                            </Menu.Item>
-                            <Menu.Item
-                                onClick={() => {
-                                    const sql = exportSQL(
-                                        props.tableDict,
-                                        props.linkDict,
-                                        'mssql'
-                                    );
-                                    props.setCommand(sql);
-                                }}
-                            >
-                                MSSQL
-                            </Menu.Item>
-                            <Menu.Item
-                                onClick={() => {
-                                    const sql = exportSQL(
-                                        props.tableDict,
-                                        props.linkDict,
-                                        'dbml'
-                                    );
-                                    props.setCommand(sql);
-                                }}
-                            >
-                                DBML
-                            </Menu.Item>
-                        </Menu>
-                    }
-                    position="br"
+                <Button
+                    type="outline"
+                    shape="round"
+                    onClick={() => props.handlerExport()}
                 >
-                    <Button type="outline" shape="round">
-                        Export SQL
-                    </Button>
-                </Dropdown>
+                    Export
+                </Button>
                 <Button
                     onClick={props.handlerHistory}
                     type="secondary"
@@ -151,9 +95,7 @@ export default function Nav(props) {
                     checkedIcon={<IconMoonFill />}
                     uncheckedIcon={<IconSunFill />}
                     checked={props.theme === 'dark'}
-                    onChange={(e) => {
-                        props.setTheme(e ? 'dark' : 'light');
-                    }}
+                    onChange={e => props.setTheme(e ? 'dark' : 'light')}
                 />
             </Space>
         </nav>

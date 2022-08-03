@@ -4,6 +4,7 @@ import { useState, useRef, useMemo } from 'react';
 import { Drawer, Modal, Tag } from '@arco-design/web-react';
 import { nanoid } from 'nanoid';
 import { useContextMenu } from 'react-contexify';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import TableForm from '../../components/table_form';
 import FieldForm from '../../components/field_form';
@@ -275,7 +276,7 @@ export default function Home() {
     const addTable = ({
         x = box.x + box.w / 2 - 200 + tables.length * 20,
         y = box.y + box.h / 2 - 200 + tables.length * 20,
-    }) => {
+    } = {}) => {
         setTableDict(state => {
             const id = nanoid();
             return {
@@ -409,6 +410,7 @@ export default function Home() {
     const [editingLink, setEditingLink] = useState(null);
 
     const [command, setCommand] = useState('');
+    const [exportType, setExportType] = useState('');
 
     const [formChange, setFormChange] = useState(false);
 
@@ -532,6 +534,78 @@ export default function Home() {
         setHistory(undefined);
     };
 
+    const handlerExport = (type = 'dbml') => {
+        const sql = type === '' ? '' : exportSQL(
+            tableDict,
+            linkDict,
+            type === 'postgresql' ? undefined : type,
+        );
+        setCommand(sql);
+        setExportType(type);
+    };
+
+    useHotkeys('ctrl+s, cmd+s', e => {
+        updateGraph();
+        e.preventDefault();
+    }, [tableDict, linkDict, name]);
+
+    useHotkeys('ctrl+n, cmd+n', e => {
+        addTable();
+        e.preventDefault();
+    }, [tableDict, linkDict]);
+
+    useHotkeys('ctrl+e, cmd+e', async e => {
+        console.log({ tableDict, name });
+        handlerExport('dbml');
+        e.preventDefault();
+    }, [tableDict, linkDict]);
+
+    useHotkeys('ctrl+i, cmd+i', e => {
+        setImportType('MySQL');
+        e.preventDefault();
+    });
+
+    useHotkeys('ctrl+h, cmd+h', e => {
+        handlerHistory();
+        e.preventDefault();
+    });
+
+    useHotkeys('ctrl+=, cmd+=', e => {
+        setBox(state => ({
+            x: state.x,
+            y: state.y,
+            w: state.w * 0.9,
+            h: state.h * 0.9,
+            clientH: state.clientH,
+            clientW: state.clientW,
+        }));
+        e.preventDefault();
+    });
+
+    useHotkeys('ctrl+-, cmd+-', e => {
+        setBox(state => ({
+            x: state.x,
+            y: state.y,
+            w: state.w * 1.1,
+            h: state.h * 1.1,
+            clientH: state.clientH,
+            clientW: state.clientW,
+        }));
+        e.preventDefault();
+    });
+
+    useHotkeys('ctrl+0, cmd+0', e => {
+        setBox(state => ({
+            x: state.x,
+            y: state.y,
+            w: state.clientW,
+            h: state.clientH,
+            clientH: state.clientH,
+            clientW: state.clientW,
+        }));
+        e.preventDefault();
+    });
+
     return (
         <div className="graph">
             <Head>
@@ -551,7 +625,7 @@ export default function Home() {
                 box={box}
                 name={name}
                 setName={setName}
-                setCommand={setCommand}
+                handlerExport={handlerExport}
                 theme={theme}
                 setTheme={setTheme}
                 saveGraph={updateGraph}
@@ -671,7 +745,8 @@ export default function Home() {
             />
             <ExportModal
                 command={command}
-                setCommand={setCommand}
+                exportType={exportType}
+                handlerExport={handlerExport}
                 theme={theme}
             />
             {version === 'currentVersion' && (
@@ -681,10 +756,7 @@ export default function Home() {
                     addTable={addTable}
                     setImportType={setImportType}
                     saveGraph={updateGraph}
-                    setCommand={val => {
-                        const sql = exportSQL(tableDict, linkDict, val);
-                        setCommand(sql);
-                    }}
+                    handlerExport={handlerExport}
                 />
             )}
             <HistoryDrawer

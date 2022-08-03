@@ -1,11 +1,13 @@
-import { Modal, Notification } from '@arco-design/web-react';
+import { Modal, Notification, Tabs } from '@arco-design/web-react';
 import Editor from '@monaco-editor/react';
+
+const TabPane = Tabs.TabPane;
 
 /**
  * It's a modal that displays the command to be exported
  * @returns Modal component
  */
-export default function ExportModal({ command, setCommand, theme }) {
+export default function ExportModal({ command, handlerExport, exportType, theme }) {
     const copy = async () => {
         try {
             await window.navigator.clipboard.writeText(command);
@@ -28,9 +30,18 @@ export default function ExportModal({ command, setCommand, theme }) {
             onOk={() => copy()}
             okText="Copy"
             cancelText="Close"
-            onCancel={() => setCommand('')}
+            onCancel={() => handlerExport('')}
             style={{ width: 'auto' }}
         >
+            <Tabs
+                activeTab={exportType}
+                onChange={val => handlerExport(val)}
+            >
+                <TabPane key="dbml" title="DBML" />
+                <TabPane key="postgresql" title="PostgreSQL" />
+                <TabPane key="mysql" title="MySQL" />
+                <TabPane key="mssql" title="MSSQL" />
+            </Tabs>
             <Editor
                 value={command}
                 language="sql"
