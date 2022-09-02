@@ -377,6 +377,9 @@ export default function TableForm(props) {
 
             <Form
                 onSubmit={save}
+                onSubmitFailed={() => {
+                    props.setCommitting(false);
+                }}
                 form={form}
                 labelAlign="left"
                 requiredSymbol={false}
