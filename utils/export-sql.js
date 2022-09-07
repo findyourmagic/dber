@@ -21,7 +21,8 @@ const exportSQL = (tableDict, linkDict, databaseType = 'postgres') => {
                     return {
                         ...field,
                         type: {
-                            type_name: field.type,
+                            // To lower case because of typing 'BIGINT' with upper case and increment get wrong pg sql type when export
+                            type_name: field.type.toLowerCase(),
                             args: null,
                         },
                     };
