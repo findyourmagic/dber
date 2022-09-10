@@ -288,7 +288,9 @@ export default function Home() {
         const instance = svg.current;
         instance.addEventListener('wheel', wheelHandler, { passive: false });
         return () => {
-            instance.removeEventListener('wheel', wheelHandler, { passive: false })
+            instance.removeEventListener('wheel', wheelHandler, {
+                passive: false,
+            });
         };
     }, []);
 
@@ -535,7 +537,11 @@ export default function Home() {
 
     const handlerHistory = async () => {
         const id = new URLSearchParams(global.location.search).get('id');
-        const history = await db.logs.where('graphId').equals(id).desc().toArray();
+        const history = await db.logs
+            .where('graphId')
+            .equals(id)
+            .desc()
+            .toArray();
         setHistory(history);
     };
 
@@ -562,29 +568,44 @@ export default function Home() {
     };
 
     const handlerExport = (type = 'dbml') => {
-        const sql = type === '' ? '' : exportSQL(
-            tableDict,
-            linkDict,
-            type === 'postgresql' ? undefined : type,
-        );
+        const sql =
+            type === ''
+                ? ''
+                : exportSQL(
+                      tableDict,
+                      linkDict,
+                      type === 'postgresql' ? undefined : type
+                  );
         setCommand(sql);
         setExportType(type);
     };
 
-    useHotkeys('ctrl+s, cmd+s', e => {
-        updateGraph();
-        e.preventDefault();
-    }, [tableDict, linkDict, name]);
+    useHotkeys(
+        'ctrl+s, cmd+s',
+        e => {
+            updateGraph();
+            e.preventDefault();
+        },
+        [tableDict, linkDict, name]
+    );
 
-    useHotkeys('ctrl+n, cmd+n', e => {
-        addTable();
-        e.preventDefault();
-    }, [tableDict, linkDict]);
+    useHotkeys(
+        'ctrl+n, cmd+n',
+        e => {
+            addTable();
+            e.preventDefault();
+        },
+        [tableDict, linkDict]
+    );
 
-    useHotkeys('ctrl+e, cmd+e', async e => {
-        handlerExport('dbml');
-        e.preventDefault();
-    }, [tableDict, linkDict]);
+    useHotkeys(
+        'ctrl+e, cmd+e',
+        async e => {
+            handlerExport('dbml');
+            e.preventDefault();
+        },
+        [tableDict, linkDict]
+    );
 
     useHotkeys('ctrl+i, cmd+i', e => {
         setImportType('MySQL');
@@ -669,19 +690,6 @@ export default function Home() {
                 // onWheel={wheelHandler}
                 ref={svg}
             >
-                {links.map(link => {
-                    return (
-                        <LinkPath
-                            TableWidth={TableWidth}
-                            link={link}
-                            key={`${link.id}`}
-                            tableDict={tableDict}
-                            linkDict={linkDict}
-                            setEditingLink={setEditingLink}
-                            editable={version === 'currentVersion'}
-                        />
-                    );
-                })}
                 {tables.map(table => {
                     return (
                         <Table
@@ -700,7 +708,19 @@ export default function Home() {
                         />
                     );
                 })}
-
+                {links.map(link => {
+                    return (
+                        <LinkPath
+                            TableWidth={TableWidth}
+                            link={link}
+                            key={`${link.id}`}
+                            tableDict={tableDict}
+                            linkDict={linkDict}
+                            setEditingLink={setEditingLink}
+                            editable={version === 'currentVersion'}
+                        />
+                    );
+                })}
                 <rect x="0" y="0" width="2" height="2"></rect>
                 {mode === 'linking' &&
                     version === 'currentVersion' &&
