@@ -2,7 +2,7 @@ const control = 20;
 const padding = 5;
 const gripWidth = 10;
 const gripRadius = gripWidth / 2;
-const margin = 3;
+const margin = 0.5;
 
 /**
  * It takes a link object and returns a path element that connects the two tables
@@ -34,8 +34,12 @@ export default function LinkPath(props) {
     ];
 
     const [sourceFieldIndex, targetFieldIndex] = [
-        sourceTable.fields.findIndex(field => field.id === endpoints[0].fieldId),
-        targetTable.fields.findIndex(field => field.id === endpoints[1].fieldId),
+        sourceTable.fields.findIndex(
+            field => field.id === endpoints[0].fieldId
+        ),
+        targetTable.fields.findIndex(
+            field => field.id === endpoints[1].fieldId
+        ),
     ];
 
     const sourceFieldPosition = {
@@ -95,20 +99,48 @@ export default function LinkPath(props) {
         e.stopPropagation();
     };
 
+    let d = `M ${x} ${y}
+    C ${x + control} ${y} ${midX} ${midY} ${midX} ${midY}
+    C ${midX} ${midY} ${x1 - control} ${y1} ${x1} ${y1}`;
+    let foreignObjectPositions = [
+        {
+            x: (x + control + midX) / 2 - 10,
+            y: (y + midY) / 2 - 10,
+        },
+        { x: (x1 - control + midX) / 2 - 10, y: (y1 + midY) / 2 - 10 },
+    ];
+
+    if (endpoints[0].id == endpoints[1].id) {
+        const factor = (y1 - y) / 50 < 2 ? 2 : (y1 - y) / 50;
+
+        d = `M ${sourceRight} ${y}
+        L ${sourceRight + control} ${y}
+        C ${sourceRight + control * factor} ${y} ${
+            sourceRight + control * factor
+        } ${y1} ${sourceRight + control} ${y1}
+        L ${sourceRight} ${y1}`;
+
+        foreignObjectPositions = [
+            {
+                x: sourceRight + control - 10,
+                y: y - 10,
+            },
+            { x: targetRight + control - 10, y: y1 - 10 },
+        ];
+    }
+
     return (
         <>
             <path
-                d={`M ${x} ${y}
-    C ${x + control} ${y} ${midX} ${midY} ${midX} ${midY}
-    C ${midX} ${midY} ${x1 - control} ${y1} ${x1} ${y1}`}
+                d={d}
                 stroke="black"
                 strokeWidth="1"
                 fill="none"
                 className="path-line"
             />
             <foreignObject
-                x={(x + control + midX) / 2 - 10}
-                y={(y + midY) / 2 - 10}
+                x={foreignObjectPositions[0].x}
+                y={foreignObjectPositions[0].y}
                 width={20}
                 height={20}
                 onMouseDown={() => {
@@ -121,15 +153,18 @@ export default function LinkPath(props) {
                 onContextMenu={handlerContextMenu}
             >
                 <div
-                    style={{ cursor: editable ? 'pointer' : 'default', userSelect: 'none' }}
+                    style={{
+                        cursor: editable ? 'pointer' : 'default',
+                        userSelect: 'none',
+                    }}
                     className="path-label"
                 >
                     {source.relation}
                 </div>
             </foreignObject>
             <foreignObject
-                x={(x1 - control + midX) / 2 - 10}
-                y={(y1 + midY) / 2 - 10}
+                x={foreignObjectPositions[1].x}
+                y={foreignObjectPositions[1].y}
                 width={20}
                 height={20}
                 onMouseDown={() => {
@@ -142,7 +177,10 @@ export default function LinkPath(props) {
                 onContextMenu={handlerContextMenu}
             >
                 <div
-                    style={{ cursor: editable ? 'pointer' : 'default', userSelect: 'none' }}
+                    style={{
+                        cursor: editable ? 'pointer' : 'default',
+                        userSelect: 'none',
+                    }}
                     className="path-label"
                 >
                     {target.relation}

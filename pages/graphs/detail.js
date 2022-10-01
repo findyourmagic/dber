@@ -135,8 +135,7 @@ export default function Home() {
                             ]
                                 .sort()
                                 .join(' ')
-                    ) &&
-                    linkStat.startTableId !== endTableId
+                    )
                 ) {
                     setLinkDict(state => {
                         const id = nanoid();
