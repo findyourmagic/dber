@@ -7,7 +7,7 @@ import {
     Popconfirm,
     Form,
     Checkbox,
-    Select,
+    AutoComplete,
 } from '@arco-design/web-react';
 import classNames from 'classnames';
 import { nanoid } from 'nanoid';
@@ -117,13 +117,7 @@ function TableFormItem(props) {
                             },
                         ]}
                     >
-                        <Select style={{ width: '100%' }} allowCreate>
-                            {fieldTypes.map(item => (
-                                <Select.Option key={item} value={item}>
-                                    {item}
-                                </Select.Option>
-                            ))}
-                        </Select>
+                        <AutoComplete data={fieldTypes}></AutoComplete>
                     </Form.Item>
                 </Space>
                 <Space className="table-form-item">

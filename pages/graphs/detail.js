@@ -767,16 +767,18 @@ export default function Home() {
                     />
                 ) : null}
             </Drawer>
-            <FieldForm
-                {...editingField}
-                updateTable={updateTable}
-                formChange={formChange}
-                setFormChange={setFormChange}
-                addField={addField}
-                setAddField={setAddField}
-                removeField={removeField}
-                setEditingField={setEditingField}
-            />
+            {editingField ? (
+                <FieldForm
+                    {...editingField}
+                    updateTable={updateTable}
+                    formChange={formChange}
+                    setFormChange={setFormChange}
+                    addField={addField}
+                    setAddField={setAddField}
+                    removeField={removeField}
+                    setEditingField={setEditingField}
+                />
+            ) : null}
             <LinkModal
                 editingLink={editingLink}
                 setEditingLink={setEditingLink}
