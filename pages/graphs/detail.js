@@ -269,6 +269,16 @@ export default function Home() {
                 deltaY = deltaY * 2;
                 deltaX = deltaY * (state.w / state.h);
 
+                const deltaLimit = 600;
+
+                if (deltaY > deltaLimit) {
+                    deltaY = deltaY > deltaLimit ? deltaLimit : deltaY;
+                    deltaX = deltaY * (state.w / state.h);
+                } else if (deltaY < -deltaLimit) {
+                    deltaY = deltaY < -deltaLimit ? -deltaLimit : deltaY;
+                    deltaX = deltaY * (state.w / state.h);
+                }
+
                 return {
                     x: state.x - ((cursor.x - state.x) / state.w) * deltaX,
                     y: state.y - ((cursor.y - state.y) / state.h) * deltaY,
