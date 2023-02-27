@@ -71,6 +71,8 @@ a
     &:hover
         border: 1px solid rgb(var(--primary-6))
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.12)
+        .table-settings
+            opacity: 1
 
     &:active,
     &-title
@@ -92,6 +94,9 @@ a
         background: var(--color-fill-2)
         font-weight: 600
 
+    &-settings
+        opacity: 0
+
     &-name
         max-width: 50%
         overflow: hidden
@@ -107,6 +112,7 @@ a
         background: var(--color-neutral-3)
         &.no-comment
             color: var(--color-text-4)
+            font-style: italic
 
 .row
     position: relative
@@ -179,7 +185,7 @@ a
     stroke: var(--color-border-3)
 
 .table-tips
-    width: 180px
+    width: 240px
     margin: -8px
     .head
         padding-bottom: 6px
@@ -199,6 +205,9 @@ a
         span
             margin-right: 8px
             color: var(--color-text-3)
+        .empty-value
+            color: var(--color-text-4)
+            font-style: italic
 
 .drawer-btns
     position: fixed

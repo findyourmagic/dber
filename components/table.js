@@ -82,11 +82,11 @@ export default function Table(props) {
 
                 <div className="field-item dbdefault">
                     <span>DEFAULT:</span>
-                    {field.dbdefault}
+                    {field.dbdefault || (<span className="empty-value">(Unset)</span>)}
                 </div>
                 <div className="field-item note">
                     <span>COMMENT:</span>
-                    {field.note}
+                    {field.note || (<span className="empty-value">(No Comment)</span>)}
                 </div>
             </div>
         </div>
@@ -121,7 +121,7 @@ export default function Table(props) {
                     <span className="table-name">{table.name}</span>
 
                     {editable && (
-                        <Space size={4}>
+                        <Space size={4} className="table-settings">
                             <Button
                                 size="mini"
                                 onClick={() => {
@@ -234,7 +234,7 @@ export default function Table(props) {
                     )}
                 </div>
                 <div className={`table-comment ${note ? '' : 'no-comment'}`}>
-                    {table.note || 'No Comment'}
+                    {table.note || '(No Comment)'}
                 </div>
                 {table.fields &&
                     table.fields.map((field, index) => (

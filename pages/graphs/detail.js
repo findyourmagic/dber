@@ -749,7 +749,7 @@ export default function Home() {
             <Drawer
                 width={620}
                 title="Edit Table"
-                visible={editingTable}
+                visible={!!editingTable}
                 okText="Commit"
                 autoFocus={false}
                 onOk={() => {

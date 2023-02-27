@@ -25,7 +25,7 @@ export default function ExportModal({ command, handlerExport, exportType, theme 
         <Modal
             title={null}
             simple
-            visible={command}
+            visible={!!command}
             autoFocus={false}
             onOk={() => copy()}
             okText="Copy"

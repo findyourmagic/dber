@@ -52,7 +52,7 @@ export default function FieldForm(props) {
                     Field
                 </div>
             }
-            visible={table}
+            visible={!!table}
             onCancel={() => {
                 if (addField?.index) {
                     removeField(addField.table, addField.index);

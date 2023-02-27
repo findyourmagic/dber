@@ -334,39 +334,43 @@ export default function TableForm(props) {
                 onDrop={e => {
                     unShiftFields();
                 }}
-                style={{ display: 'flex', alignItems: 'center' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
             >
-                <label>Table Name:</label>
-                <Input
-                    defaultValue={props.table.name}
-                    type="text"
-                    onChange={value => {
-                        setName(value);
-                    }}
-                    style={{ width: 200, margin: '0 8px' }}
-                />
-                <Popconfirm
-                    position="br"
-                    title="Are you sure you want to delete this table?"
-                    okText="Yes"
-                    cancelText="No"
-                    onOk={() => {
-                        props.removeTable(props.table.id);
-                    }}
-                >
-                    <Button type="outline" status="warning">
-                        Delete table
-                    </Button>
-                </Popconfirm>
+                <label style={{ width: 110 }}>Table Name:</label>
+                <div style={{ display: 'flex', width: 468 }}>
+                    <Input
+                        defaultValue={props.table.name}
+                        type="text"
+                        onChange={value => {
+                            setName(value);
+                        }}
+                        style={{ width: 340 }}
+                    />
+                    <Popconfirm
+                        position="br"
+                        title="Are you sure you want to delete this table?"
+                        okText="Yes"
+                        cancelText="No"
+                        onOk={() => {
+                            props.removeTable(props.table.id);
+                        }}
+                    >
+                        <Button type="outline" status="warning" style={{ width: 120, marginLeft: 8 }}>
+                            Delete table
+                        </Button>
+                    </Popconfirm>
+                </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <label>Table Comment:</label>
-                <Input
-                    defaultValue={props.table.note}
-                    type="text"
-                    onChange={value => setNote(value)}
-                    style={{ width: 460, marginLeft: 8 }}
-                />
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <label style={{ width: 110 }}>Table Comment:</label>
+                <div style={{ width: 468 }}>
+                    <Input
+                        defaultValue={props.table.note}
+                        type="text"
+                        onChange={value => setNote(value)}
+                        style={{ width: '100%' }}
+                    />
+                </div>
             </div>
 
             <Form

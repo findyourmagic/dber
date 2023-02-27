@@ -81,7 +81,7 @@ export default function ImportModal({ importType, setImportType, theme, handlerI
         <Modal
             title={null}
             simple
-            visible={importType}
+            visible={!!importType}
             autoFocus={false}
             onOk={() => {
                 handleOk();

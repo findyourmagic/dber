@@ -25,34 +25,16 @@ export default function ListNav(props) {
                 <Dropdown
                     droplist={
                         <Menu>
-                            <Menu.Item
-                                onClick={() => {
-                                    setImportType('DBML');
-                                }}
-                            >
-                                DBML
-                            </Menu.Item>
-                            <Menu.Item
-                                onClick={() => {
-                                    setImportType('PostgreSQL');
-                                }}
-                            >
-                                PostgreSQL
-                            </Menu.Item>
-                            <Menu.Item
-                                onClick={() => {
-                                    setImportType('MySQL');
-                                }}
-                            >
-                                MySQL
-                            </Menu.Item>
-                            <Menu.Item
-                                onClick={() => {
-                                    setImportType('MSSQL');
-                                }}
-                            >
-                                MSSQL
-                            </Menu.Item>
+                            {['DBML', 'PostgreSQL', 'MySQL', 'MSSQL'].map(item => (
+                                <Menu.Item
+                                    key={item}
+                                    onClick={() => {
+                                        setImportType(item);
+                                    }}
+                                >
+                                    {item}
+                                </Menu.Item>
+                            ))}
                         </Menu>
                     }
                     position="br"
