@@ -43,6 +43,8 @@ export default function Table(props) {
         handlerAddField,
         handlerRemoveField,
         editable,
+        tableSelectedId,
+        setTableSelectId,
     } = props;
 
     const handlerContextMenu = e => {
@@ -111,8 +113,10 @@ export default function Table(props) {
             onContextMenu={handlerContextMenu}
         >
             <div
-                className={`table ${editable ? 'editable' : ''}`}
+                className={`table ${editable ? 'editable' : ''} ${tableSelectedId === table.id ? 'table-selected' : ''}`}
                 style={{ borderColor: table.theme }}
+                onMouseOver={() => setTableSelectId(table.id)}
+                onMouseOut={() => setTableSelectId(null)}
             >
                 <div
                     className="table-title"

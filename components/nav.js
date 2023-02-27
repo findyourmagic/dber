@@ -48,6 +48,7 @@ export default function Nav(props) {
                     type="text"
                     value={props.name}
                     onChange={value => props.setName(value)}
+                    style={{ width: '240px' }}
                 />
             </Space>
 

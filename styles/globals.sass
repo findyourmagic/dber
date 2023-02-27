@@ -21,7 +21,7 @@ a
     padding: 10px
     background-color: var(--color-bg-1)
     color: var(--color-text-1)
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.16)
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.08)
     a
         color: var(--color-text-1)
         text-decoration: none
@@ -68,7 +68,7 @@ a
     user-select: none
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.08)
 
-    &:hover
+    &:hover, &-selected
         border: 1px solid rgb(var(--primary-6))
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.12)
         .table-settings
@@ -221,6 +221,48 @@ a
 
 label
     user-select: none
+
+.left-table-nav
+    position: absolute
+    z-index: 101
+    width: 196px
+
+    padding: 8px 0 4px
+    left: 24px
+    top: 72px
+    background-color: var(--color-bg-5)
+    border-radius: 4px
+    box-shadow: 0 8px 24px 2px rgba(29, 41, 57, .14)
+    transition: all .2s
+
+    .table-nav-title
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding: 2px 8px 8px 16px
+        color: var(--color-text-2)
+        font-weight: bold
+    .table-nav-content
+        border-top: 1px solid var(--color-neutral-3)
+        .table-nav-menu
+            max-height: calc(100vh - 172px)
+            overflow-y: auto
+        .table-nav-search
+            padding: 8px 8px 0
+    .table-nav-count
+        margin-left: 4px
+        font-style: italic
+    .table-filter
+        background-color: var(--color-primary-light-1) !important
+
+    .arco-menu-light,
+    .arco-menu-light .arco-menu-item
+        background-color: var(--color-bg-5)
+    .arco-menu-light .arco-menu-item:hover,
+    .arco-menu-light .arco-menu-item.arco-menu-selected
+        background-color: var(--color-fill-2)
+    .arco-btn-secondary:not(.arco-btn-disabled)
+        background-color: transparent
 
 
 .dragging

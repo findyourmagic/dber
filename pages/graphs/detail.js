@@ -12,6 +12,7 @@ import LinkPath from '../../components/link_path';
 import LinkModal from '../../components/link_modal';
 import Nav from '../../components/nav';
 import Table from '../../components/table';
+import TableNav from '../../components/table_nav';
 import ContextMenu from '../../components/context_menu';
 import HistoryDrawer from '../../components/history';
 import useGraphState from '../../hooks/use-graph-state';
@@ -589,6 +590,23 @@ export default function Home() {
         setExportType(type);
     };
 
+    const [tableSelectedId, setTableSelectId] = useState(null);
+
+    const handlerTableSelected = table => {
+        const svgInfo = svg.current.getBBox();
+        setBox(state => {
+            return {
+                w: state.w,
+                h: state.h,
+                x: table.x + svgInfo.x - (svgInfo.x < 0 ? 16 : 264),
+                y: svgInfo.y + table.y + (svgInfo.y < 0 ? 88 : -72),
+                clientH: state.clientH,
+                clientW: state.clientW,
+            };
+        });
+        setTableSelectId(table.id);
+    };
+
     useHotkeys(
         'ctrl+s, cmd+s',
         e => {
@@ -628,8 +646,8 @@ export default function Home() {
 
     useHotkeys('ctrl+=, cmd+=', e => {
         setBox(state => ({
-            x: state.x,
-            y: state.y,
+            x: state.x + state.w * 0.05,
+            y: state.y + state.h * 0.05,
             w: state.w * 0.9,
             h: state.h * 0.9,
             clientH: state.clientH,
@@ -640,8 +658,8 @@ export default function Home() {
 
     useHotkeys('ctrl+-, cmd+-', e => {
         setBox(state => ({
-            x: state.x,
-            y: state.y,
+            x: state.x - state.w * 0.05,
+            y: state.y - state.h * 0.05,
             w: state.w * 1.1,
             h: state.h * 1.1,
             clientH: state.clientH,
@@ -652,8 +670,8 @@ export default function Home() {
 
     useHotkeys('ctrl+0, cmd+0', e => {
         setBox(state => ({
-            x: state.x,
-            y: state.y,
+            x: 0,
+            y: 0,
             w: state.clientW,
             h: state.clientH,
             clientH: state.clientH,
@@ -714,6 +732,8 @@ export default function Home() {
                             removeTable={removeTable}
                             updateTable={updateTable}
                             editable={version === 'currentVersion'}
+                            tableSelectedId={tableSelectedId}
+                            setTableSelectId={setTableSelectId}
                         />
                     );
                 })}
@@ -823,6 +843,11 @@ export default function Home() {
                 setVersion={setVersion}
                 handlerVersion={handlerVersion}
                 handlerHistory={handlerHistory}
+            />
+            <TableNav
+                tables={tables}
+                onTableSelected={handlerTableSelected}
+                tableSelectedId={tableSelectedId}
             />
         </div>
     );
