@@ -593,12 +593,14 @@ export default function Home() {
     const [tableSelectedId, setTableSelectId] = useState(null);
 
     const handlerTableSelected = table => {
+        // 表位置移动后的 x/y 会表现不一致
         const svgInfo = svg.current.getBBox();
         setBox(state => {
+            const newX = table.x + svgInfo.x - (table.x > -16 ? 264 : -table.x / 2);
             return {
                 w: state.w,
                 h: state.h,
-                x: table.x + svgInfo.x - (svgInfo.x < 0 ? 16 : 264),
+                x: newX,
                 y: svgInfo.y + table.y + (svgInfo.y < 0 ? 88 : -72),
                 clientH: state.clientH,
                 clientW: state.clientW,
