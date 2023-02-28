@@ -574,6 +574,11 @@ export default function Home() {
         setHistory(undefined);
     };
 
+    const exitHistory = () => {
+        handlerVersion('currentVersion');
+        setHistory(undefined);
+    };
+
     const handlerExport = (type = 'dbml') => {
         const sql =
             type === ''
@@ -704,6 +709,7 @@ export default function Home() {
                 saveGraph={updateGraph}
                 handlerHistory={handlerHistory}
                 applyHistory={applyHistory}
+                exitHistory={exitHistory}
                 editable={version === 'currentVersion'}
             />
             <svg

@@ -18,10 +18,10 @@ export default function Nav(props) {
     if (!props.editable) {
         return (
             <nav className="nav">
+                <div className="nav-title">
+                    History Record: {props.name}
+                </div>
                 <Space>
-                    <div className="nav-title">
-                        History Record: {props.name}
-                    </div>
                     <Button
                         onClick={props.applyHistory}
                         type="primary"
@@ -29,7 +29,14 @@ export default function Nav(props) {
                         shape="round"
                         style={{ marginLeft: 8 }}
                     >
-                        Apply
+                        Apply Select Version
+                    </Button>
+                    <Button
+                        onClick={props.exitHistory}
+                        shape="round"
+                        style={{ marginLeft: 8 }}
+                    >
+                        Exit History View
                     </Button>
                 </Space>
             </nav>
