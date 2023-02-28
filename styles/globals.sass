@@ -245,7 +245,7 @@ label
     .table-nav-content
         border-top: 1px solid var(--color-neutral-3)
         .table-nav-menu
-            max-height: calc(100vh - 172px)
+            max-height: calc(100vh - 160px)
             overflow-y: auto
         .table-nav-search
             padding: 8px 8px 0
@@ -307,9 +307,6 @@ label
     width: 55px
     display: inline-block
 
-.react-contexify__theme--dark
-    .react-contexify__separator
-        background-color: var(--color-border-2) !important
 
 .custom-radio-card
     padding: 10px 16px
@@ -369,8 +366,15 @@ label
     &:hover
         color: rgb(var(--primary-6))
 
-.react-contexify__item__content
-    justify-content: space-between
+
+.context-menu
+    width: 200px
+    .context-menu-item
+        display: flex
+        justify-content: space-between
+        align-items: center
+    .context-menu-line
+        margin: 4px 0
 
 body[arco-theme=dark] .arco-home-key
     background: #202022

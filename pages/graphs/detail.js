@@ -1,9 +1,8 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useState, useRef, useMemo, useEffect } from 'react';
-import { Drawer, Modal, Tag } from '@arco-design/web-react';
+import { Modal, Tag } from '@arco-design/web-react';
 import { nanoid } from 'nanoid';
-import { useContextMenu } from 'react-contexify';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import TableForm from '../../components/table_form';
@@ -26,7 +25,6 @@ const ImportModal = dynamic(() => import('../../components/import_modal'), {
     ssr: false,
 });
 
-const MENU_ID = 'svg-menu';
 
 export default function Home() {
     const {
@@ -78,15 +76,6 @@ export default function Home() {
     };
 
     const [importType, setImportType] = useState('');
-
-    const { show } = useContextMenu({
-        id: MENU_ID,
-    });
-
-    const contextMenuHandler = e => {
-        e.preventDefault();
-        show(e);
-    };
 
     /**
      * It sets the moving table to the table that was clicked on, and sets the mode to moving
@@ -302,7 +291,7 @@ export default function Home() {
                 passive: false,
             });
         };
-    }, []);
+    }, [version]);
 
     const updateGraph = () => {
         const id = new URLSearchParams(global.location.search).get('id');
@@ -712,64 +701,73 @@ export default function Home() {
                 exitHistory={exitHistory}
                 editable={version === 'currentVersion'}
             />
-            <svg
-                className="main"
-                viewBox={`${box.x} ${box.y} ${box.w} ${box.h}`}
-                onMouseDown={mouseDownHandler}
-                onMouseUp={mouseUpHandler}
-                onMouseMove={mouseMoveHandler}
-                onContextMenu={contextMenuHandler}
-                // onWheel={wheelHandler}
-                ref={svg}
+
+            <ContextMenu
+                theme={theme}
+                version={version}
+                addTable={addTable}
+                setImportType={setImportType}
+                saveGraph={updateGraph}
+                handlerExport={handlerExport}
             >
-                {tables.map(table => {
-                    return (
-                        <Table
-                            key={table.id}
-                            table={table}
-                            TableWidth={TableWidth}
-                            tableMouseDownHandler={tableMouseDownHandler}
-                            handlerEditingTable={handlerEditingTable}
-                            gripMouseDownHandler={gripMouseDownHandler}
-                            handlerEditingField={handlerEditingField}
-                            handlerAddField={handlerAddField}
-                            handlerRemoveField={handlerRemoveField}
-                            removeTable={removeTable}
-                            updateTable={updateTable}
-                            editable={version === 'currentVersion'}
-                            tableSelectedId={tableSelectedId}
-                            setTableSelectId={setTableSelectId}
-                        />
-                    );
-                })}
-                {links.map(link => {
-                    return (
-                        <LinkPath
-                            TableWidth={TableWidth}
-                            link={link}
-                            key={`${link.id}`}
-                            tableDict={tableDict}
-                            linkDict={linkDict}
-                            setEditingLink={setEditingLink}
-                            editable={version === 'currentVersion'}
-                        />
-                    );
-                })}
-                <rect x="0" y="0" width="2" height="2"></rect>
-                {mode === 'linking' &&
-                    version === 'currentVersion' &&
-                    linkStat.startX != null &&
-                    linkStat.endX != null && (
-                        <line
-                            x1={linkStat.startX}
-                            y1={linkStat.startY}
-                            x2={linkStat.endX}
-                            y2={linkStat.endY}
-                            stroke="red"
-                            strokeDasharray="5,5"
-                        />
-                    )}
-            </svg>
+                <svg
+                    className="main"
+                    viewBox={`${box.x} ${box.y} ${box.w} ${box.h}`}
+                    onMouseDown={mouseDownHandler}
+                    onMouseUp={mouseUpHandler}
+                    onMouseMove={mouseMoveHandler}
+                    // onWheel={wheelHandler}
+                    ref={svg}
+                >
+                    {tables.map(table => {
+                        return (
+                            <Table
+                                key={table.id}
+                                table={table}
+                                TableWidth={TableWidth}
+                                tableMouseDownHandler={tableMouseDownHandler}
+                                handlerEditingTable={handlerEditingTable}
+                                gripMouseDownHandler={gripMouseDownHandler}
+                                handlerEditingField={handlerEditingField}
+                                handlerAddField={handlerAddField}
+                                handlerRemoveField={handlerRemoveField}
+                                removeTable={removeTable}
+                                updateTable={updateTable}
+                                editable={version === 'currentVersion'}
+                                tableSelectedId={tableSelectedId}
+                                setTableSelectId={setTableSelectId}
+                            />
+                        );
+                    })}
+                    {links.map(link => {
+                        return (
+                            <LinkPath
+                                TableWidth={TableWidth}
+                                link={link}
+                                key={`${link.id}`}
+                                tableDict={tableDict}
+                                linkDict={linkDict}
+                                setEditingLink={setEditingLink}
+                                editable={version === 'currentVersion'}
+                            />
+                        );
+                    })}
+                    <rect x="0" y="0" width="2" height="2"></rect>
+                    {mode === 'linking' &&
+                        version === 'currentVersion' &&
+                        linkStat.startX != null &&
+                        linkStat.endX != null && (
+                            <line
+                                x1={linkStat.startX}
+                                y1={linkStat.startY}
+                                x2={linkStat.endX}
+                                y2={linkStat.endY}
+                                stroke="red"
+                                strokeDasharray="5,5"
+                            />
+                        )}
+                </svg>
+            </ContextMenu>
 
             <TableForm
                 table={editingTable}
@@ -807,16 +805,6 @@ export default function Home() {
                 handlerExport={handlerExport}
                 theme={theme}
             />
-            {version === 'currentVersion' && (
-                <ContextMenu
-                    theme={theme}
-                    menuId={MENU_ID}
-                    addTable={addTable}
-                    setImportType={setImportType}
-                    saveGraph={updateGraph}
-                    handlerExport={handlerExport}
-                />
-            )}
             <HistoryDrawer
                 history={history}
                 setHistory={setHistory}

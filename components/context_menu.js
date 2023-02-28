@@ -1,44 +1,61 @@
-import { Space } from '@arco-design/web-react';
-import { Menu, Item, Separator, theme } from 'react-contexify';
-import 'react-contexify/dist/ReactContexify.css';
+import { Dropdown, Menu, Space, Divider } from '@arco-design/web-react';
+
 
 export default function ContextMenu(props) {
+    const menus = [
+        {
+            key: 'N',
+            title: 'Add New Table',
+            action: e => props.addTable({ x: e.clientX - 40, y: e.clientY - 100 }),
+        },
+        {
+            key: 'I',
+            title: 'Import Table',
+            action: () => props.setImportType('MySQL'),
+        },
+        {
+            key: 'line',
+        },
+        {
+            key: 'S',
+            title: 'Save Change',
+            action: () => props.saveGraph(),
+        },
+        {
+            key: 'E',
+            title: 'Export Database',
+            action: () => props.handlerExport(),
+        }
+    ];
+
     return (
-        <Menu id={props.menuId} animation="fade" theme={props.theme === 'dark' ? theme.dark : theme.light}>
-            <Item
-                onClick={({ triggerEvent }) => {
-                    props.addTable({ x: triggerEvent.clientX - 40, y: triggerEvent.clientY - 100 });
-                }}
-                style={{ justifyContent: 'center' }}
-            >
-                Add New Table
-                <Space size={4}>
-                    <div className="arco-home-key">⌘</div>
-                    <div className="arco-home-key">N</div>
-                </Space>
-            </Item>
-            <Item onClick={() => props.setImportType('MySQL')}>
-                Import Table
-                <Space size={4}>
-                    <div className="arco-home-key">⌘</div>
-                    <div className="arco-home-key">I</div>
-                </Space>
-            </Item>
-            <Separator />
-            <Item onClick={() => props.saveGraph()}>
-                Save
-                <Space size={4}>
-                    <div className="arco-home-key">⌘</div>
-                    <div className="arco-home-key">S</div>
-                </Space>
-            </Item>
-            <Item onClick={() => props.handlerExport()}>
-                Export Database
-                <Space size={4}>
-                    <div className="arco-home-key">⌘</div>
-                    <div className="arco-home-key">E</div>
-                </Space>
-            </Item>
-        </Menu>
+        <Dropdown
+            trigger="contextMenu"
+            position="bl"
+            popupVisible={props.popupVisible}
+            droplist={
+                props.version !== 'currentVersion' ? null : (
+                    <Menu className="context-menu">
+                        {menus.map(item => item.key === 'line' ? (
+                            <Divider key={item.key} className="context-menu-line" />
+                        ) : (
+                            <Menu.Item
+                                key={item.key}
+                                className="context-menu-item"
+                                onClick={item.action}
+                            >
+                                {item.title}
+                                <Space size={4}>
+                                    <div className="arco-home-key">⌘</div>
+                                    <div className="arco-home-key">{item.key}</div>
+                                </Space>
+                            </Menu.Item>
+                        ))}
+                    </Menu>
+                )
+            }
+        >
+            {props.children}
+        </Dropdown>
     );
 }
