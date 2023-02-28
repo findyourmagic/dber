@@ -14,6 +14,8 @@ import {
 import classNames from 'classnames';
 import { nanoid } from 'nanoid';
 import fieldTypes from '../data/filed_typs';
+import tableModel from '../hooks/table-model';
+import graphState from '../hooks/use-graph-state';
 
 /**
  * It takes the current fields array, checks if the current index is less than the length of the array,
@@ -70,8 +72,7 @@ function TableFormItem(props) {
                     props.droppingId === props.field.id &&
                     props.droppingId !== props.draggingId &&
                     props.index !== props.draggingIndex - 1,
-                dragging:
-                    props.draggingId && props.draggingId === props.field.id,
+                dragging: props.draggingId && props.draggingId === props.field.id,
                 'table-form': true,
             })}
             draggable="true"
@@ -102,10 +103,11 @@ function TableFormItem(props) {
                             },
                             {
                                 validator: (value, cb) => {
-                                    return fieldList.filter(item => item.id !== field.id)
+                                    return fieldList
+                                        .filter(item => item.id !== field.id)
                                         .find(item => item.name === value)
                                         ? cb('have same name field')
-                                        : cb()
+                                        : cb();
                                 },
                             },
                         ]}
@@ -143,39 +145,17 @@ function TableFormItem(props) {
                     </Form.Item>
                 </Space>
                 <Space className="table-form-item">
-                    <Form.Item
-                        noStyle
-                        field={`${index}.pk`}
-                        initialValue={field.pk}
-                    >
+                    <Form.Item noStyle field={`${index}.pk`} initialValue={field.pk}>
                         <Checkbox defaultChecked={field.pk}>Primary</Checkbox>
                     </Form.Item>
-                    <Form.Item
-                        noStyle
-                        field={`${index}.unique`}
-                        initialValue={field.unique}
-                    >
-                        <Checkbox defaultChecked={field.unique}>
-                            Unique
-                        </Checkbox>
+                    <Form.Item noStyle field={`${index}.unique`} initialValue={field.unique}>
+                        <Checkbox defaultChecked={field.unique}>Unique</Checkbox>
                     </Form.Item>
-                    <Form.Item
-                        noStyle
-                        field={`${index}.not_null`}
-                        initialValue={field.not_null}
-                    >
-                        <Checkbox defaultChecked={field.not_null}>
-                            Not Null
-                        </Checkbox>
+                    <Form.Item noStyle field={`${index}.not_null`} initialValue={field.not_null}>
+                        <Checkbox defaultChecked={field.not_null}>Not Null</Checkbox>
                     </Form.Item>
-                    <Form.Item
-                        noStyle
-                        field={`${index}.increment`}
-                        initialValue={field.increment}
-                    >
-                        <Checkbox defaultChecked={field.increment}>
-                            Increment
-                        </Checkbox>
+                    <Form.Item noStyle field={`${index}.increment`} initialValue={field.increment}>
+                        <Checkbox defaultChecked={field.increment}>Increment</Checkbox>
                     </Form.Item>
                 </Space>
 
@@ -214,8 +194,11 @@ function TableFormItem(props) {
     );
 }
 
-function TableBaseForm({ table, removeTable, tableList }) {
-    if (!table) return null;
+function TableBaseForm() {
+    const { tableList, editingTable } = graphState.useContainer();
+    const { removeTable } = tableModel();
+
+    if (!editingTable) return null;
     return (
         <>
             <Form.Item label="Table Name" labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
@@ -223,7 +206,7 @@ function TableBaseForm({ table, removeTable, tableList }) {
                     <Grid.Col span={18}>
                         <Form.Item
                             field="name"
-                            initialValue={table.name}
+                            initialValue={editingTable.name}
                             noStyle={{ showErrorTip: true }}
                             rules={[
                                 {
@@ -232,10 +215,11 @@ function TableBaseForm({ table, removeTable, tableList }) {
                                 },
                                 {
                                     validator: (value, cb) => {
-                                        return tableList.filter(item => item.id !== table.id)
+                                        return tableList
+                                            .filter(item => item.id !== editingTable.id)
                                             .find(item => item.name === value)
                                             ? cb('have same name table')
-                                            : cb()
+                                            : cb();
                                     },
                                 },
                             ]}
@@ -249,7 +233,7 @@ function TableBaseForm({ table, removeTable, tableList }) {
                             title="Are you sure you want to delete this table?"
                             okText="Yes"
                             cancelText="No"
-                            onOk={() => removeTable(table.id)}
+                            onOk={() => removeTable(editingTable.id)}
                         >
                             <Button type="outline" status="warning">
                                 Delete table
@@ -264,7 +248,7 @@ function TableBaseForm({ table, removeTable, tableList }) {
                 field="note"
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 19 }}
-                initialValue={table.note}
+                initialValue={editingTable.note}
             >
                 <Input type="text" />
             </Form.Item>
@@ -283,22 +267,24 @@ function TableBaseForm({ table, removeTable, tableList }) {
 export default function TableForm(props) {
     const [fields, setFields] = useState([]);
     const [form] = Form.useForm();
+    const { editingTable, setEditingTable } = graphState.useContainer();
+    const { updateTable } = tableModel();
 
     useEffect(() => {
-        if (props.table) {
-            setFields(props.table.fields);
+        if (editingTable) {
+            setFields(editingTable.fields);
         }
-    }, [props.table]);
+    }, [editingTable]);
 
     const save = values => {
         const { name, note, ...fields } = values;
         const newTable = {
-            ...props.table,
+            ...editingTable,
             name,
             note,
             fields: Object.values(fields),
         };
-        props.updateTable(newTable);
+        updateTable(newTable);
     };
 
     const addItem = index => {
@@ -382,16 +368,16 @@ export default function TableForm(props) {
         <Drawer
             width={620}
             title="Edit Table"
-            visible={!!props.table}
+            visible={!!editingTable}
             okText="Commit"
             autoFocus={false}
             onOk={() => form.submit()}
             cancelText="Cancel"
-            onCancel={() => props.setEditingTable(false)}
+            onCancel={() => setEditingTable(false)}
             escToExit={!props.formChange}
             maskClosable={!props.formChange}
             afterClose={() => {
-                props.setFormChange(false);
+                props.onFormChange(false);
                 form.resetFields();
             }}
         >
@@ -403,15 +389,11 @@ export default function TableForm(props) {
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span: 18 }}
                 onValuesChange={(changedValues, allValues) => {
-                        if (!props.formChange) props.setFormChange(true);
-                    }}
+                    if (!props.formChange) props.onFormChange(true);
+                }}
                 scrollToFirstError
             >
-                <TableBaseForm
-                    table={props.table}
-                    removeTable={props.removeTable}
-                    tableList={props.tableList}
-                />
+                <TableBaseForm />
 
                 {fields.map((field, index) => (
                     <TableFormItem

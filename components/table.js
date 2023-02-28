@@ -1,12 +1,5 @@
 import { useState } from 'react';
-import {
-    Button,
-    Popover,
-    Space,
-    Tag,
-    Popconfirm,
-    Input,
-} from '@arco-design/web-react';
+import { Button, Popover, Space, Tag, Popconfirm, Input } from '@arco-design/web-react';
 import {
     IconEdit,
     IconDelete,
@@ -16,111 +9,102 @@ import {
     IconPalette,
 } from '@arco-design/web-react/icon';
 
-import themes from '../data/theme';
+import { themes, tableWidth, titleHeight, commentHeight, fieldHeight } from '../data/settings';
+import graphState from '../hooks/use-graph-state';
+import tableModel from '../hooks/table-model';
+
+const RenderTableTips = ({ field }) => (
+    <div className="table-tips">
+        <div className="head">
+            <span className="field-name">{field.name}</span>
+            <span className="field-type">{field.type}</span>
+        </div>
+        <div className="content">
+            <Space wrap size={4}>
+                {field.pk && (
+                    <Tag size="small" color="gold">
+                        PRIMARY
+                    </Tag>
+                )}
+                {field.unique && (
+                    <Tag size="small" color="green">
+                        UNIQUE
+                    </Tag>
+                )}
+                {field.not_null && (
+                    <Tag size="small" color="magenta">
+                        NOT NULL
+                    </Tag>
+                )}
+                {field.increment && (
+                    <Tag size="small" color="lime">
+                        INCREMENT
+                    </Tag>
+                )}
+            </Space>
+
+            <div className="field-item dbdefault">
+                <span>DEFAULT:</span>
+                {field.dbdefault || <span className="empty-value">(Unset)</span>}
+            </div>
+            <div className="field-item note">
+                <span>COMMENT:</span>
+                {field.note || <span className="empty-value">(No Comment)</span>}
+            </div>
+        </div>
+    </div>
+);
 
 /**
  * It renders a table with a title, a list of fields, and a button to edit the table
  * @param props - {
  *            table,
- *            TableWidth,
- *            tableMouseDownHandler,
- *            handlerEditingTable,
- *            gripMouseDownHandler,
- *            handlerEditingField,
- *            handlerAddField,
- *            handlerRemoveField,
+ *            onTableMouseDown,
+ *            onGripMouseDown,
  *        }
  * @returns A table component with a title and a list of fields.
  */
 export default function Table(props) {
-    const {
-        table,
-        TableWidth,
-        tableMouseDownHandler,
-        handlerEditingTable,
-        gripMouseDownHandler,
-        handlerEditingField,
-        handlerAddField,
-        handlerRemoveField,
-        editable,
-        tableSelectedId,
-        setTableSelectId,
-    } = props;
+    const { table, onTableMouseDown, onGripMouseDown, tableSelectedId, setTableSelectId } = props;
+    const { version, setEditingField, setEditingTable } = graphState.useContainer();
+    const { updateTable, removeTable, addField, removeField } = tableModel();
+    const [note, setNote] = useState(table.note);
+
+    const editable = version === 'currentVersion';
 
     const handlerContextMenu = e => {
         e.preventDefault();
         e.stopPropagation();
     };
 
-    const RenderTableTips = ({ field }) => (
-        <div className="table-tips">
-            <div className="head">
-                <span className="field-name">{field.name}</span>
-                <span className="field-type">{field.type}</span>
-            </div>
-            <div className="content">
-                <Space wrap size={4}>
-                    {field.pk && (
-                        <Tag size="small" color="gold">
-                            PRIMARY
-                        </Tag>
-                    )}
-                    {field.unique && (
-                        <Tag size="small" color="green">
-                            UNIQUE
-                        </Tag>
-                    )}
-                    {field.not_null && (
-                        <Tag size="small" color="magenta">
-                            NOT NULL
-                        </Tag>
-                    )}
-                    {field.increment && (
-                        <Tag size="small" color="lime">
-                            INCREMENT
-                        </Tag>
-                    )}
-                </Space>
-
-                <div className="field-item dbdefault">
-                    <span>DEFAULT:</span>
-                    {field.dbdefault || (<span className="empty-value">(Unset)</span>)}
-                </div>
-                <div className="field-item note">
-                    <span>COMMENT:</span>
-                    {field.note || (<span className="empty-value">(No Comment)</span>)}
-                </div>
-            </div>
-        </div>
-    );
-
-    const [note, setNote] = useState(table.note);
-
-    const height = table.fields.length * 32 + 52 + 24;
+    // 12: box-shadow
+    const height = table.fields.length * fieldHeight + titleHeight + commentHeight + 12;
     return (
         <foreignObject
             x={table.x}
             y={table.y}
-            width={TableWidth}
+            width={tableWidth}
             height={height}
             key={table.id}
-            onMouseDown={e => {
-                tableMouseDownHandler(e, table);
-            }}
-            // onMouseUp={(e) => {
-            //     tableMouseUpHandler(e, table);
-            // }}
+            onMouseDown={e => onTableMouseDown(e, table)}
+            // onMouseUp={(e) => onTableMouseUp(e, table)}
             onContextMenu={handlerContextMenu}
         >
             <div
-                className={`table ${editable ? 'editable' : ''} ${tableSelectedId === table.id ? 'table-selected' : ''}`}
+                className={`table ${editable ? 'editable' : ''} ${
+                    tableSelectedId === table.id ? 'table-selected' : ''
+                }`}
                 style={{ borderColor: table.theme }}
                 onMouseOver={() => setTableSelectId(table.id)}
                 onMouseOut={() => setTableSelectId(null)}
             >
                 <div
                     className="table-title"
-                    style={{ background: table.theme }}
+                    style={{
+                        background: table.theme,
+                        height: titleHeight,
+                        lineHeight: `${titleHeight}px`,
+                    }}
                 >
                     <span className="table-name">{table.name}</span>
 
@@ -128,9 +112,7 @@ export default function Table(props) {
                         <Space size={4} className="table-settings">
                             <Button
                                 size="mini"
-                                onClick={() => {
-                                    handlerEditingTable(table);
-                                }}
+                                onClick={() => setEditingTable(table)}
                                 icon={<IconEdit />}
                             />
                             <Popconfirm
@@ -145,16 +127,14 @@ export default function Table(props) {
                                             defaultValue={table.note}
                                             allowClear
                                             placeholder="Please Enter Comment"
-                                            onChange={value => {
-                                                setNote(value);
-                                            }}
+                                            onChange={value => setNote(value)}
                                         />
                                     </Space>
                                 }
                                 okText="Commit"
                                 cancelText="Cancel"
                                 onOk={() => {
-                                    props.updateTable({ ...props.table, note });
+                                    updateTable({ ...props.table, note });
                                 }}
                                 onCancel={() => {
                                     setNote(props.table.note);
@@ -174,7 +154,7 @@ export default function Table(props) {
                                                 fontSize: '12px',
                                             }}
                                             onClick={() =>
-                                                props.updateTable({
+                                                updateTable({
                                                     ...props.table,
                                                     theme: undefined,
                                                 })
@@ -192,10 +172,7 @@ export default function Table(props) {
                                         style={{ margin: '8px 0 4px' }}
                                     >
                                         {themes.map(list => (
-                                            <Space
-                                                size="medium"
-                                                key={list.toString()}
-                                            >
+                                            <Space size="medium" key={list.toString()}>
                                                 {list.map(item => (
                                                     <Button
                                                         key={item}
@@ -204,7 +181,7 @@ export default function Table(props) {
                                                             background: item,
                                                         }}
                                                         onClick={() =>
-                                                            props.updateTable({
+                                                            updateTable({
                                                                 ...props.table,
                                                                 theme: item,
                                                             })
@@ -224,20 +201,17 @@ export default function Table(props) {
                                 title="Are you sure you want to delete this table?"
                                 okText="Yes"
                                 cancelText="No"
-                                onOk={() => {
-                                    props.removeTable(table.id);
-                                }}
+                                onOk={() => removeTable(table.id)}
                             >
-                                <Button
-                                    status="danger"
-                                    size="mini"
-                                    icon={<IconDelete />}
-                                />
+                                <Button status="danger" size="mini" icon={<IconDelete />} />
                             </Popconfirm>
                         </Space>
                     )}
                 </div>
-                <div className={`table-comment ${note ? '' : 'no-comment'}`}>
+                <div
+                    className={`table-comment ${note ? '' : 'no-comment'}`}
+                    style={{ height: commentHeight, lineHeight: `${commentHeight}px` }}
+                >
                     {table.note || '(No Comment)'}
                 </div>
                 {table.fields &&
@@ -252,16 +226,18 @@ export default function Table(props) {
                                 key={field.id}
                                 tableid={table.id}
                                 fieldid={field.id}
+                                style={{ height: fieldHeight, lineHeight: `${fieldHeight}px` }}
                             >
                                 <div
                                     className="start-grip grip"
-                                    onMouseDown={gripMouseDownHandler}
+                                    onMouseDown={onGripMouseDown}
                                 ></div>
                                 <div className="field-content">
                                     <div>
                                         {field.name}
                                         {field.pk && (
                                             <img
+                                                alt="pk"
                                                 style={{
                                                     width: 10,
                                                     height: 10,
@@ -272,6 +248,7 @@ export default function Table(props) {
                                         )}
                                         {(field.unique || field.index) && (
                                             <img
+                                                alt="index"
                                                 style={{
                                                     width: 10,
                                                     height: 10,
@@ -281,9 +258,7 @@ export default function Table(props) {
                                             />
                                         )}
                                     </div>
-                                    <div className="field-type">
-                                        {field.type}
-                                    </div>
+                                    <div className="field-type">{field.type}</div>
                                 </div>
                                 <div className="grip-setting">
                                     <Button
@@ -292,10 +267,7 @@ export default function Table(props) {
                                         size="mini"
                                         icon={<IconEdit />}
                                         onClick={() => {
-                                            handlerEditingField({
-                                                field,
-                                                table,
-                                            });
+                                            setEditingField({ field, table });
                                         }}
                                     />
                                     <Button
@@ -304,18 +276,23 @@ export default function Table(props) {
                                         size="mini"
                                         icon={<IconPlus />}
                                         onClick={() => {
-                                            handlerAddField(table, index);
+                                            addField(table, index);
                                         }}
                                     />
-                                    <Button
-                                        status="danger"
-                                        className="grip-setting-btn"
-                                        size="mini"
-                                        icon={<IconMinus />}
-                                        onClick={() => {
-                                            handlerRemoveField(table, index);
-                                        }}
-                                    />
+                                    <Popconfirm
+                                        position="tr"
+                                        title="Are you sure you want to delete this field?"
+                                        okText="Yes"
+                                        cancelText="No"
+                                        onOk={() => removeField(table, index)}
+                                    >
+                                        <Button
+                                            status="danger"
+                                            className="grip-setting-btn"
+                                            size="mini"
+                                            icon={<IconMinus />}
+                                        />
+                                    </Popconfirm>
                                 </div>
                             </div>
                         </Popover>

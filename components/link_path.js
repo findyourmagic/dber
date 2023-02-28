@@ -1,3 +1,6 @@
+import graphState from '../hooks/use-graph-state';
+import { tableWidth, fieldHeight, commentHeight, titleHeight } from '../data/settings';
+
 const control = 20;
 const padding = 5;
 const gripWidth = 10;
@@ -9,62 +12,49 @@ const margin = 0.5;
  * @param props - The props object that is passed to the component.
  * {
  *      link,
- *      tableDict,
- *      linkDict,
- *      TableWidth,
  *      setEditingLink,
  *  }
  * @returns A svg path is being returned.
  */
 export default function LinkPath(props) {
-    const {
-        link,
-        tableDict,
-        linkDict,
-        TableWidth: width,
-        setEditingLink,
-        editable,
-    } = props;
+    const { link, setEditingLink } = props;
+    const { tableDict, version } = graphState.useContainer();
+
+    const editable = version === 'currentVersion';
+
     if (!tableDict) return null;
 
     const { endpoints } = link;
-    const [sourceTable, targetTable] = [
-        tableDict[endpoints[0].id],
-        tableDict[endpoints[1].id],
-    ];
+    const [sourceTable, targetTable] = [tableDict[endpoints[0].id], tableDict[endpoints[1].id]];
 
     const [sourceFieldIndex, targetFieldIndex] = [
-        sourceTable.fields.findIndex(
-            field => field.id === endpoints[0].fieldId
-        ),
-        targetTable.fields.findIndex(
-            field => field.id === endpoints[1].fieldId
-        ),
+        sourceTable.fields.findIndex(field => field.id === endpoints[0].fieldId),
+        targetTable.fields.findIndex(field => field.id === endpoints[1].fieldId),
     ];
+
+    const calcHeight = titleHeight + commentHeight + fieldHeight / 2;
 
     const sourceFieldPosition = {
         x: sourceTable.x,
-        y: sourceTable.y + sourceFieldIndex * 32 + 50 + gripRadius + 24,
+        y: sourceTable.y + sourceFieldIndex * fieldHeight + calcHeight,
         ...endpoints[0],
     };
 
     const targetFieldPosition = {
         x: targetTable.x,
-        y: targetTable.y + targetFieldIndex * 32 + 50 + gripRadius + 24,
+        y: targetTable.y + targetFieldIndex * fieldHeight + calcHeight,
         ...endpoints[1],
     };
 
     // const [source, target] = [sourceFieldPosition, targetFieldPosition];
 
-    const [source, target] = [sourceFieldPosition, targetFieldPosition].sort(
-        (a, b) => {
-            return a.x - b.x || a.y - b.y;
-        }
-    );
+    const [source, target] = [sourceFieldPosition, targetFieldPosition].sort((a, b) => {
+        return a.x - b.x || a.y - b.y;
+    });
 
     const sourceLeft = source.x + padding + gripRadius + margin;
 
-    const sourceRight = source.x + width - padding - gripRadius - margin;
+    const sourceRight = source.x + tableWidth - padding - gripRadius - margin;
 
     let x = sourceLeft;
 
@@ -72,7 +62,7 @@ export default function LinkPath(props) {
 
     const targetLeft = target.x + padding + gripRadius + margin;
 
-    const targetRight = target.x + width - padding - gripRadius - margin;
+    const targetRight = target.x + tableWidth - padding - gripRadius - margin;
 
     let minDistance = Math.abs(sourceLeft - targetLeft);
 
@@ -115,9 +105,9 @@ export default function LinkPath(props) {
 
         d = `M ${sourceRight} ${y}
         L ${sourceRight + control} ${y}
-        C ${sourceRight + control * factor} ${y} ${
-            sourceRight + control * factor
-        } ${y1} ${sourceRight + control} ${y1}
+        C ${sourceRight + control * factor} ${y} ${sourceRight + control * factor} ${y1} ${
+            sourceRight + control
+        } ${y1}
         L ${sourceRight} ${y1}`;
 
         foreignObjectPositions = [
@@ -131,13 +121,7 @@ export default function LinkPath(props) {
 
     return (
         <>
-            <path
-                d={d}
-                stroke="black"
-                strokeWidth="1"
-                fill="none"
-                className="path-line"
-            />
+            <path d={d} stroke="black" strokeWidth="1" fill="none" className="path-line" />
             <foreignObject
                 x={foreignObjectPositions[0].x}
                 y={foreignObjectPositions[0].y}

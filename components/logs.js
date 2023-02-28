@@ -1,88 +1,84 @@
-import {
-    Button,
-    Drawer,
-    Notification,
-    Popconfirm,
-    Space,
-} from '@arco-design/web-react';
+import { useState, useEffect } from 'react';
+import { Drawer, Notification, Popconfirm, Space } from '@arco-design/web-react';
 
-import { db } from '../data/db';
+import { delLogs, getLogs } from '../data/db';
+import graphState from '../hooks/use-graph-state';
+import tableModel from '../hooks/table-model';
 
-export default function HistoryDrawer(props) {
-    const { history, setHistory, version, handlerVersion } = props;
+export default function LogsDrawer({ showDrawer, onCloseDrawer }) {
+    const { id, version } = graphState.useContainer();
+    const { applyVersion } = tableModel();
+    const [logs, setLogs] = useState(undefined);
 
-    const deleteHistory = (e, id) => {
+    const viewLogs = async () => {
+        const records = await getLogs(id);
+        setLogs(records);
+    };
+
+    useEffect(() => {
+        if (showDrawer === 'logs') {
+            viewLogs();
+        }
+    }, [showDrawer]);
+
+    const deleteLogs = (e, id) => {
         e.preventDefault();
         e.stopPropagation();
 
-        db.logs.delete(id);
-        props.handlerHistory();
+        delLogs(id);
+        setLogs(state => state.filter(item => item.id !== id));
         Notification.success({
-            title: 'Delete history record success',
+            title: 'Delete logs record success',
         });
     };
 
     return (
         <Drawer
             width={320}
-            title="History Record"
-            visible={history !== undefined}
+            title="Logs Record"
+            visible={showDrawer === 'logs'}
             autoFocus={false}
             footer={null}
             mask={false}
-            onCancel={() => {
-                setHistory(undefined);
-                // handlerVersion('currentVersion');
-            }}
+            onCancel={() => onCloseDrawer()}
             style={{ boxShadow: '0 0 8px rgba(0, 0, 0, 0.1)' }}
         >
             <Space
                 align="start"
                 className={`custom-radio-card ${
-                    version === 'currentVersion'
-                        ? 'custom-radio-card-checked'
-                        : ''
+                    version === 'currentVersion' ? 'custom-radio-card-checked' : ''
                 }`}
-                onClick={() => handlerVersion('currentVersion')}
+                onClick={() => applyVersion('currentVersion')}
             >
                 <div className="custom-radio-card-dot"></div>
                 <div>
-                    <div className="custom-radio-card-title">
-                        Current Version
-                    </div>
+                    <div className="custom-radio-card-title">Current Version</div>
                 </div>
             </Space>
 
-            {history
-                ? history.map(item => (
+            {logs
+                ? logs.map(item => (
                       <Space
                           key={item.updatedAt}
                           align="start"
                           className={`custom-radio-card ${
-                              version === item.updatedAt
-                                  ? 'custom-radio-card-checked'
-                                  : ''
+                              version === item.updatedAt ? 'custom-radio-card-checked' : ''
                           }`}
-                          onClick={() => handlerVersion(item)}
+                          onClick={() => applyVersion(item)}
                       >
                           <div className="custom-radio-card-dot"></div>
                           <div>
-                              <div className="custom-radio-card-title">
-                                  Version {item.id}
-                              </div>
+                              <div className="custom-radio-card-title">Version {item.id}</div>
                               <div className="custom-radio-card-secondary">
-                                  Auto save at{' '}
-                                  {new Date(item.updatedAt).toLocaleString()}
+                                  Auto save at {new Date(item.updatedAt).toLocaleString()}
                               </div>
                           </div>
                           <Popconfirm
-                              position="tr"
-                              title="Are you sure you want to delete this history record?"
+                              position="br"
+                              title="Are you sure you want to delete this logs record?"
                               okText="Yes"
                               cancelText="No"
-                              onOk={e => {
-                                  deleteHistory(e, item.id);
-                              }}
+                              onOk={e => deleteLogs(e, item.id)}
                               onCancel={e => {
                                   e.preventDefault();
                                   e.stopPropagation();

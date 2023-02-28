@@ -307,5 +307,6 @@
         "clientH": 764
     },
     "name": "Blog(example)",
-    "updatedAt": 1655451615323
+    "updatedAt": 1655451615323,
+    "createdAt": 1655451615323
 }

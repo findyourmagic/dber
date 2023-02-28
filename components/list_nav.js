@@ -1,6 +1,7 @@
-import { Space, Button, Dropdown, Menu, Switch } from '@arco-design/web-react';
+import { Space, Button, Switch } from '@arco-design/web-react';
 import { IconSunFill, IconMoonFill } from '@arco-design/web-react/icon';
 import Link from 'next/link';
+import graphState from '../hooks/use-graph-state';
 
 /**
  * It renders a nav bar with a link to the home page, a button to add a new graph, and a dropdown menu
@@ -8,57 +9,31 @@ import Link from 'next/link';
  * @param props - the props passed to the component
  * @returns List Nav component
  */
-export default function ListNav(props) {
-    const { setImportType } = props;
+export default function ListNav({ importGraph, addGraph, addExample }) {
+    const { theme, setTheme } = graphState.useContainer();
 
     return (
         <div className="nav">
             <div>
                 <Link href="/" passHref>
-                    <a href="javascript:;">
-                        <strong>DBER</strong> | Database design tool based on
-                        entity relation diagram
-                    </a>
+                    <strong>DBER</strong> | Database design tool based on entity relation diagram
                 </Link>
             </div>
             <Space>
-                <Dropdown
-                    droplist={
-                        <Menu>
-                            {['DBML', 'PostgreSQL', 'MySQL', 'MSSQL'].map(item => (
-                                <Menu.Item
-                                    key={item}
-                                    onClick={() => {
-                                        setImportType(item);
-                                    }}
-                                >
-                                    {item}
-                                </Menu.Item>
-                            ))}
-                        </Menu>
-                    }
-                    position="br"
-                >
-                    <Button type="outline" shape="round">
-                        import
-                    </Button>
-                </Dropdown>
-                <Button
-                    type="primary"
-                    shape="round"
-                    onClick={() => {
-                        props.addGraph();
-                    }}
-                >
+                <Button size="small" type="outline" shape="round" onClick={() => importGraph()}>
+                    Import
+                </Button>
+                <Button size="small" type="primary" shape="round" onClick={() => addGraph()}>
                     + New graph
+                </Button>
+                <Button size="small" shape="round" onClick={() => addExample()}>
+                    Example graph
                 </Button>
                 <Switch
                     checkedIcon={<IconMoonFill />}
                     uncheckedIcon={<IconSunFill />}
-                    checked={props.theme === 'dark'}
-                    onChange={(e) => {
-                        props.setTheme(e ? 'dark' : 'light');
-                    }}
+                    checked={theme === 'dark'}
+                    onChange={e => setTheme(e ? 'dark' : 'light')}
                 />
             </Space>
         </div>

@@ -1,12 +1,8 @@
-import {
-    Button,
-    Space,
-    Popconfirm,
-    Input,
-    Switch,
-} from '@arco-design/web-react';
+import { Button, Space, Popconfirm, Input, Switch, Dropdown, Menu } from '@arco-design/web-react';
 import { IconSunFill, IconMoonFill, IconLeft } from '@arco-design/web-react/icon';
 import Link from 'next/link';
+import graphState from '../hooks/use-graph-state';
+import tableModel from '../hooks/table-model';
 
 /**
  * It renders a nav bar with a title, a save button, a demo button, a clear button, an export button,
@@ -14,16 +10,18 @@ import Link from 'next/link';
  * @param props - the props passed to the component
  * @returns A Nav component that takes in a title, a save button, a demo button, a clear button, an export button
  */
-export default function Nav(props) {
-    if (!props.editable) {
+export default function Nav({ setShowModal, setShowDrawer }) {
+    const { name, setName, theme, setTheme, setTableDict, setLinkDict, version } =
+        graphState.useContainer();
+    const { updateGraph, addTable, applyVersion } = tableModel();
+
+    if (version !== 'currentVersion') {
         return (
             <nav className="nav">
-                <div className="nav-title">
-                    History Record: {props.name}
-                </div>
+                <div className="nav-title">Logs Record: {name}</div>
                 <Space>
                     <Button
-                        onClick={props.applyHistory}
+                        onClick={() => updateGraph()}
                         type="primary"
                         status="success"
                         shape="round"
@@ -32,11 +30,11 @@ export default function Nav(props) {
                         Apply Select Version
                     </Button>
                     <Button
-                        onClick={props.exitHistory}
+                        onClick={() => applyVersion('currentVersion')}
                         shape="round"
                         style={{ marginLeft: 8 }}
                     >
-                        Exit History View
+                        Exit Logs View
                     </Button>
                 </Space>
             </nav>
@@ -47,63 +45,86 @@ export default function Nav(props) {
         <nav className="nav">
             <Space>
                 <Link href="/graphs" passHref>
-                    <a href="javascript:;">
-                        <IconLeft style={{ fontSize: 20 }} />
-                    </a>
+                    <IconLeft style={{ fontSize: 20 }} />
                 </Link>
                 <Input
                     type="text"
-                    value={props.name}
-                    onChange={value => props.setName(value)}
+                    value={name}
+                    onChange={value => setName(value)}
                     style={{ width: '240px' }}
                 />
             </Space>
 
             <Space>
                 <Button
-                    onClick={() => props.saveGraph()}
+                    size="small"
                     type="primary"
                     status="success"
                     shape="round"
+                    onClick={() => updateGraph()}
                 >
                     Save
                 </Button>
-                <Button onClick={props.addTable} type="primary" shape="round">
-                    + New Table
-                </Button>
+                <Dropdown
+                    position="bottom"
+                    droplist={
+                        <Menu>
+                            <Menu.Item
+                                key="add"
+                                className="context-menu-item"
+                                onClick={() => addTable()}
+                            >
+                                Add Table
+                            </Menu.Item>
+                            <Menu.Item
+                                key="import"
+                                className="context-menu-item"
+                                onClick={() => setShowModal('import')}
+                            >
+                                Import Table
+                            </Menu.Item>
+                        </Menu>
+                    }
+                >
+                    <Button size="small" type="primary" shape="round">
+                        + New Table
+                    </Button>
+                </Dropdown>
                 <Popconfirm
                     title="Are you sure you want to delete all the tables?"
                     okText="Yes"
                     cancelText="No"
                     position="br"
                     onOk={() => {
-                        props.setTableDict({});
-                        props.setLinkDict({});
+                        setTableDict({});
+                        setLinkDict({});
                     }}
                 >
-                    <Button type="outline" status="danger" shape="round">
+                    <Button size="small" type="outline" status="danger" shape="round">
                         Clear
                     </Button>
                 </Popconfirm>
                 <Button
+                    size="small"
                     type="outline"
                     shape="round"
-                    onClick={() => props.handlerExport()}
+                    onClick={() => setShowModal('export')}
                 >
                     Export
                 </Button>
                 <Button
-                    onClick={props.handlerHistory}
+                    size="small"
                     type="secondary"
                     shape="round"
+                    onClick={() => setShowDrawer('logs')}
                 >
-                    History
+                    Logs
                 </Button>
                 <Switch
                     checkedIcon={<IconMoonFill />}
                     uncheckedIcon={<IconSunFill />}
-                    checked={props.theme === 'dark'}
-                    onChange={e => props.setTheme(e ? 'dark' : 'light')}
+                    checked={theme === 'dark'}
+                    onChange={e => setTheme(e ? 'dark' : 'light')}
                 />
             </Space>
         </nav>

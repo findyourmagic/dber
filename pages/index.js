@@ -1,13 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import {
-    Button,
-    Card,
-    PageHeader,
-    Space,
-    Typography,
-    Steps,
-} from '@arco-design/web-react';
+import { Button, Card, PageHeader, Space, Typography, Steps } from '@arco-design/web-react';
 
 const Step = Steps.Step;
 
@@ -58,9 +51,7 @@ export default function Home() {
                 <div className="index-bg">
                     <Typography.Title className="tc" type="secondary">
                         <p>Simply easy</p>
-                        <p className="mark">
-                            Database designing & Data modeling tool
-                        </p>
+                        <p className="mark">Database designing & Data modeling tool</p>
                         <p>Open source and free.</p>
                     </Typography.Title>
                     <Link href="/graphs">
@@ -87,18 +78,9 @@ export default function Home() {
                             margin: '100px auto',
                         }}
                     >
-                        <Step
-                            title="Design data structures"
-                            description="Visually"
-                        />
-                        <Step
-                            title="Create relationships"
-                            description="Drag and drop"
-                        />
-                        <Step
-                            title="Export SQL scripts"
-                            description="It's that simple"
-                        />
+                        <Step title="Design data structures" description="Visually" />
+                        <Step title="Create relationships" description="Drag and drop" />
+                        <Step title="Export SQL scripts" description="It's that simple" />
                     </Steps>
                 </div>
 
@@ -107,22 +89,17 @@ export default function Home() {
                         <h2>FAQ</h2>
                         <dl>
                             <dt>How to register?</dt>
-                            <dd>
-                                No registration required, just start playing.
-                            </dd>
+                            <dd>No registration required, just start playing.</dd>
                         </dl>
                         <dl>
                             <dt>Where is the data stored?</dt>
                             <dd>
-                                Stored in local storage and indexDB, so it is
-                                best to make a backup before cleaning the
-                                browser.
+                                Stored in local storage and indexDB, so it is best to make a backup
+                                before cleaning the browser.
                             </dd>
                         </dl>
                         <dl>
-                            <dt>
-                                Is it possible to collaborate across devices?
-                            </dt>
+                            <dt>Is it possible to collaborate across devices?</dt>
                             <dd>Not for the time being.</dd>
                         </dl>
                     </div>
@@ -130,13 +107,11 @@ export default function Home() {
                 </div>
                 <div className="index-footer">
                     <div>
-                        <strong>DBER</strong> | Database design tool based on
-                        entity relation diagram
+                        <strong>DBER</strong> | Database design tool based on entity relation
+                        diagram
                     </div>
                     <Link href="/graphs">
-                        <Button type="text">
-                            Get started free & no registration required.
-                        </Button>
+                        <Button type="text">Get started free & no registration required.</Button>
                     </Link>
                     <Button
                         type="text"

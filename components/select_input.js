@@ -17,12 +17,7 @@ export default function SelectInput({ name, options, defaultValue, width }) {
     return (
         <>
             <input type="hidden" name={name} value={value} />
-            <Select
-                value={value}
-                onChange={handleChange}
-                style={{ width }}
-                allowCreate
-            >
+            <Select value={value} onChange={handleChange} style={{ width }} allowCreate>
                 {options.map(item => (
                     <Option key={item} value={item}>
                         {item}

@@ -3,6 +3,8 @@ import { Parser } from '@dbml/core';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import Editor from '@monaco-editor/react';
+import graphState from '../hooks/use-graph-state';
+import tableModel from '../hooks/table-model';
 
 const TabPane = Tabs.TabPane;
 
@@ -10,27 +12,33 @@ const TabPane = Tabs.TabPane;
  * It's a modal that allows you to import a graph from a string
  * @returns Modal component
  */
-export default function ImportModal({ importType, setImportType, theme, handlerImportTable }) {
+export default function ImportModal({ showModal, onCloseModal, cb = p => {} }) {
+    const { theme, setTableDict, setLinkDict, tableList } = graphState.useContainer();
+    const { calcXY } = tableModel();
+
     const [value, setValue] = useState('');
+    const [importType, setImportType] = useState('dbml');
 
     const handleOk = async () => {
         if (!value) {
-            setImportType('');
+            onCloseModal();
             return;
         }
         try {
-            const result = await Parser.parse(value, importType.toLowerCase());
+            const result = await Parser.parse(value, importType);
             const graph = result.schemas[0];
             const tableDict = {};
             const linkDict = {};
+            const tables = [...tableList];
             graph.tables.forEach((table, index) => {
                 const id = nanoid();
-                tableDict[id] = {
+                const [x, y] = calcXY(0, tables);
+                const newTable = {
                     id,
                     name: table.name,
                     note: table.note,
-                    x: index * 260 + 60,
-                    y: 120,
+                    x,
+                    y,
                     fields: table.fields.map(field => {
                         const fieldId = nanoid();
                         return {
@@ -45,6 +53,8 @@ export default function ImportModal({ importType, setImportType, theme, handlerI
                         };
                     }),
                 };
+                tableDict[id] = newTable;
+                tables.push(newTable);
             });
 
             graph.refs.forEach(ref => {
@@ -66,9 +76,18 @@ export default function ImportModal({ importType, setImportType, theme, handlerI
                 };
             });
 
-            handlerImportTable({ tableDict, linkDict });
+            setTableDict(state => ({
+                ...state,
+                ...tableDict,
+            }));
+            setLinkDict(state => ({
+                ...state,
+                ...linkDict,
+            }));
+
             setValue('');
-            setImportType('');
+            onCloseModal();
+            cb({ tableDict, linkDict });
         } catch (e) {
             console.log(e);
             Notification.error({
@@ -81,34 +100,30 @@ export default function ImportModal({ importType, setImportType, theme, handlerI
         <Modal
             title={null}
             simple
-            visible={!!importType}
+            visible={showModal === 'import'}
             autoFocus={false}
-            onOk={() => {
-                handleOk();
-            }}
+            onOk={() => handleOk()}
             okText="Import"
             cancelText="Close"
-            onCancel={() => setImportType('')}
+            onCancel={() => onCloseModal()}
             style={{ width: 'auto' }}
             unmountOnExit
         >
-            <Tabs
-                defaultActiveTab={importType}
-                onChange={val => setImportType(val)}
-            >
-                <TabPane key="DBML" title="DBML" />
-                <TabPane key="PostgreSQL" title="PostgreSQL" />
-                <TabPane key="MySQL" title="MySQL" />
-                <TabPane key="MSSQL" title="MSSQL" />
+            <Tabs activeTab={importType} onChange={val => setImportType(val)}>
+                <TabPane key="dbml" title="DBML" />
+                <TabPane key="postgres" title="PostgreSQL" />
+                <TabPane key="mysql" title="MySQL" />
+                <TabPane key="mssql" title="MSSQL" />
             </Tabs>
             <Editor
-                language={importType === 'DBML' ? 'apex' : 'sql'}
+                language={importType === 'dbml' ? 'apex' : 'sql'}
                 width="680px"
                 height="80vh"
                 theme={theme === 'dark' ? 'vs-dark' : 'vs'}
                 options={{
                     minimap: { enabled: false },
-                    scrollbar: { // 滚动条设置
+                    scrollbar: {
+                        // 滚动条设置
                         verticalScrollbarSize: 6, // 竖滚动条
                         horizontalScrollbarSize: 6, // 横滚动条
                     },

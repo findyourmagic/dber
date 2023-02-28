@@ -1,45 +1,67 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { createContainer } from 'unstated-next';
+import { useRouter } from 'next/router';
 import { Modal } from '@arco-design/web-react';
-import { db } from '../data/db';
+import { getGraph } from '../data/db';
 
 /**
  * It returns a state object that contains the graph data, and a set of functions to update the graph
  * data
  * @returns An object with the following properties:
- * {
- *  tableDict,
- *  setTableDict,
- *  linkDict,
- *  setLinkDict,
- *  box,
- *  setBox,
- *  name,
- *  setName,
- *  }
  */
-export default function useGraphState() {
-    const [tableDict, setTableDict] = useState({});
-    const [linkDict, setLinkDict] = useState({});
+function useGraphState() {
+    const [init, setInit] = useState(false);
     const [name, setName] = useState('Untitled graph');
-    const [theme, setTheme] = useState(null);
+    const [theme, setTheme] = useState('');
+    const [version, setVersion] = useState('currentVersion');
 
     // viewbox of svg
-    const [box, setBox] = useState({
-        x: 0,
-        y: 0,
-        w: 0,
-        h: 0,
-        clientW: 0,
-        clientH: 0,
-    });
+    const [box, setBox] = useState({ x: 0, y: 0, w: 0, h: 0, clientW: 0, clientH: 0 });
+    const [tableDict, setTableDict] = useState({});
+    const [linkDict, setLinkDict] = useState({});
 
-    const [id, setId] = useState(null);
-    const [inited, setInited] = useState(false);
+    const [editingTable, setEditingTable] = useState();
+    const [editingField, setEditingField] = useState({});
+    const [addingField, setAddingField] = useState(null);
+
+    const router = useRouter();
+    const { id } = router.query;
+    // const id = new URLSearchParams(global?.location?.search).get('id');
+
+    /* A callback function that is used to update the viewbox of the svg. */
+    const resizeHandler = useCallback(() => {
+        setBox(state => {
+            return {
+                x: state.x,
+                y: state.y,
+                w:
+                    state.w && state.clientW
+                        ? state.w * (window.innerWidth / state.clientW)
+                        : window.innerWidth,
+                h:
+                    state.h && state.clientH
+                        ? state.h * (window.innerHeight / state.clientH)
+                        : window.innerHeight,
+                clientW: window.innerWidth,
+                clientH: window.innerHeight,
+            };
+        });
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener('resize', resizeHandler);
+
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
+        };
+    }, []);
 
     /**
      * It takes a graph object and sets the state of the app to match the graph object
      */
     const loadGraph = graph => {
+        if (!graph) return resizeHandler();
+
         if (graph.tableDict) setTableDict(graph.tableDict);
         if (graph.linkDict) setLinkDict(graph.linkDict);
         if (graph.box) {
@@ -47,27 +69,23 @@ export default function useGraphState() {
             setBox({
                 x,
                 y,
-                w:
-                    w && clientW
-                        ? w * (global.innerWidth / clientW)
-                        : global.innerWidth,
-                h:
-                    h && clientH
-                        ? h * (global.innerHeight / clientH)
-                        : global.innerHeight,
-                clientW: global.innerWidth,
-                clientH: global.innerHeight,
+                w: w && clientW ? w * (window.innerWidth / clientW) : window.innerWidth,
+                h: h && clientH ? h * (window.innerHeight / clientH) : window.innerHeight,
+                clientW: window.innerWidth,
+                clientH: window.innerHeight,
             });
         }
         if (graph.name) setName(graph.name);
     };
 
     useEffect(() => {
-        setId(new URLSearchParams(global.location.search).get('id'));
-    }, []);
-
-    useEffect(() => {
-        if (!id) return;
+        if (!id) {
+            setTableDict({});
+            setLinkDict({});
+            setName('');
+            resizeHandler();
+            return;
+        }
 
         /**
          * > If the graph is in the local storage, and the graph in the local storage is newer than the
@@ -75,7 +93,11 @@ export default function useGraphState() {
          * storage
          */
         const initGraph = async () => {
-            const graph = await db.graphs.get(id);
+            setInit(true);
+
+            const graph = await getGraph(id);
+            loadGraph(graph);
+
             const storageGraph = JSON.parse(window.localStorage.getItem(id));
             if (graph?.updatedAt < storageGraph?.updatedAt) {
                 Modal.confirm({
@@ -89,22 +111,20 @@ export default function useGraphState() {
                         loadGraph(storageGraph);
                     },
                     onCancel: () => {
-                        loadGraph(graph);
                         window.localStorage.removeItem(id);
                     },
                 });
-            } else if (graph) {
-                loadGraph(graph);
             } else {
                 resizeHandler();
             }
-            setInited(true);
         };
         initGraph();
     }, [id]);
 
     useEffect(() => {
-        if (!id || !inited) return;
+        if (init) setInit(false);
+        if (!id || init || !Object.keys(tableDict).length) return;
+
         window.localStorage.setItem(
             id,
             JSON.stringify({
@@ -116,7 +136,7 @@ export default function useGraphState() {
                 updatedAt: new Date().valueOf(),
             })
         );
-    }, [id, inited, box, linkDict, tableDict, name]);
+    }, [box, linkDict, tableDict, name]);
 
     useEffect(() => {
         const t = theme || window.localStorage.getItem('theme') || 'light';
@@ -124,37 +144,14 @@ export default function useGraphState() {
             ? document.body.setAttribute('arco-theme', 'dark')
             : document.body.removeAttribute('arco-theme');
         window.localStorage.setItem('theme', t);
-        if (theme === null) setTheme(t);
+        if (!theme) setTheme(t);
     }, [theme]);
 
-    /* A callback function that is used to update the viewbox of the svg. */
-    const resizeHandler = useCallback(() => {
-        setBox(state => {
-            return {
-                x: state.x,
-                y: state.y,
-                w:
-                    state.w && state.clientW
-                        ? state.w * (global.innerWidth / state.clientW)
-                        : global.innerWidth,
-                h:
-                    state.h && state.clientH
-                        ? state.h * (global.innerHeight / state.clientH)
-                        : global.innerHeight,
-                clientW: global.innerWidth,
-                clientH: global.innerHeight,
-            };
-        });
-    }, []);
-
-    useEffect(() => {
-        global.addEventListener('resize', resizeHandler);
-        return () => {
-            global.removeEventListener('resize', resizeHandler);
-        };
-    }, []);
+    const tableList = useMemo(() => Object.values(tableDict), [tableDict]);
 
     return {
+        id,
+        tableList,
         tableDict,
         setTableDict,
         linkDict,
@@ -165,5 +162,15 @@ export default function useGraphState() {
         setName,
         theme,
         setTheme,
+        version,
+        setVersion,
+        editingTable,
+        setEditingTable,
+        editingField,
+        setEditingField,
+        addingField,
+        setAddingField,
     };
 }
+
+export default createContainer(useGraphState);

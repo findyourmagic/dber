@@ -8,14 +8,16 @@ import {
     IconSortDescending,
     IconFilter,
 } from '@arco-design/web-react/icon';
+import graphState from '../hooks/use-graph-state';
 
-
-export default function TableNav({ tables, onTableSelected, tableSelectedId }) {
+export default function TableNav({ onTableSelected, tableSelectedId, setTableSelectId }) {
     const [collapsed, setCollapsed] = useState(false);
     const [tableList, setTableList] = useState([]);
     const [order, setOrder] = useState(1);
     const [filterValue, setFilterValue] = useState('');
     const [showFilter, setShowFilter] = useState(false);
+
+    const { tableList: tables } = graphState.useContainer();
 
     useEffect(() => {
         setTableList(tables);
@@ -32,7 +34,7 @@ export default function TableNav({ tables, onTableSelected, tableSelectedId }) {
                 return order;
             }
             if (nameA > nameB) {
-                return -(order);
+                return -order;
             }
 
             // names must be equal
@@ -42,25 +44,22 @@ export default function TableNav({ tables, onTableSelected, tableSelectedId }) {
         setOrder(val => -val);
     };
 
-    const handlerFilter = (e) => {
+    const handlerFilter = e => {
         const { value } = e.target;
         if (!value) {
             setTableList(tables);
             return;
         }
-        const newList = tableList.filter(item => item.name.toUpperCase().indexOf(value.toUpperCase()) > -1);
+        const newList = tableList.filter(
+            item => item.name.toUpperCase().indexOf(value.toUpperCase()) > -1
+        );
         setTableList(newList);
         setFilterValue(value);
     };
 
-    useHotkeys(
-        'ctrl+., cmd+.',
-        async e => {
-            setCollapsed(val => !val);
-            e.preventDefault();
-        },
-        [tables.toString()]
-    );
+    useHotkeys('ctrl+., meta+.', () => setCollapsed(val => !val), { preventDefault: true }, [
+        tables,
+    ]);
 
     return (
         <div className="left-table-nav">
@@ -107,16 +106,23 @@ export default function TableNav({ tables, onTableSelected, tableSelectedId }) {
                             />
                         </div>
                     )}
-                    <Menu className="table-nav-menu" autoScrollIntoView selectedKeys={[tableSelectedId]}>
+                    <Menu
+                        className="table-nav-menu"
+                        autoScrollIntoView
+                        selectedKeys={[tableSelectedId]}
+                    >
                         {tableList.map(table => (
                             <Menu.Item
                                 key={table.id}
                                 onClick={() => onTableSelected(table)}
+                                onMouseOver={() => setTableSelectId(table.id)}
                             >
                                 <Tooltip position="right" content={table.note || ''}>
                                     <div>
                                         {table.name}
-                                        <span className="table-nav-count">({table.fields.length})</span>
+                                        <span className="table-nav-count">
+                                            ({table.fields.length})
+                                        </span>
                                     </div>
                                 </Tooltip>
                             </Menu.Item>
