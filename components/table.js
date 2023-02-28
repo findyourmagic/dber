@@ -186,7 +186,7 @@ export default function Table(props) {
                                 }
                                 content={
                                     <Space
-                                        warp
+                                        // warp
                                         direction="vertical"
                                         size="medium"
                                         style={{ margin: '8px 0 4px' }}

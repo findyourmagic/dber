@@ -56,7 +56,7 @@ export default function Home() {
     const [version, setVersion] = useState('currentVersion');
 
     const [editingTable, setEditingTable] = useState();
-    const [editingField, setEditingField] = useState();
+    const [editingField, setEditingField] = useState({});
 
     // offset of svg origin
     const [offset, setOffset] = useState({
@@ -310,33 +310,43 @@ export default function Home() {
     };
 
     /**
+     * It sets the editing table to the table that was clicked.
+     */
+    const handlerEditingTable = table => {
+        setEditingTable(table);
+    };
+
+    const handlerEditingField = field => {
+        setEditingField(field);
+    };
+
+    /**
      * It creates a new table object and adds it to the table dictionary
      */
     const addTable = ({
         x = box.x + box.w / 2 - 200 + tables.length * 20,
         y = box.y + box.h / 2 - 200 + tables.length * 20,
     } = {}) => {
-        setTableDict(state => {
-            const id = nanoid();
-            return {
-                ...state,
-                [id]: {
-                    id,
-                    name: `Table Name ${tables.length + 1}`,
-                    x,
-                    y,
-                    fields: [
-                        {
-                            id: nanoid(),
-                            name: 'id',
-                            type: 'INTEGER',
-                            pk: true,
-                            increment: true,
-                        },
-                    ],
-                },
-            };
-        });
+        const id = nanoid();
+        const newTable = {
+            [id]: {
+                id,
+                name: `Table Name ${tables.length + 1}`,
+                x,
+                y,
+                fields: [
+                    {
+                        id: nanoid(),
+                        name: 'id',
+                        type: 'INTEGER',
+                        pk: true,
+                        increment: true,
+                    },
+                ],
+            },
+        }
+        // setTableDict(state => ({ ...state, ...newTable }));
+        handlerEditingTable(newTable[id]);
     };
 
     /**
@@ -372,7 +382,7 @@ export default function Home() {
             return newState;
         });
         setEditingTable(null);
-        setEditingField(null);
+        setEditingField({});
     };
 
     /**
@@ -400,17 +410,6 @@ export default function Home() {
         });
 
         setEditingTable(null);
-    };
-
-    /**
-     * It sets the editing table to the table that was clicked.
-     */
-    const handlerEditingTable = table => {
-        setEditingTable(table);
-    };
-
-    const handlerEditingField = field => {
-        setEditingField(field);
     };
 
     const [linkStat, setLinkStat] = useState({
@@ -443,8 +442,6 @@ export default function Home() {
     };
 
     const TableWidth = 240;
-
-    const [committing, setCommitting] = useState(false);
 
     const [editingLink, setEditingLink] = useState(null);
 
@@ -768,49 +765,25 @@ export default function Home() {
                     )}
             </svg>
 
-            <Drawer
-                width={620}
-                title="Edit Table"
-                visible={!!editingTable}
-                okText="Commit"
-                autoFocus={false}
-                onOk={() => {
-                    setCommitting(true);
-                }}
-                cancelText="Cancel"
-                onCancel={() => {
-                    setEditingTable(false);
-                }}
-                escToExit={!formChange}
-                maskClosable={!formChange}
-                afterClose={() => {
-                    setFormChange(false);
-                }}
-            >
-                {editingTable ? (
-                    <TableForm
-                        table={editingTable}
-                        updateTable={updateTable}
-                        removeTable={removeTable}
-                        committing={committing}
-                        setCommitting={setCommitting}
-                        formChange={formChange}
-                        setFormChange={setFormChange}
-                    />
-                ) : null}
-            </Drawer>
-            {editingField ? (
-                <FieldForm
-                    {...editingField}
-                    updateTable={updateTable}
-                    formChange={formChange}
-                    setFormChange={setFormChange}
-                    addField={addField}
-                    setAddField={setAddField}
-                    removeField={removeField}
-                    setEditingField={setEditingField}
-                />
-            ) : null}
+            <TableForm
+                table={editingTable}
+                tableList={tables}
+                updateTable={updateTable}
+                removeTable={removeTable}
+                formChange={formChange}
+                setFormChange={setFormChange}
+                setEditingTable={setEditingTable}
+            />
+            <FieldForm
+                {...editingField}
+                updateTable={updateTable}
+                formChange={formChange}
+                setFormChange={setFormChange}
+                addField={addField}
+                setAddField={setAddField}
+                removeField={removeField}
+                setEditingField={setEditingField}
+            />
             <LinkModal
                 editingLink={editingLink}
                 setEditingLink={setEditingLink}

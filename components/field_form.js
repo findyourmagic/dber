@@ -33,10 +33,6 @@ export default function FieldForm(props) {
         props.updateTable(table);
     };
 
-    const submit = () => {
-        form.submit();
-    };
-
     return table ? (
         <Modal
             title={
@@ -61,12 +57,15 @@ export default function FieldForm(props) {
             }}
             onOk={() => {
                 setAddField(null);
-                submit();
+                form.submit();
             }}
             escToExit={!formChange}
             maskClosable={!formChange}
             afterClose={() => {
                 setFormChange(false);
+            }}
+            afterOpen={() => {
+                form.resetFields();
             }}
             style={{ width: 580 }}
             okText="Commit"
@@ -94,6 +93,14 @@ export default function FieldForm(props) {
                                     {
                                         required: true,
                                         message: 'Please enter field name',
+                                    },
+                                    {
+                                        validator: (value, cb) => {
+                                            return table.fields.filter(item => item.id !== field.id)
+                                                .find(item => item.name === value)
+                                                ? cb('have same name field')
+                                                : cb()
+                                        },
                                     },
                                 ]}
                             >

@@ -8,6 +8,8 @@ import {
     Form,
     Checkbox,
     AutoComplete,
+    Drawer,
+    Grid,
 } from '@arco-design/web-react';
 import classNames from 'classnames';
 import { nanoid } from 'nanoid';
@@ -57,7 +59,7 @@ function TableFormItem(props) {
         });
     };
 
-    const { field } = props;
+    const { field, fieldList } = props;
     const index = `A${props.index}`;
 
     return (
@@ -73,20 +75,16 @@ function TableFormItem(props) {
                 'table-form': true,
             })}
             draggable="true"
-            onDragStart={() => {
-                props.onDragStart(props.field.id);
-            }}
+            onDragStart={() => props.onDragStart(field.id)}
             onDragEnd={() => {
                 props.setDraggingId(null);
                 props.setDroppingId(null);
             }}
             onDragOver={e => {
-                props.setDroppingId(props.field.id);
+                props.setDroppingId(field.id);
                 e.preventDefault();
             }}
-            onDrop={e => {
-                props.onDrop(props.field.id);
-            }}
+            onDrop={e => props.onDrop(field.id)}
         >
             <Form.Item hidden field={`${index}.id`} initialValue={field.id}>
                 <Input />
@@ -101,6 +99,14 @@ function TableFormItem(props) {
                             {
                                 required: true,
                                 message: 'Please enter field name',
+                            },
+                            {
+                                validator: (value, cb) => {
+                                    return fieldList.filter(item => item.id !== field.id)
+                                        .find(item => item.name === value)
+                                        ? cb('have same name field')
+                                        : cb()
+                                },
                             },
                         ]}
                     >
@@ -208,6 +214,64 @@ function TableFormItem(props) {
     );
 }
 
+function TableBaseForm({ table, removeTable, tableList }) {
+    if (!table) return null;
+    return (
+        <>
+            <Form.Item label="Table Name" labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
+                <Grid.Row align="center" gutter={8}>
+                    <Grid.Col span={18}>
+                        <Form.Item
+                            field="name"
+                            initialValue={table.name}
+                            noStyle={{ showErrorTip: true }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please enter table name',
+                                },
+                                {
+                                    validator: (value, cb) => {
+                                        return tableList.filter(item => item.id !== table.id)
+                                            .find(item => item.name === value)
+                                            ? cb('have same name table')
+                                            : cb()
+                                    },
+                                },
+                            ]}
+                        >
+                            <Input type="text" />
+                        </Form.Item>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <Popconfirm
+                            position="br"
+                            title="Are you sure you want to delete this table?"
+                            okText="Yes"
+                            cancelText="No"
+                            onOk={() => removeTable(table.id)}
+                        >
+                            <Button type="outline" status="warning">
+                                Delete table
+                            </Button>
+                        </Popconfirm>
+                    </Grid.Col>
+                </Grid.Row>
+            </Form.Item>
+
+            <Form.Item
+                label="Table Comment"
+                field="note"
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 19 }}
+                initialValue={table.note}
+            >
+                <Input type="text" />
+            </Form.Item>
+        </>
+    );
+}
+
 /* A forwardRef function that is used to forward the ref to the child component. */
 // const TableRefFormItem = forwardRef(TableFormItem);
 
@@ -217,34 +281,25 @@ function TableFormItem(props) {
  * @returns A TableForm component
  */
 export default function TableForm(props) {
-    const [fields, setFields] = useState(props.table.fields);
-    const [name, setName] = useState(props.table.name);
-    const [note, setNote] = useState(props.table.note);
+    const [fields, setFields] = useState([]);
     const [form] = Form.useForm();
 
     useEffect(() => {
-        setFields(props.table.fields);
+        if (props.table) {
+            setFields(props.table.fields);
+        }
     }, [props.table]);
 
     const save = values => {
-        const table = {
+        const { name, note, ...fields } = values;
+        const newTable = {
             ...props.table,
             name,
             note,
-            fields: Object.values(values),
+            fields: Object.values(fields),
         };
-        delete table.x;
-        delete table.y;
-
-        props.updateTable(table);
-        props.setCommitting(false);
+        props.updateTable(newTable);
     };
-
-    useEffect(() => {
-        if (props.committing) {
-            form.submit();
-        }
-    }, [props.committing]);
 
     const addItem = index => {
         const newState = [...fields];
@@ -324,75 +379,46 @@ export default function TableForm(props) {
     };
 
     return (
-        <Space direction="vertical" style={{ width: '100%' }}>
-            <div
-                className={droppingId === 'root' ? 'dropping' : ''}
-                onDragOver={e => {
-                    if (draggingIndex !== 0) setDroppingId('root');
-                    e.preventDefault();
-                }}
-                onDrop={e => {
-                    unShiftFields();
-                }}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-            >
-                <label style={{ width: 110 }}>Table Name:</label>
-                <div style={{ display: 'flex', width: 468 }}>
-                    <Input
-                        defaultValue={props.table.name}
-                        type="text"
-                        onChange={value => {
-                            setName(value);
-                        }}
-                        style={{ width: 340 }}
-                    />
-                    <Popconfirm
-                        position="br"
-                        title="Are you sure you want to delete this table?"
-                        okText="Yes"
-                        cancelText="No"
-                        onOk={() => {
-                            props.removeTable(props.table.id);
-                        }}
-                    >
-                        <Button type="outline" status="warning" style={{ width: 120, marginLeft: 8 }}>
-                            Delete table
-                        </Button>
-                    </Popconfirm>
-                </div>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <label style={{ width: 110 }}>Table Comment:</label>
-                <div style={{ width: 468 }}>
-                    <Input
-                        defaultValue={props.table.note}
-                        type="text"
-                        onChange={value => setNote(value)}
-                        style={{ width: '100%' }}
-                    />
-                </div>
-            </div>
-
+        <Drawer
+            width={620}
+            title="Edit Table"
+            visible={!!props.table}
+            okText="Commit"
+            autoFocus={false}
+            onOk={() => form.submit()}
+            cancelText="Cancel"
+            onCancel={() => props.setEditingTable(false)}
+            escToExit={!props.formChange}
+            maskClosable={!props.formChange}
+            afterClose={() => {
+                props.setFormChange(false);
+                form.resetFields();
+            }}
+        >
             <Form
                 onSubmit={save}
-                onSubmitFailed={() => {
-                    props.setCommitting(false);
-                }}
                 form={form}
                 labelAlign="left"
                 requiredSymbol={false}
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span: 18 }}
                 onValuesChange={(changedValues, allValues) => {
-                    if (!props.formChange) props.setFormChange(true);
-                }}
+                        if (!props.formChange) props.setFormChange(true);
+                    }}
                 scrollToFirstError
             >
+                <TableBaseForm
+                    table={props.table}
+                    removeTable={props.removeTable}
+                    tableList={props.tableList}
+                />
+
                 {fields.map((field, index) => (
                     <TableFormItem
                         field={field}
                         key={field.id}
                         index={index}
+                        fieldList={fields}
                         addItem={addItem}
                         removeItem={removeItem}
                         setFields={setFields}
@@ -417,6 +443,6 @@ export default function TableForm(props) {
                     </Button>
                 )}
             </Form>
-        </Space>
+        </Drawer>
     );
 }
