@@ -69,7 +69,9 @@ export default function Home() {
     };
 
     const handlerAddExample = async () => {
-        await Promise.all([northwindTraders, blog, spaceX].map(({ id, ...item }) => addGraph(item, id)));
+        await Promise.all(
+            [northwindTraders, blog, spaceX].map(({ id, ...item }) => addGraph(item, id))
+        );
         setGraphs(state => [northwindTraders, blog, spaceX, ...state]);
         Notification.success({
             title: 'Sample data generated success.',
@@ -127,9 +129,11 @@ export default function Home() {
                                     title={item.name}
                                     description={
                                         <Space style={{ marginTop: 4 }}>
-                                            <Tag color="arcoblue" icon={<IconNav />}>
-                                                {Object.keys(item.tableDict).length} tables
-                                            </Tag>
+                                            {item.tableDict ? (
+                                                <Tag color="arcoblue" icon={<IconNav />}>
+                                                    {Object.keys(item.tableDict).length} tables
+                                                </Tag>
+                                            ) : null}
                                             <Tag color="green" icon={<IconCopy />}>
                                                 createdAt{' '}
                                                 {new Date(item.createdAt).toLocaleString()}
@@ -145,7 +149,7 @@ export default function Home() {
                         )}
                     />
                 ) : (
-                    <div className="tc">
+                    <div className="graph-list-btns">
                         <Empty style={{ marginBottom: 16 }} />
                         <Button size="large" type="primary" onClick={() => handlerAddGraph()}>
                             Create new graph now
