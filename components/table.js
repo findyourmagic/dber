@@ -109,7 +109,11 @@ export default function Table(props) {
                     <span className="table-name">{table.name}</span>
 
                     {editable && (
-                        <Space size={4} className="table-settings">
+                        <Space
+                            size={4}
+                            className="table-settings"
+                            style={{ background: table.theme }}
+                        >
                             <Button
                                 size="mini"
                                 onClick={() => setEditingTable(table)}
