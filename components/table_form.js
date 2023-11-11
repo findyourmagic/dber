@@ -13,9 +13,10 @@ import {
 } from '@arco-design/web-react';
 import classNames from 'classnames';
 import { nanoid } from 'nanoid';
-import fieldTypes from '../data/filed_typs';
-import tableModel from '../hooks/table-model';
-import graphState from '../hooks/use-graph-state';
+
+import fieldTypes from '@/config/filed_typs';
+import tableModel from '@/hooks/table-model';
+import graphState from '@/hooks/use-graph-state';
 
 /**
  * It takes the current fields array, checks if the current index is less than the length of the array,

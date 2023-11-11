@@ -12,7 +12,7 @@ https://dber.tech
 
 1. 可视化数据库结构设计
 2. 拖拽生成模型引用关系
-3. 一键导出SQL语句
+3. 一键导出 SQL 语句
 
 ## 技术栈
 
@@ -60,15 +60,30 @@ npm run build && npm run start
 npm run gen
 ```
 
-## 使用docker构建
+> 避免刷新时出现 404，服务器需做以下设置(以 `Nginx` 为例)：
 
-使用以下命令来构建Docker镜像:
+```
+server {
+    listen       80;
+    server_name  dber.local.yes-hr.com;
+    root   /{you_projects}/dber/out;
+    index index.html;
+
+    location /graphs {
+        try_files $uri $uri.html /graphs/[id].html;
+    }
+}
+```
+
+## 使用 docker 构建
+
+使用以下命令来构建 Docker 镜像:
 
 ```
 docker build -t dber .
 ```
 
-然后可以用Docker或者Docker Compose来启动服务:
+然后可以用 Docker 或者 Docker Compose 来启动服务:
 
 ```
 docker run -p 3000:3000 dber

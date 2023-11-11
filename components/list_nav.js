@@ -1,7 +1,8 @@
+import Link from 'next/link';
 import { Space, Button, Switch } from '@arco-design/web-react';
 import { IconSunFill, IconMoonFill } from '@arco-design/web-react/icon';
-import Link from 'next/link';
-import graphState from '../hooks/use-graph-state';
+
+import graphState from '@/hooks/use-graph-state';
 
 /**
  * It renders a nav bar with a link to the home page, a button to add a new graph, and a dropdown menu

@@ -21,13 +21,12 @@ import {
     IconCopy,
 } from '@arco-design/web-react/icon';
 import { useState, useEffect } from 'react';
-import { addGraph, delGraph, getAllGraphs } from '../../data/db';
-import ListNav from '../../components/list_nav';
-import northwindTraders from '../../data/example/northwind_traders.json';
-import blog from '../../data/example/blog.json';
-import spaceX from '../../data/example/spacex.json';
 
-const ImportModal = dynamic(() => import('../../components/import_modal'), { ssr: false });
+import ListNav from '@/components/list_nav';
+import exampleData from '@/data/example';
+import { addGraph, delGraph, getAllGraphs } from '@/engine/db';
+
+const ImportModal = dynamic(() => import('@/components/import_modal'), { ssr: false });
 
 /**
  * It fetches all the graphs from the database and displays them in a list
@@ -60,19 +59,17 @@ export default function Home() {
 
     const handlerImportGraph = async ({ tableDict, linkDict }) => {
         const id = await addGraph({ tableDict, linkDict, name: `Untitled graph ${graphs.length}` });
-        router.push(`/graphs/${id}`);
+        await router.push(`/graphs/${id}`);
     };
 
     const handlerAddGraph = async () => {
         const id = await addGraph({ name: `Untitled graph ${graphs.length}` });
-        router.push(`/graphs/${id}`);
+        await router.push(`/graphs/${id}`);
     };
 
     const handlerAddExample = async () => {
-        await Promise.all(
-            [northwindTraders, blog, spaceX].map(({ id, ...item }) => addGraph(item, id))
-        );
-        setGraphs(state => [northwindTraders, blog, spaceX, ...state]);
+        await Promise.all(exampleData.map(({ id, ...item }) => addGraph(item, id)));
+        setGraphs(state => [...exampleData, ...state]);
         Notification.success({
             title: 'Sample data generated success.',
         });

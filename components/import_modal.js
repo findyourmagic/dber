@@ -3,8 +3,9 @@ import { Parser } from '@dbml/core';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import Editor from '@monaco-editor/react';
-import graphState from '../hooks/use-graph-state';
-import tableModel from '../hooks/table-model';
+
+import graphState from '@/hooks/use-graph-state';
+import tableModel from '@/hooks/table-model';
 
 const TabPane = Tabs.TabPane;
 

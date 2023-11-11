@@ -1,5 +1,5 @@
-import graphState from '../hooks/use-graph-state';
-import { tableWidth, fieldHeight, commentHeight, titleHeight } from '../data/settings';
+import graphState from '@/hooks/use-graph-state';
+import { tableWidth, fieldHeight, commentHeight, titleHeight } from '@/config/settings';
 
 const control = 20;
 const padding = 5;
@@ -100,7 +100,7 @@ export default function LinkPath(props) {
         { x: (x1 - control + midX) / 2 - 10, y: (y1 + midY) / 2 - 10 },
     ];
 
-    if (endpoints[0].id == endpoints[1].id) {
+    if (endpoints[0].id === endpoints[1].id) {
         const factor = (y1 - y) / 50 < 2 ? 2 : (y1 - y) / 50;
 
         d = `M ${sourceRight} ${y}

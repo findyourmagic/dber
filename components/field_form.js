@@ -1,7 +1,8 @@
 import { Checkbox, Form, Input, Space, Tag, Modal, AutoComplete } from '@arco-design/web-react';
-import fieldTypes from '../data/filed_typs';
-import graphState from '../hooks/use-graph-state';
-import tableModel from '../hooks/table-model';
+
+import fieldTypes from '@/config/filed_typs';
+import graphState from '@/hooks/use-graph-state';
+import tableModel from '@/hooks/table-model';
 
 /**
  * It renders a form for editing a table

@@ -1,8 +1,9 @@
+import Link from 'next/link';
 import { Button, Space, Popconfirm, Input, Switch, Dropdown, Menu } from '@arco-design/web-react';
 import { IconSunFill, IconMoonFill, IconLeft } from '@arco-design/web-react/icon';
-import Link from 'next/link';
-import graphState from '../hooks/use-graph-state';
-import tableModel from '../hooks/table-model';
+
+import graphState from '@/hooks/use-graph-state';
+import tableModel from '@/hooks/table-model';
 
 /**
  * It renders a nav bar with a title, a save button, a demo button, a clear button, an export button,

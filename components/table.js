@@ -9,9 +9,9 @@ import {
     IconPalette,
 } from '@arco-design/web-react/icon';
 
-import { themes, tableWidth, titleHeight, commentHeight, fieldHeight } from '../data/settings';
-import graphState from '../hooks/use-graph-state';
-import tableModel from '../hooks/table-model';
+import { themes, tableWidth, titleHeight, commentHeight, fieldHeight } from '@/config/settings';
+import graphState from '@/hooks/use-graph-state';
+import tableModel from '@/hooks/table-model';
 
 const RenderTableTips = ({ field }) => (
     <div className="table-tips">

@@ -1,31 +1,29 @@
 import { useState, useEffect } from 'react';
 import { Drawer, Notification, Popconfirm, Space } from '@arco-design/web-react';
 
-import { delLogs, getLogs } from '../data/db';
-import graphState from '../hooks/use-graph-state';
-import tableModel from '../hooks/table-model';
+import { delLogs, getLogs } from '@/engine/db';
+import graphState from '@/hooks/use-graph-state';
+import tableModel from '@/hooks/table-model';
 
 export default function LogsDrawer({ showDrawer, onCloseDrawer }) {
     const { id, version } = graphState.useContainer();
     const { applyVersion } = tableModel();
     const [logs, setLogs] = useState(undefined);
 
-    const viewLogs = async () => {
-        const records = await getLogs(id);
-        setLogs(records);
-    };
-
     useEffect(() => {
         if (showDrawer === 'logs') {
-            viewLogs();
+            (async () => {
+                const records = await getLogs(id);
+                setLogs(records);
+            })();
         }
-    }, [showDrawer]);
+    }, [id, showDrawer]);
 
-    const deleteLogs = (e, id) => {
+    const deleteLogs = async (e, id) => {
         e.preventDefault();
         e.stopPropagation();
 
-        delLogs(id);
+        await delLogs(id);
         setLogs(state => state.filter(item => item.id !== id));
         Notification.success({
             title: 'Delete logs record success',

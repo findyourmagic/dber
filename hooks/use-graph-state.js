@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { createContainer } from 'unstated-next';
 import { useRouter } from 'next/router';
 import { Modal } from '@arco-design/web-react';
-import { getGraph } from '../data/db';
+
+import { getGraph } from '@/engine/db';
 
 /**
  * It returns a state object that contains the graph data, and a set of functions to update the graph

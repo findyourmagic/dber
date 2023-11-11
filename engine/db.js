@@ -1,7 +1,8 @@
-import { dbAdaptor } from './settings';
+import { dbAdaptor } from '@/config/settings';
 
 const dbc = {
     indexed: require('./adaptor/indexed'),
+    soul: require('./adaptor/soul'),
 }[dbAdaptor];
 
 export const getAllGraphs = async () => await dbc.getAllGraphs();

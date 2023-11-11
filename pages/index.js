@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { Button, Card, PageHeader, Space, Typography, Steps } from '@arco-design/web-react';
+import { Button, PageHeader, Space, Typography, Steps } from '@arco-design/web-react';
 
 const Step = Steps.Step;
 

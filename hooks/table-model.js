@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
-import graphState from './use-graph-state';
-import { saveGraph, getGraph } from '../data/db';
+
+import { saveGraph, getGraph } from '@/engine/db';
 import {
     tableWidth,
     tableMarginLeft,
@@ -9,7 +9,8 @@ import {
     fieldHeight,
     titleHeight,
     commentHeight,
-} from '../data/settings';
+} from '@/config/settings';
+import graphState from './use-graph-state';
 
 const tableModel = () => {
     const {

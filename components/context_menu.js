@@ -1,6 +1,7 @@
 import { Dropdown, Menu, Space, Divider } from '@arco-design/web-react';
-import graphState from '../hooks/use-graph-state';
-import tableModel from '../hooks/table-model';
+
+import graphState from '@/hooks/use-graph-state';
+import tableModel from '@/hooks/table-model';
 
 export default function ContextMenu({ setShowModal, children }) {
     const { version } = graphState.useContainer();

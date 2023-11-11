@@ -8,7 +8,8 @@ import {
     IconSortDescending,
     IconFilter,
 } from '@arco-design/web-react/icon';
-import graphState from '../hooks/use-graph-state';
+
+import graphState from '@/hooks/use-graph-state';
 
 export default function TableNav({ onTableSelected, tableSelectedId, setTableSelectId }) {
     const [collapsed, setCollapsed] = useState(false);

@@ -1,5 +1,6 @@
 import { Modal, Button, Space, Popconfirm } from '@arco-design/web-react';
-import graphState from '../hooks/use-graph-state';
+
+import graphState from '@/hooks/use-graph-state';
 
 /**
  * It renders a modal that allows the user to change the relation of a link or delete the link
@@ -39,7 +40,7 @@ export default function LinkModal(props) {
     };
 
     const removeLink = () => {
-        const { linkId, fieldId } = editingLink;
+        const { linkId } = editingLink;
         setLinkDict(state => {
             delete state[linkId];
             return { ...state };

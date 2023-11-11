@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Modal, Notification, Tabs } from '@arco-design/web-react';
 import Editor from '@monaco-editor/react';
-import graphState from '../hooks/use-graph-state';
-import exportSQL from '../utils/export-sql';
+
+import graphState from '@/hooks/use-graph-state';
+import exportSQL from '@/utils/export-sql';
 
 const TabPane = Tabs.TabPane;
 
