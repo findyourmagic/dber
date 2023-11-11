@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid';
+import { Notification } from '@arco-design/web-react';
 
-import { saveGraph, getGraph } from '@/engine/db';
+import { saveGraph, getGraph, delLogs } from '@/engine/db';
 import {
     tableWidth,
     tableMarginLeft,
@@ -23,6 +24,7 @@ const tableModel = () => {
         box,
         name,
         setName,
+        version,
         setVersion,
         setEditingTable,
         setEditingField,
@@ -30,8 +32,22 @@ const tableModel = () => {
     } = graphState.useContainer();
 
     const updateGraph = async () => {
-        await saveGraph({ id, name, tableDict, linkDict, box });
-        setVersion('currentVersion');
+        try {
+            await saveGraph({ id, name, tableDict, linkDict, box });
+            if (version !== 'currentVersion') {
+                await delLogs(version);
+            }
+
+            setVersion('currentVersion');
+            Notification.success({
+                title: 'Save success',
+            });
+        } catch (e) {
+            console.log(e);
+            Notification.error({
+                title: 'Save failed',
+            });
+        }
     };
 
     const calcXY = (start, tables = tableList) => {
@@ -191,11 +207,12 @@ const tableModel = () => {
         if (item === 'currentVersion') {
             graph = await getGraph(id);
             graph.updatedAt = 'currentVersion';
+            setVersion('currentVersion');
         } else {
             graph = item;
+            setVersion(item.id);
         }
 
-        setVersion(graph.updatedAt);
         setTableDict(graph.tableDict);
         setLinkDict(graph.linkDict);
         setName(graph.name);

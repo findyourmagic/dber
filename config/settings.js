@@ -17,5 +17,3 @@ export const titleHeight = 40;
 export const commentHeight = 24;
 
 export const fieldHeight = 32;
-
-export const dbAdaptor = 'indexed';

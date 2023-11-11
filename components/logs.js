@@ -57,10 +57,10 @@ export default function LogsDrawer({ showDrawer, onCloseDrawer }) {
             {logs
                 ? logs.map(item => (
                       <Space
-                          key={item.updatedAt}
+                          key={item.id}
                           align="start"
                           className={`custom-radio-card ${
-                              version === item.updatedAt ? 'custom-radio-card-checked' : ''
+                              version === item.id ? 'custom-radio-card-checked' : ''
                           }`}
                           onClick={() => applyVersion(item)}
                       >

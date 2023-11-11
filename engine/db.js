@@ -1,4 +1,6 @@
-import { dbAdaptor } from '@/config/settings';
+import { diffJson } from 'diff';
+
+import { dbAdaptor } from '@/package.json';
 
 const dbc = {
     indexed: require('./adaptor/indexed'),
@@ -9,7 +11,18 @@ export const getAllGraphs = async () => await dbc.getAllGraphs();
 
 export const getGraph = async id => await dbc.getGraph(id);
 
-export const saveGraph = async args => await dbc.saveGraph(args);
+export const saveGraph = async data => {
+    const { id, ...newData } = data;
+    const { id: _, ...curData } = await dbc.getGraph(id);
+
+    newData.createdAt = curData.createdAt;
+    await dbc.saveGraph({ id, ...newData });
+
+    if (diffJson(newData, curData).length > 1) {
+        curData.graphId = id;
+        await dbc.addLogs(curData);
+    }
+};
 
 export const delGraph = async id => await dbc.delGraph(id);
 

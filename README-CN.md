@@ -26,6 +26,8 @@ ArcoDesign
 
 Dexie(indexDB)
 
+Soul CLI(sqlite db)
+
 ## 开始
 
 克隆本仓库或者下载代码.
@@ -60,7 +62,7 @@ npm run build && npm run start
 npm run gen
 ```
 
-> 避免刷新时出现 404，服务器需做以下设置(以 `Nginx` 为例)：
+避免刷新时出现 404，服务器需做以下设置(以 `Nginx` 为例)：
 
 ```
 server {
@@ -96,6 +98,17 @@ docker-compose up -d
 ```
 
 使用浏览器打开 [http://localhost:3000](http://localhost:3000) 查看结果.
+
+## 协作（简单）功能
+
+使用 [Soul CLI](https://github.com/thevahidal/soul) 实现简单的在线协作功能，使用的是 `sqlite` 数据库。注意：
+
+-   暂时没有权限管理功能，如数据库接口公开，意味着任何人都具有读取、写入权限
+-   不支持编辑操作后的实时同步功能
+-   启动方式：
+    -   安装 Soul CLI 包 `np install -D soul-cli`
+    -   编辑 `package.json` 中的 `dbAdaptor` 为 `soul`，并根据实际情况设置 `soulUrl`
+    -   执行 `npm run dev` 或者 `npm run build && npm run start` (docker 方式未经测试)
 
 ## 受到以下作品启发
 

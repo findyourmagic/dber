@@ -41,5 +41,7 @@
     },
     "gitHooks": {
         "pre-commit": "pretty-quick --staged && npm run prettier"
-    }
+    },
+    "dbAdaptor": "indexed",
+    "soulUrl": "http://localhost:3001/api"
 }
