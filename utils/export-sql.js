@@ -16,8 +16,18 @@ const exportSQL = (tableDict, linkDict, databaseType = 'postgres') => {
                 name: table.name,
                 note: table.note,
                 fields: table.fields.map(field => {
+                    const defaultValue = field.dbdefault
+                        ? {
+                              dbdefault: {
+                                  type: 'string',
+                                  value: field.dbdefault,
+                              },
+                          }
+                        : {};
+
                     return {
                         ...field,
+                        ...defaultValue,
                         type: {
                             // To lower case because of typing 'BIGINT' with upper case and increment get wrong pg sql type when export
                             type_name: field.type.toLowerCase(),

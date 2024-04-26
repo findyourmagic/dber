@@ -51,6 +51,7 @@ export default function ImportModal({ showModal, onCloseModal, cb = p => {} }) {
                             pk: field.pk,
                             unique: field.unique,
                             type: field.type.type_name.toUpperCase(),
+                            dbdefault: field.dbdefault?.value,
                         };
                     }),
                 };
