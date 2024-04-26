@@ -278,12 +278,12 @@ export default function TableForm(props) {
     }, [editingTable]);
 
     const save = values => {
-        const { name, note, ...fields } = values;
+        const { name, note } = values;
         const newTable = {
             ...editingTable,
             name,
             note,
-            fields: Object.values(fields),
+            fields: [...fields],
         };
         updateTable(newTable);
     };
