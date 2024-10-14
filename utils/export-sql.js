@@ -15,6 +15,7 @@ const exportSQL = (tableDict, linkDict, databaseType = 'postgres') => {
             return {
                 name: table.name,
                 note: table.note,
+                headerColor: table.theme,
                 fields: table.fields.map(field => {
                     const defaultValue = field.dbdefault
                         ? {

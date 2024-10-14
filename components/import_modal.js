@@ -38,6 +38,7 @@ export default function ImportModal({ showModal, onCloseModal, cb = p => {} }) {
                     id,
                     name: table.name,
                     note: table.note,
+                    theme: table.headerColor,
                     x,
                     y,
                     fields: table.fields.map(field => {
